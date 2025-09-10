@@ -1,0 +1,95 @@
+---
+import { Code, Zap, Sparkles } from 'lucide-react';
+---
+
+<section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-light via-light to-light/90 pt-20">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h1 class="text-6xl md:text-8xl font-brutalist text-dark leading-tight">
+            FAST.
+            <br />
+            <span class="text-accent">PRECISE.</span>
+            <br />
+            ELEGANT.
+          </h1>
+          <p class="text-xl md:text-2xl text-dark/70 max-w-2xl">
+            We create lightning-fast, pixel-perfect websites that soar above the competition. 
+            Just like our hummingbird mascot.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-4">
+          <button class="bg-accent text-dark px-8 py-4 rounded-2xl font-bold text-lg hover:bg-accent/90 transform hover:scale-105 transition-all duration-300 animate-glow">
+            Get Started
+          </button>
+          <button class="bg-dark/10 backdrop-blur-lg text-dark px-8 py-4 rounded-2xl font-medium text-lg hover:bg-dark/20 transition-all duration-300 border border-dark/20">
+            View Portfolio
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex flex-wrap gap-8 pt-8">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-dark">50+</div>
+            <div class="text-dark/60">Projects Delivered</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-dark">99%</div>
+            <div class="text-dark/60">Client Satisfaction</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-dark">24/7</div>
+            <div class="text-dark/60">Support</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual -->
+      <div class="relative flex items-center justify-center">
+        <div class="relative">
+          <!-- Main circle with glassmorphism -->
+          <div class="w-80 h-80 md:w-96 md:h-96 rounded-full bg-light/30 backdrop-blur-xl border border-dark/20 flex items-center justify-center animate-float">
+            <!-- Inner elements -->
+            <div class="w-64 h-64 rounded-full bg-accent/20 backdrop-blur-lg border border-accent/30 flex items-center justify-center">
+              <div class="w-32 h-32 bg-accent rounded-full flex items-center justify-center">
+                <!-- Hummingbird placeholder -->
+                <div class="w-16 h-16 bg-dark rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating icons -->
+          <div class="absolute -top-8 -right-8 w-16 h-16 bg-light/80 backdrop-blur-lg rounded-2xl border border-dark/20 flex items-center justify-center animate-float" style="animation-delay: 0.5s;">
+            <Code className="w-8 h-8 text-accent" />
+          </div>
+          
+          <div class="absolute -bottom-8 -left-8 w-16 h-16 bg-light/80 backdrop-blur-lg rounded-2xl border border-dark/20 flex items-center justify-center animate-float" style="animation-delay: 1s;">
+            <Zap className="w-8 h-8 text-accent" />
+          </div>
+          
+          <div class="absolute top-1/2 -right-16 w-16 h-16 bg-light/80 backdrop-blur-lg rounded-2xl border border-dark/20 flex items-center justify-center animate-float" style="animation-delay: 1.5s;">
+            <Sparkles className="w-8 h-8 text-accent" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+</style>

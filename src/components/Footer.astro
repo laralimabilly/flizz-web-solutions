@@ -1,0 +1,80 @@
+---
+import { Github, Twitter, Linkedin, Instagram } from 'lucide-react';
+---
+
+<footer class="bg-dark py-16">
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-4 gap-12">
+      <!-- Brand Section -->
+      <div class="lg:col-span-2 space-y-6">
+        <div class="flex items-center space-x-3">
+          <img class="w-28" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Logo">
+        </div>
+        
+        <p class="text-light/70 text-lg max-w-md">
+          Creating lightning-fast, pixel-perfect websites that soar above the competition. 
+          Your digital transformation partner.
+        </p>
+
+        <div class="flex space-x-4">
+          <a href="#" class="w-10 h-10 bg-light/10 backdrop-blur-lg rounded-xl border border-light/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all duration-300 group">
+            <Github className="w-5 h-5 text-light group-hover:text-dark" />
+          </a>
+          <a href="#" class="w-10 h-10 bg-light/10 backdrop-blur-lg rounded-xl border border-light/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all duration-300 group">
+            <Twitter className="w-5 h-5 text-light group-hover:text-dark" />
+          </a>
+          <a href="#" class="w-10 h-10 bg-light/10 backdrop-blur-lg rounded-xl border border-light/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all duration-300 group">
+            <Linkedin className="w-5 h-5 text-light group-hover:text-dark" />
+          </a>
+          <a href="#" class="w-10 h-10 bg-light/10 backdrop-blur-lg rounded-xl border border-light/20 flex items-center justify-center hover:bg-accent hover:border-accent transition-all duration-300 group">
+            <Instagram className="w-5 h-5 text-light group-hover:text-dark" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-6">
+        <h3 class="text-xl font-bold text-light">Quick Links</h3>
+        <nav class="space-y-3">
+          <a href="#home" class="block text-light/70 hover:text-accent transition-colors duration-300">Home</a>
+          <a href="#solutions" class="block text-light/70 hover:text-accent transition-colors duration-300">Solutions</a>
+          <a href="#portfolio" class="block text-light/70 hover:text-accent transition-colors duration-300">Portfolio</a>
+          <a href="#contact" class="block text-light/70 hover:text-accent transition-colors duration-300">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Services -->
+      <div class="space-y-6">
+        <h3 class="text-xl font-bold text-light">Services</h3>
+        <nav class="space-y-3">
+          <a href="#" class="block text-light/70 hover:text-accent transition-colors duration-300">Web Design</a>
+          <a href="#" class="block text-light/70 hover:text-accent transition-colors duration-300">Web Development</a>
+          <a href="#" class="block text-light/70 hover:text-accent transition-colors duration-300">Mobile Apps</a>
+          <a href="#" class="block text-light/70 hover:text-accent transition-colors duration-300">Maintenance</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="border-t border-light/20 mt-12 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div class="text-light/60 text-sm">
+          © 2024 Flizz Web Solutions. All rights reserved.
+        </div>
+        
+        <div class="flex space-x-6 text-sm">
+          <a href="#" class="text-light/60 hover:text-accent transition-colors duration-300">Privacy Policy</a>
+          <a href="#" class="text-light/60 hover:text-accent transition-colors duration-300">Terms of Service</a>
+          <a href="#" class="text-light/60 hover:text-accent transition-colors duration-300">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Smooth scrolling for footer links */
+  a[href^="#"] {
+    scroll-behavior: smooth;
+  }
+</style>
