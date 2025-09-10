@@ -9,31 +9,40 @@ gsap.registerPlugin(ScrollTrigger);
 const projects: Project[] = [
   {
     id: '1',
-    title: 'E-Commerce Platform',
-    description: 'A modern, high-performance e-commerce solution built with React and Node.js. Features include real-time inventory management, seamless payment integration, and advanced analytics dashboard.',
-    industry: 'Retail & E-Commerce',
-    services: ['Web Development', 'UI/UX Design', 'Mobile Optimization'],
+    title: 'DayOne - Talent Advisory',
+    description: 'A modern, high-performance web solution built with Astro and React. Features include real-time Storyblok integration for blogging, lightweight proprietary i18n and advanced analytics tools.',
+    industry: 'Human Resources',
+    services: ['Web Development', 'UI/UX Design', 'Storyblok Integration'],
     image: '/api/placeholder/600/400',
-    link: '#'
+    link: 'https://www.dayonetalent.com/'
   },
   {
     id: '2',
-    title: 'FinTech Mobile App',
-    description: 'Revolutionary mobile banking application with biometric authentication, AI-powered insights, and seamless transaction management. Built with React Native and advanced security protocols.',
-    industry: 'Financial Technology',
-    services: ['Mobile App Development', 'Brand Design', 'Security Implementation'],
+    title: 'Bugo Mobile App',
+    description: 'Bugo (Before U Go) is a simple mobile application that uses intelligent geolocation without bluetooth tags or complex setup to remind you of your belongings before leaving a place. Built with React Native and Expo.',
+    industry: 'Utility Tools',
+    services: ['Mobile App Development', 'Brand Design', 'Web Development'],
     image: '/api/placeholder/600/400',
-    link: '#'
+    link: 'https://bugoapp.com/'
   },
   {
     id: '3',
-    title: 'Healthcare Dashboard',
-    description: 'Comprehensive patient management system with real-time monitoring, telemedicine capabilities, and HIPAA-compliant data handling. Streamlines healthcare operations for better patient outcomes.',
-    industry: 'Healthcare & Medical',
-    services: ['Web Development', 'Data Visualization', 'System Integration'],
+    title: 'Gustavo Carmo\'s Website',
+    description: 'Simple yet modern website for the guitarist Gustavo Carmo known for his works with great talents such as Rudy Sarzo, Tye Trujillo and Dirk Verbeuren. Built using jQuery and PHP.',
+    industry: 'Music',
+    services: ['Web Development', 'Social Media', 'Platform Integration'],
     image: '/api/placeholder/600/400',
-    link: '#'
-  }
+    link: 'https://gustavocarmoguitar.com/'
+  },
+  {
+    id: '4',
+    title: 'Ridiculous Rumors - Conspiracy Theory Generator',
+    description: 'Humorous platform for conspiracy theory generation with a 60s spy era vibe, powered by Gemini AI, and seamless database integration. Built with Next.js, Gemini API and Supabase.',
+    industry: 'Entertainment',
+    services: ['Web Development', 'Supabase Integration', 'Gemini AI'],
+    image: '/api/placeholder/600/400',
+    link: 'https://ridiculousrumors.com/'
+  },
 ];
 
 const Portfolio: React.FC = () => {
@@ -213,7 +222,7 @@ const Portfolio: React.FC = () => {
   };
 
   return (
-    <section ref={sectionRef} id="portfolio" className="py-20 bg-light">
+    <section ref={sectionRef} id="portfolio" className="py-40 bg-light">
       <div className="container mx-auto px-6">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -227,7 +236,7 @@ const Portfolio: React.FC = () => {
             ref={subtitleRef}
             className="text-xl text-dark/70 max-w-3xl mx-auto"
           >
-            Showcasing our latest work - where innovation meets excellence
+            Showcasing our latest work, where innovation meets excellence
           </p>
         </div>
 
@@ -255,7 +264,7 @@ const Portfolio: React.FC = () => {
                   {/* Overlay on hover */}
                   <div className="project-overlay absolute inset-0 bg-accent/90 backdrop-blur-sm opacity-0 transition-all duration-500 flex items-center justify-center">
                     <button className="bg-dark text-light px-6 py-3 rounded-xl font-medium flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      View Project <ExternalLink className="w-4 h-4" />
+                      View Project <ExternalLink href={project.link} className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -293,10 +302,10 @@ const Portfolio: React.FC = () => {
                 </div>
 
                 {/* CTA */}
-                <button className="group flex items-center gap-3 text-dark hover:text-accent transition-colors duration-300 font-medium">
+                <a href={project.link} target="_blank" className="group flex items-center gap-3 text-dark hover:text-accent transition-colors duration-300 font-medium">
                   View Case Study 
                   <ArrowRight className="arrow-icon w-4 h-4 transform transition-transform duration-300" />
-                </button>
+                </a>
               </div>
             </div>
           ))}

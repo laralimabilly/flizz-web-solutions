@@ -317,7 +317,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section ref={sectionRef} id="contact" className="py-20 bg-light">
+    <section ref={sectionRef} id="contact" className="py-40 bg-light">
       <div className="container mx-auto px-6">
         {/* Section Title */}
         <div className="text-center mb-16">
@@ -352,7 +352,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="font-medium text-dark">Email</div>
-                  <div className="text-dark/70">hello@flizzweb.com</div>
+                  <div className="text-dark/70">felipe@flizz.com.br</div>
                 </div>
               </div>
 
@@ -365,7 +365,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <div className="font-medium text-dark">Phone</div>
-                  <div className="text-dark/70">+1 (555) 123-4567</div>
+                  <div className="text-dark/70">+55 (17) 98144-9654</div>
                 </div>
               </div>
 

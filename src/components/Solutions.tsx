@@ -229,7 +229,7 @@ const Solutions: React.FC = () => {
   };
 
   return (
-    <section ref={sectionRef} id="solutions" className="py-20 bg-dark relative overflow-hidden">
+    <section ref={sectionRef} id="solutions" className="py-40 bg-dark relative overflow-hidden">
       {/* Background decorative elements */}
       <div ref={bgElementsRef} className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-32 h-32 bg-accent rounded-full blur-xl"></div>

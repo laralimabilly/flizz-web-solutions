@@ -18,7 +18,7 @@ export interface Service {
   export interface Technology {
     name: string;
     icon: string;
-    category: 'frontend' | 'backend' | 'mobile' | 'tools';
+    category: 'frontend' | 'backend' | 'mobile' | 'tools' | 'design';
   }
   
   export interface ContactForm {
