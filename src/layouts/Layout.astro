@@ -8,6 +8,8 @@ const {
   title, 
   description = "Flizz Web Solutions - Creating lightning-fast, pixel-perfect websites that soar above the competition. Your digital transformation partner." 
 } = Astro.props;
+
+import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
@@ -35,8 +37,6 @@ const {
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
     
     <title>{title}</title>
-
-    <link rel="stylesheet" href="/styles/global.css">
   </head>
   
   <body class="font-sans antialiased">
