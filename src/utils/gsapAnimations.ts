@@ -33,7 +33,7 @@ export const fadeInUp = (
     duration?: number;
     delay?: number;
     y?: number;
-    trigger?: string | Element;
+    trigger?: string | Element | undefined;
     start?: string;
     ease?: string;
   } = {}
@@ -42,7 +42,7 @@ export const fadeInUp = (
     duration = animationConfig.duration.normal,
     delay = 0,
     y = 50,
-    trigger = element,
+    trigger = element as string | Element | undefined,
     start = "top 85%",
     ease = animationConfig.ease.smooth
   } = options;
@@ -56,7 +56,7 @@ export const fadeInUp = (
     delay,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }
@@ -93,7 +93,7 @@ export const fadeInLeft = (
     delay,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }
@@ -130,7 +130,7 @@ export const fadeInRight = (
     delay,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }
@@ -167,7 +167,7 @@ export const scaleIn = (
     delay,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }
@@ -204,7 +204,7 @@ export const staggerFadeIn = (
     stagger,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }
@@ -283,7 +283,7 @@ export const parallaxEffect = (
   return gsap.to(element, {
     y,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       end,
       scrub
@@ -453,7 +453,7 @@ export const textReveal = (
     delay,
     ease,
     scrollTrigger: {
-      trigger,
+      trigger: trigger as string | Element | undefined,
       start,
       toggleActions: "play none none reverse"
     }

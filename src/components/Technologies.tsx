@@ -207,7 +207,7 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes scroll {
           0% {
             transform: translateX(0);
