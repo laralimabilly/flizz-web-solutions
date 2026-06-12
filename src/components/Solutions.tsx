@@ -72,11 +72,14 @@ const Solutions: React.FC = () => {
           scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        // Cards slide in, then scale away as the next one stacks on top
+        // Cards slide in, then scale away as the next one stacks on top.
+        // The entrance targets the inner content while the scrub targets the
+        // card shell — they must not share properties, or the scrub locks its
+        // start values mid-entrance and leaves cards permanently faded.
         cardsRef.current.forEach((card, i) => {
           if (!card) return;
 
-          gsap.from(card, {
+          gsap.from(card.querySelector('.card-inner'), {
             opacity: 0,
             y: 80,
             duration: 0.9,
@@ -86,19 +89,23 @@ const Solutions: React.FC = () => {
 
           const next = cardsRef.current[i + 1];
           if (next) {
-            gsap.to(card, {
-              scale: 0.94,
-              opacity: 0.5,
-              filter: 'blur(2px)',
-              transformOrigin: 'center top',
-              ease: 'none',
-              scrollTrigger: {
-                trigger: next,
-                start: 'top bottom',
-                end: 'top top+=120',
-                scrub: true,
-              },
-            });
+            gsap.fromTo(card,
+              { scale: 1, opacity: 1, filter: 'blur(0px)' },
+              {
+                scale: 0.94,
+                opacity: 0.5,
+                filter: 'blur(2px)',
+                transformOrigin: 'center top',
+                ease: 'none',
+                immediateRender: false,
+                scrollTrigger: {
+                  trigger: next,
+                  start: 'top bottom',
+                  end: 'top top+=120',
+                  scrub: true,
+                },
+              }
+            );
           }
         });
 
@@ -119,10 +126,12 @@ const Solutions: React.FC = () => {
     card.style.setProperty('--y', `${e.clientY - rect.top}px`);
   };
 
+  // No overflow-hidden on the section — it would turn it into a scroll container
+  // and break the sticky card stacking. The glow wrapper clips instead.
   return (
-    <section ref={sectionRef} id="solutions" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
+    <section ref={sectionRef} id="solutions" className="relative py-32 md:py-40 bg-night bg-noise">
       {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-1/3 -left-40 w-[30rem] h-[30rem] bg-accent/10 rounded-full blur-[160px]" />
       </div>
 
@@ -153,7 +162,7 @@ const Solutions: React.FC = () => {
                 className="spotlight-card sticky group bg-surface/90 backdrop-blur-xl rounded-3xl border border-line hover:border-accent/40 transition-colors duration-500 overflow-hidden"
                 style={{ top: `${96 + index * 24}px` }}
               >
-                <div className="grid md:grid-cols-12 gap-8 p-8 md:p-12 items-center">
+                <div className="card-inner grid md:grid-cols-12 gap-8 p-8 md:p-12 items-center">
                   {/* Index + icon */}
                   <div className="md:col-span-3 flex md:flex-col items-center md:items-start gap-6">
                     <span className="font-mono text-muted/50 text-sm tracking-widest">
