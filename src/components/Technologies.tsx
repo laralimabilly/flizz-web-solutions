@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import type { Technology } from '../types';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const technologies: Technology[] = [
   // Frontend
@@ -18,6 +19,7 @@ const technologies: Technology[] = [
   { name: 'jQuery', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jquery/jquery-plain.svg', category: 'frontend' },
   { name: 'MaterializeCSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/materializecss/materializecss-plain.svg', category: 'frontend' },
   { name: 'Material UI', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/materialui/materialui-plain.svg', category: 'frontend' },
+  { name: 'GSAP', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gsap/gsap-original.svg', category: 'frontend' },
 
   // Backend
   { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain.svg', category: 'backend' },
@@ -40,7 +42,7 @@ const technologies: Technology[] = [
   { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', category: 'tools' },
   { name: 'Vite', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-plain.svg', category: 'tools' },
 
-  //Design
+  // Design
   { name: 'Illustrator', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-plain.svg', category: 'design' },
   { name: 'Photoshop', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-plain.svg', category: 'design' },
   { name: 'Premiere Pro', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-plain.svg', category: 'design' },
@@ -48,183 +50,140 @@ const technologies: Technology[] = [
   { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-plain.svg', category: 'design' },
 ];
 
-// Double the array for infinite scroll effect
-const infiniteTechnologies = [...technologies, ...technologies];
+const rowA = technologies.filter((_, i) => i % 2 === 0);
+const rowB = technologies.filter((_, i) => i % 2 === 1);
+
+const TechChip: React.FC<{ tech: Technology }> = ({ tech }) => (
+  <div className="flex-shrink-0 group flex items-center gap-3 bg-surface/80 backdrop-blur-lg rounded-full pl-3 pr-6 py-3 border border-line hover:border-accent/50 hover:bg-surface transition-all duration-300 mx-3">
+    <div className="w-9 h-9 rounded-full bg-night flex items-center justify-center">
+      <img
+        src={tech.icon}
+        alt=""
+        loading="lazy"
+        width={20}
+        height={20}
+        className="w-5 h-5 object-contain"
+        style={{ filter: 'brightness(0) invert(1)' }}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.style.display = 'none';
+        }}
+      />
+    </div>
+    <span className="text-light/80 font-medium text-sm whitespace-nowrap group-hover:text-accent transition-colors duration-300">
+      {tech.name}
+    </span>
+  </div>
+);
 
 const Technologies: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const philosophyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Simple fade in animations
-      gsap.fromTo(titleRef.current, 
-        { opacity: 0, y: 50 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1.5, 
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 85%"
-          }
-        }
-      );
+    const mm = gsap.matchMedia();
 
-      gsap.fromTo(subtitleRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: subtitleRef.current,
-            start: "top 85%"
-          }
-        }
-      );
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+        const split = new SplitText(titleRef.current, { type: 'chars' });
+        gsap.from(split.chars, {
+          yPercent: 110,
+          opacity: 0,
+          stagger: 0.025,
+          duration: 0.8,
+          ease: 'power4.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
+        });
 
-      gsap.fromTo(philosophyRef.current,
-        { opacity: 0, y: 100, scale: 0.95 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.2,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: philosophyRef.current,
-            start: "top 85%"
-          }
-        }
-      );
+        gsap.from([eyebrowRef.current, subtitleRef.current], {
+          opacity: 0,
+          y: 40,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
+        });
 
-    }, sectionRef);
+        gsap.from(philosophyRef.current, {
+          opacity: 0,
+          y: 80,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: philosophyRef.current, start: 'top 88%' },
+        });
 
-    return () => ctx.revert();
+        return () => split.revert();
+      }, sectionRef);
+
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-40 bg-dark relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-accent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+    <section ref={sectionRef} aria-label="Technologies" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-accent/5 rounded-full blur-[200px]" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 
-            ref={titleRef}
-            className="text-6xl md:text-8xl font-brutalist text-light mb-6"
-          >
+      <div className="container mx-auto px-6 relative z-10 mb-16">
+        <div className="max-w-4xl">
+          <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
+            {'//'} 03 — Our toolbox
+          </p>
+          <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
             TECH STACK
           </h2>
-          <p 
-            ref={subtitleRef}
-            className="text-xl text-light/70 max-w-3xl mx-auto"
-          >
-            Cutting-edge technologies and tools we use to build exceptional digital experiences
+          <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
+            Cutting-edge technologies and tools we use to build exceptional digital experiences.
           </p>
         </div>
+      </div>
 
-        {/* Technologies Carousel */}
-        <div className="relative mb-20">
-          {/* Gradient overlays for smooth edges */}
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-dark to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-dark to-transparent z-10 pointer-events-none"></div>
-          
-          {/* Pure CSS Carousel */}
-          <div className="overflow-hidden py-8">
-            <div className="flex gap-8 animate-scroll">
-              {infiniteTechnologies.map((tech, index) => (
-                <div 
-                  key={`${tech.name}-${index}`}
-                  className="flex-shrink-0 group bg-light/10 backdrop-blur-lg rounded-2xl p-6 border border-light/20 hover:border-accent/50 transition-all duration-300 cursor-pointer w-44 h-32 hover:scale-110 hover:bg-light/15"
-                >
-                  <div className="flex flex-col items-center gap-3 h-full justify-center">
-                    <div className="w-12 h-12 flex items-center justify-center">
-                      <img 
-                        src={tech.icon} 
-                        alt={tech.name}
-                        className="w-10 h-10 object-contain group-hover:text-accent transition-colors duration-300"
-                        style={{ filter: 'brightness(0) invert(1)' }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent) {
-                            parent.innerHTML = `<div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-dark font-bold text-xs">${tech.name.charAt(0)}</div>`;
-                          }
-                        }}
-                      />
-                    </div>
-                    <span className="text-light font-medium text-center text-sm group-hover:text-accent transition-colors duration-300">
-                      {tech.name}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Dual-direction marquees */}
+      <div className="relative space-y-5 marquee-paused mb-24">
+        <div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-gradient-to-r from-night to-transparent z-10 pointer-events-none" aria-hidden="true" />
+        <div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-gradient-to-l from-night to-transparent z-10 pointer-events-none" aria-hidden="true" />
+
+        <div className="overflow-hidden">
+          <div className="marquee-track">
+            {[...rowA, ...rowA].map((tech, i) => <TechChip key={`a-${i}`} tech={tech} />)}
           </div>
         </div>
-
-        {/* Tech Philosophy */}
-        <div className="text-center">
-          <div 
-            ref={philosophyRef}
-            className="bg-light/5 backdrop-blur-lg rounded-3xl p-12 border border-light/10 max-w-4xl mx-auto cursor-pointer hover:bg-light/10 hover:scale-102 transition-all duration-300"
-          >
-            <h3 className="text-3xl font-bold text-light mb-6">
-              Our Technology Philosophy
-            </h3>
-            <p className="text-light/70 text-lg leading-relaxed">
-              We believe in using the right tool for the right job. Our technology choices are driven by 
-              performance, scalability, and developer experience. We stay current with industry trends 
-              while maintaining stability and reliability in our solutions.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <div className="bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/30">
-                Performance First
-              </div>
-              <div className="bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/30">
-                Scalable Architecture
-              </div>
-              <div className="bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/30">
-                Developer Experience
-              </div>
-              <div className="bg-accent/20 text-accent px-4 py-2 rounded-full text-sm font-medium border border-accent/30">
-                Future-Proof Solutions
-              </div>
-            </div>
+        <div className="overflow-hidden">
+          <div className="marquee-track-reverse">
+            {[...rowB, ...rowB].map((tech, i) => <TechChip key={`b-${i}`} tech={tech} />)}
           </div>
         </div>
       </div>
 
-      <style>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(calc(-200px * ${technologies.length}));
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll 40s linear infinite;
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+      {/* Tech Philosophy */}
+      <div className="container mx-auto px-6 relative z-10">
+        <div
+          ref={philosophyRef}
+          className="spotlight-card bg-surface/80 backdrop-blur-xl rounded-3xl p-10 md:p-14 border border-line hover:border-accent/40 transition-colors duration-500 max-w-4xl mx-auto"
+        >
+          <p className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">Philosophy</p>
+          <h3 className="text-3xl md:text-4xl font-display font-bold text-light mb-6">
+            The right tool for the right job.
+          </h3>
+          <p className="text-muted text-lg leading-relaxed">
+            Our technology choices are driven by performance, scalability, and developer experience.
+            We stay current with industry trends while maintaining stability and reliability in our solutions.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {['Performance First', 'Scalable Architecture', 'Developer Experience', 'Future-Proof Solutions'].map((pill) => (
+              <span key={pill} className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-mono border border-accent/25">
+                {pill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

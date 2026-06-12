@@ -2,85 +2,105 @@
 export interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { 
-  title, 
-  description = "Flizz Web Solutions - Creating lightning-fast, pixel-perfect websites that soar above the competition. Your digital transformation partner." 
+const {
+  title,
+  description = "Flizz Web Solutions builds lightning-fast, pixel-perfect websites, web apps and mobile apps for clients in Brazil and the US. Performance-first development with React, Astro and React Native.",
+  image = "/images/Flizz_Logo_Dark@300x.webp",
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": `${Astro.site}#organization`,
+      name: "Flizz Web Solutions",
+      url: `${Astro.site}`,
+      logo: new URL("/images/Flizz_Logo_Light@300x.webp", Astro.site).toString(),
+      description,
+      email: "felipe@flizz.com.br",
+      telephone: "+55-17-98144-9654",
+      areaServed: [
+        { "@type": "Country", name: "Brazil" },
+        { "@type": "Country", name: "United States" },
+      ],
+      sameAs: [
+        "https://github.com/laralimabilly",
+        "https://www.linkedin.com/company/flizz-web-solutions/",
+      ],
+      knowsAbout: [
+        "Web Development",
+        "Web Design",
+        "Mobile App Development",
+        "SEO",
+        "React",
+        "Astro",
+        "React Native",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${Astro.site}#website`,
+      url: `${Astro.site}`,
+      name: "Flizz Web Solutions",
+      publisher: { "@id": `${Astro.site}#organization` },
+      inLanguage: "en",
+    },
+  ],
+};
 
 import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
-    
-    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0b0a11" />
+    <meta name="author" content="Flizz Web Solutions" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Flizz Web Solutions" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="/og-image.jpg" />
-    
-    <!-- Preload critical fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
-    
-    <title>{title}</title>
+    <meta name="twitter:image" content={socialImage} />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  
-  <body class="font-sans antialiased">
+
+  <body class="font-sans antialiased bg-night text-light">
     <slot />
-    
-    <!-- Smooth scroll behavior -->
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      
-      body {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-      }
-      
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      
-      ::-webkit-scrollbar-track {
-        background: #f3f3f3;
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background: #68f70b;
-        border-radius: 4px;
-      }
-      
-      ::-webkit-scrollbar-thumb:hover {
-        background: #5de009;
-      }
-      
-      /* Prevent horizontal scroll */
-      body {
-        overflow-x: hidden;
-      }
-      
-      /* Ensure all sections are properly contained */
-      * {
-        box-sizing: border-box;
-      }
-    </style>
   </body>
 </html>

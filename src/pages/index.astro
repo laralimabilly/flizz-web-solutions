@@ -9,14 +9,14 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="Flizz Web Solutions - Fast, Precise, Elegant Websites">
+<Layout title="Flizz Web Solutions — Fast, Precise, Elegant Websites & Apps">
   <Header />
   <main>
     <Hero client:load />
-    <Solutions client:load />
-    <Portfolio client:load />
-    <Technologies client:load />
-    <Contact client:load />
+    <Solutions client:visible />
+    <Portfolio client:visible />
+    <Technologies client:visible />
+    <Contact client:visible />
   </main>
   <Footer />
 </Layout>

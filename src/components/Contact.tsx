@@ -1,416 +1,175 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { Mail, Phone, MapPin, Send, Clock, Users } from 'lucide-react';
 import type { ContactForm } from '../types';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
+
+const contactDetails = [
+  { icon: Mail, label: 'Email', value: 'felipe@flizz.com.br', href: 'mailto:felipe@flizz.com.br' },
+  { icon: Phone, label: 'Phone / WhatsApp', value: '+55 (17) 98144-9654', href: 'tel:+5517981449654' },
+  { icon: MapPin, label: 'Location', value: 'Brazil & US — Remote Worldwide' },
+];
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
   });
 
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const leftContentRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const contactDetailsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const infoCardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const formFieldsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const formWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current], {
-        opacity: 0,
-        y: 50
-      });
+    const mm = gsap.matchMedia();
 
-      gsap.set(leftContentRef.current, {
-        opacity: 0,
-        x: -50
-      });
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+        const split = new SplitText(titleRef.current, { type: 'chars' });
+        gsap.from(split.chars, {
+          yPercent: 110,
+          opacity: 0,
+          stagger: 0.025,
+          duration: 0.8,
+          ease: 'power4.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
+        });
 
-      gsap.set(formRef.current, {
-        opacity: 0,
-        x: 50,
-        scale: 0.95
-      });
+        gsap.from([eyebrowRef.current, subtitleRef.current], {
+          opacity: 0,
+          y: 40,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
+        });
 
-      gsap.set(contactDetailsRef.current, {
-        opacity: 0,
-        x: -30,
-        scale: 0.9
-      });
+        gsap.from(leftContentRef.current, {
+          opacity: 0,
+          x: -60,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: leftContentRef.current, start: 'top 85%' },
+        });
 
-      gsap.set(infoCardsRef.current, {
-        opacity: 0,
-        y: 30,
-        scale: 0.9
-      });
+        gsap.from(formWrapRef.current, {
+          opacity: 0,
+          x: 60,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: formWrapRef.current, start: 'top 85%' },
+        });
 
-      gsap.set(formFieldsRef.current, {
-        opacity: 0,
-        y: 20
-      });
+        return () => split.revert();
+      }, sectionRef);
 
-      gsap.set(submitButtonRef.current, {
-        opacity: 0,
-        scale: 0.8
-      });
+      return () => ctx.revert();
+    });
 
-      // Title animation
-      gsap.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Subtitle animation
-      gsap.to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: subtitleRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Left content animation
-      gsap.to(leftContentRef.current, {
-        opacity: 1,
-        x: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: leftContentRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Form animation
-      gsap.to(formRef.current, {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: formRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Contact details animation
-      gsap.to(contactDetailsRef.current, {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: contactDetailsRef.current[0],
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Info cards animation
-      gsap.to(infoCardsRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: infoCardsRef.current[0],
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Form fields animation
-      gsap.to(formFieldsRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: formFieldsRef.current[0],
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Submit button animation
-      gsap.to(submitButtonRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: submitButtonRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Hover animations for contact details
-      contactDetailsRef.current.forEach((detail) => {
-        if (detail) {
-          const icon = detail.querySelector('.contact-icon');
-          
-          detail.addEventListener('mouseenter', () => {
-            gsap.to(detail, {
-              scale: 1.05,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              rotation: 360,
-              scale: 1.1,
-              duration: 0.5,
-              ease: "back.out(1.7)"
-            });
-          });
-
-          detail.addEventListener('mouseleave', () => {
-            gsap.to(detail, {
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              rotation: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-        }
-      });
-
-      // Info cards hover animations
-      infoCardsRef.current.forEach((card) => {
-        if (card) {
-          const icon = card.querySelector('.info-icon');
-          
-          card.addEventListener('mouseenter', () => {
-            gsap.to(card, {
-              y: -5,
-              scale: 1.02,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              y: -3,
-              scale: 1.1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-
-          card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-          });
-        }
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
-
-  const setContactDetailRef = (el: HTMLDivElement | null, index: number) => {
-    contactDetailsRef.current[index] = el;
-  };
-
-  const setInfoCardRef = (el: HTMLDivElement | null, index: number) => {
-    infoCardsRef.current[index] = el;
-  };
-
-  const setFormFieldRef = (el: HTMLDivElement | null, index: number) => {
-    formFieldsRef.current[index] = el;
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Add submit animation
-    gsap.to(submitButtonRef.current, {
-      scale: 0.95,
-      duration: 0.1,
-      yoyo: true,
-      repeat: 1,
-      ease: "power2.out"
-    });
 
-    // Success animation
-    gsap.to(formRef.current, {
-      scale: 1.02,
-      duration: 0.2,
-      yoyo: true,
-      repeat: 1,
-      ease: "power2.out"
-    });
-
-    console.log('Form submitted:', formData);
-    setFormData({ name: '', email: '', company: '', message: '' });
+    // No backend yet — hand off to the user's mail client with everything pre-filled
+    const subject = encodeURIComponent(`Project inquiry from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
+    const body = encodeURIComponent(`${formData.message}\n\n—\n${formData.name}\n${formData.email}${formData.company ? `\n${formData.company}` : ''}`);
+    window.location.href = `mailto:felipe@flizz.com.br?subject=${subject}&body=${body}`;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    gsap.to(e.target, {
-      scale: 1.02,
-      duration: 0.2,
-      ease: "power2.out"
-    });
-  };
-
-  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    gsap.to(e.target, {
-      scale: 1,
-      duration: 0.2,
-      ease: "power2.out"
-    });
-  };
+  const inputClasses =
+    'w-full px-4 py-3.5 bg-night/60 border border-line rounded-xl text-light placeholder:text-muted/50 focus:border-accent focus:shadow-glow focus:outline-none transition-all duration-300';
 
   return (
-    <section ref={sectionRef} id="contact" className="py-40 bg-light">
-      <div className="container mx-auto px-6">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 ref={titleRef} className="text-6xl md:text-8xl font-brutalist text-dark mb-6">
+    <section ref={sectionRef} id="contact" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute bottom-0 left-1/3 w-[34rem] h-[34rem] bg-accent/10 rounded-full blur-[180px]" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section heading */}
+        <div className="max-w-4xl mb-20">
+          <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
+            {'//'} 04 — Get in touch
+          </p>
+          <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
             LET'S TALK
           </h2>
-          <p ref={subtitleRef} className="text-xl text-dark/70 max-w-3xl mx-auto">
+          <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
             Ready to transform your digital presence? Let's discuss your project and bring your vision to life.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Contact Information */}
-          <div ref={leftContentRef} className="space-y-8">
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-dark">Get in Touch</h3>
-              <p className="text-dark/70 text-lg leading-relaxed">
-                We're here to help you create something extraordinary. Whether you need a complete 
-                digital transformation or want to enhance your existing platform, our team is ready 
-                to make it happen.
-              </p>
-            </div>
+          <div ref={leftContentRef} className="space-y-10">
+            <p className="text-muted text-lg leading-relaxed max-w-lg">
+              Whether you need a complete digital transformation or want to enhance your existing
+              platform, we're ready to make it happen — in English or Portuguese.
+            </p>
 
             {/* Contact Details */}
-            <div className="space-y-6">
-              <div 
-                ref={(el) => setContactDetailRef(el, 0)}
-                className="flex items-center gap-4 cursor-pointer"
-              >
-                <div className="contact-icon w-12 h-12 bg-accent/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-accent/30">
-                  <Mail className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <div className="font-medium text-dark">Email</div>
-                  <div className="text-dark/70">felipe@flizz.com.br</div>
-                </div>
-              </div>
+            <div className="space-y-4">
+              {contactDetails.map(({ icon: Icon, label, value, href }) => {
+                const inner = (
+                  <>
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/25 group-hover:bg-accent/20 group-hover:shadow-glow transition-all duration-300 shrink-0">
+                      <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div className="font-mono text-xs uppercase tracking-widest text-muted">{label}</div>
+                      <div className="text-light font-medium mt-0.5 group-hover:text-accent transition-colors duration-300">{value}</div>
+                    </div>
+                  </>
+                );
 
-              <div 
-                ref={(el) => setContactDetailRef(el, 1)}
-                className="flex items-center gap-4 cursor-pointer"
-              >
-                <div className="contact-icon w-12 h-12 bg-accent/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-accent/30">
-                  <Phone className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <div className="font-medium text-dark">Phone</div>
-                  <div className="text-dark/70">+55 (17) 98144-9654</div>
-                </div>
-              </div>
-
-              <div 
-                ref={(el) => setContactDetailRef(el, 2)}
-                className="flex items-center gap-4 cursor-pointer"
-              >
-                <div className="contact-icon w-12 h-12 bg-accent/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-accent/30">
-                  <MapPin className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <div className="font-medium text-dark">Location</div>
-                  <div className="text-dark/70">Remote & On-site Worldwide</div>
-                </div>
-              </div>
+                return href ? (
+                  <a key={label} href={href} className="group flex items-center gap-4 bg-surface/60 border border-line rounded-2xl p-4 hover:border-accent/40 transition-colors duration-300">
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={label} className="group flex items-center gap-4 bg-surface/60 border border-line rounded-2xl p-4">
+                    {inner}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Additional Info */}
-            <div className="grid sm:grid-cols-2 gap-6 pt-8">
-              <div 
-                ref={(el) => setInfoCardRef(el, 0)}
-                className="bg-dark/5 backdrop-blur-lg rounded-2xl p-6 border border-dark/10 cursor-pointer"
-              >
-                <Clock className="info-icon w-8 h-8 text-accent mb-3" />
-                <h4 className="font-bold text-dark mb-2">Response Time</h4>
-                <p className="text-dark/70 text-sm">We typically respond within 24 hours</p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="spotlight-card bg-surface/60 rounded-2xl p-6 border border-line hover:border-accent/40 transition-colors duration-300">
+                <Clock className="w-7 h-7 text-accent mb-3" aria-hidden="true" />
+                <h3 className="font-bold text-light mb-1">Response Time</h3>
+                <p className="text-muted text-sm">We typically respond within 24 hours</p>
               </div>
 
-              <div 
-                ref={(el) => setInfoCardRef(el, 1)}
-                className="bg-dark/5 backdrop-blur-lg rounded-2xl p-6 border border-dark/10 cursor-pointer"
-              >
-                <Users className="info-icon w-8 h-8 text-accent mb-3" />
-                <h4 className="font-bold text-dark mb-2">Free Consultation</h4>
-                <p className="text-dark/70 text-sm">30-minute strategy session included</p>
+              <div className="spotlight-card bg-surface/60 rounded-2xl p-6 border border-line hover:border-accent/40 transition-colors duration-300">
+                <Users className="w-7 h-7 text-accent mb-3" aria-hidden="true" />
+                <h3 className="font-bold text-light mb-1">Free Consultation</h3>
+                <p className="text-muted text-sm">30-minute strategy session included</p>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-dark/5 backdrop-blur-lg rounded-3xl p-8 border border-dark/10">
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+          <div ref={formWrapRef} className="bg-surface/80 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-line">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
-                <div ref={(el) => setFormFieldRef(el, 0)}>
-                  <label htmlFor="name" className="block text-dark font-medium mb-2">
+                <div>
+                  <label htmlFor="name" className="block text-light/80 font-mono text-xs uppercase tracking-widest mb-2">
                     Name *
                   </label>
                   <input
@@ -419,16 +178,15 @@ const Contact: React.FC = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
                     required
-                    className="w-full px-4 py-3 bg-light/50 backdrop-blur-lg border border-dark/20 rounded-xl focus:border-accent focus:outline-none transition-colors duration-300"
+                    autoComplete="name"
+                    className={inputClasses}
                     placeholder="Your full name"
                   />
                 </div>
 
-                <div ref={(el) => setFormFieldRef(el, 1)}>
-                  <label htmlFor="email" className="block text-dark font-medium mb-2">
+                <div>
+                  <label htmlFor="email" className="block text-light/80 font-mono text-xs uppercase tracking-widest mb-2">
                     Email *
                   </label>
                   <input
@@ -437,17 +195,16 @@ const Contact: React.FC = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    onFocus={handleInputFocus}
-                    onBlur={handleInputBlur}
                     required
-                    className="w-full px-4 py-3 bg-light/50 backdrop-blur-lg border border-dark/20 rounded-xl focus:border-accent focus:outline-none transition-colors duration-300"
+                    autoComplete="email"
+                    className={inputClasses}
                     placeholder="your@email.com"
                   />
                 </div>
               </div>
 
-              <div ref={(el) => setFormFieldRef(el, 2)}>
-                <label htmlFor="company" className="block text-dark font-medium mb-2">
+              <div>
+                <label htmlFor="company" className="block text-light/80 font-mono text-xs uppercase tracking-widest mb-2">
                   Company
                 </label>
                 <input
@@ -456,15 +213,14 @@ const Contact: React.FC = () => {
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  onFocus={handleInputFocus}
-                  onBlur={handleInputBlur}
-                  className="w-full px-4 py-3 bg-light/50 backdrop-blur-lg border border-dark/20 rounded-xl focus:border-accent focus:outline-none transition-colors duration-300"
+                  autoComplete="organization"
+                  className={inputClasses}
                   placeholder="Your company name"
                 />
               </div>
 
-              <div ref={(el) => setFormFieldRef(el, 3)}>
-                <label htmlFor="message" className="block text-dark font-medium mb-2">
+              <div>
+                <label htmlFor="message" className="block text-light/80 font-mono text-xs uppercase tracking-widest mb-2">
                   Message *
                 </label>
                 <textarea
@@ -472,25 +228,19 @@ const Contact: React.FC = () => {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  onFocus={handleInputFocus}
-                  onBlur={handleInputBlur}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 bg-light/50 backdrop-blur-lg border border-dark/20 rounded-xl focus:border-accent focus:outline-none transition-colors duration-300 resize-none"
+                  className={`${inputClasses} resize-none`}
                   placeholder="Tell us about your project..."
                 />
               </div>
 
               <button
-                ref={submitButtonRef}
                 type="submit"
-                className="group w-full bg-accent text-dark px-8 py-4 rounded-2xl font-bold text-lg hover:bg-accent/90 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden"
+                className="group w-full bg-accent text-night px-8 py-4 rounded-full font-bold text-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  Send Message
-                  <Send className="w-5 h-5" />
-                </span>
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                Send Message
+                <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" aria-hidden="true" />
               </button>
             </form>
           </div>

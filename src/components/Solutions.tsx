@@ -1,331 +1,207 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Palette, Code2, Smartphone, Cloud } from 'lucide-react';
+import { SplitText } from 'gsap/SplitText';
+import { Palette, Code2, Smartphone, Cloud, ArrowUpRight } from 'lucide-react';
 import type { Service } from '../types';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const services: Service[] = [
+const services: (Service & { tagline: string })[] = [
   {
     title: 'Brand & Web Design',
-    description: 'Stunning visual identities and user experiences that captivate your audience',
+    tagline: 'Design that converts',
+    description: 'Stunning visual identities and user experiences that captivate your audience and turn visitors into customers.',
     icon: 'Palette',
-    features: ['Brand Identity', 'UI/UX Design', 'Responsive Design', 'Prototyping']
+    features: ['Brand Identity', 'UI/UX Design', 'Responsive Design', 'Prototyping'],
   },
   {
     title: 'Web Development',
-    description: 'High-performance websites built with modern technologies and best practices',
+    tagline: 'Built for speed',
+    description: 'High-performance websites built with modern technologies — engineered to load instantly and rank on top.',
     icon: 'Code2',
-    features: ['React & TypeScript', 'Next.js & Astro', 'Performance Optimization', 'SEO Ready']
+    features: ['React & TypeScript', 'Next.js & Astro', 'Performance Optimization', 'SEO Ready'],
   },
   {
     title: 'Mobile App Development',
-    description: 'Native and cross-platform mobile applications that deliver exceptional user experiences',
+    tagline: 'Native experiences',
+    description: 'Native and cross-platform mobile applications that deliver exceptional user experiences on iOS and Android.',
     icon: 'Smartphone',
-    features: ['React Native', 'iOS & Android', 'App Store Optimization', 'Push Notifications']
+    features: ['React Native', 'iOS & Android', 'App Store Optimization', 'Push Notifications'],
   },
   {
     title: 'Deploy & Maintenance',
-    description: 'Reliable hosting, continuous deployment, and ongoing support for your digital assets',
+    tagline: 'Always online',
+    description: 'Reliable hosting, continuous deployment, and ongoing support keeping your digital assets fast and secure.',
     icon: 'Cloud',
-    features: ['Cloud Hosting', 'CI/CD Pipeline', '24/7 Monitoring', 'Regular Updates']
-  }
+    features: ['Cloud Hosting', 'CI/CD Pipeline', '24/7 Monitoring', 'Regular Updates'],
+  },
 ];
 
-const iconComponents = {
-  Palette,
-  Code2,
-  Smartphone,
-  Cloud
-};
+const iconComponents = { Palette, Code2, Smartphone, Cloud };
 
 const Solutions: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const ctaRef = useRef<HTMLButtonElement>(null);
-  const bgElementsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set([titleRef.current, subtitleRef.current], {
-        opacity: 0,
-        y: 50
-      });
+    const mm = gsap.matchMedia();
 
-      gsap.set(cardsRef.current, {
-        opacity: 0,
-        y: 100,
-        scale: 0.8
-      });
-
-      gsap.set(ctaRef.current, {
-        opacity: 0,
-        scale: 0.8
-      });
-
-      // Background elements animation
-      if (bgElementsRef.current) {
-        const bgElements = bgElementsRef.current.children;
-        gsap.set(bgElements, {
-          scale: 0,
-          opacity: 0
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const ctx = gsap.context(() => {
+        // Section heading reveal
+        const split = new SplitText(titleRef.current, { type: 'chars' });
+        gsap.from(split.chars, {
+          yPercent: 110,
+          opacity: 0,
+          stagger: 0.025,
+          duration: 0.8,
+          ease: 'power4.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        gsap.to(bgElements, {
-          scale: 1,
-          opacity: 0.1,
-          duration: 2,
-          stagger: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
+        gsap.from([eyebrowRef.current, subtitleRef.current], {
+          opacity: 0,
+          y: 40,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
+        });
+
+        // Cards slide in, then scale away as the next one stacks on top
+        cardsRef.current.forEach((card, i) => {
+          if (!card) return;
+
+          gsap.from(card, {
+            opacity: 0,
+            y: 80,
+            duration: 0.9,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: card, start: 'top 90%' },
+          });
+
+          const next = cardsRef.current[i + 1];
+          if (next) {
+            gsap.to(card, {
+              scale: 0.94,
+              opacity: 0.5,
+              filter: 'blur(2px)',
+              transformOrigin: 'center top',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: next,
+                start: 'top bottom',
+                end: 'top top+=120',
+                scrub: true,
+              },
+            });
           }
         });
 
-        // Continuous floating animation for background elements
-        Array.from(bgElements).forEach((element, index) => {
-          gsap.to(element, {
-            y: -20,
-            duration: 4 + index,
-            ease: "power2.inOut",
-            yoyo: true,
-            repeat: -1
-          });
-        });
-      }
+        return () => split.revert();
+      }, sectionRef);
 
-      // Title animation
-      gsap.to(titleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
+      return () => ctx.revert();
+    });
 
-      // Subtitle animation
-      gsap.to(subtitleRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: subtitleRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Cards animation
-      gsap.to(cardsRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: cardsRef.current[0],
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // CTA animation
-      gsap.to(ctaRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: "top 85%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      // Individual card hover animations
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          const icon = card.querySelector('.service-icon');
-          const title = card.querySelector('.service-title');
-          const features = card.querySelectorAll('.service-feature');
-
-          card.addEventListener('mouseenter', () => {
-            gsap.to(card, {
-              y: -10,
-              scale: 1.03,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              rotation: 360,
-              scale: 1.1,
-              duration: 0.5,
-              ease: "back.out(1.7)"
-            });
-
-            gsap.to(title, {
-              color: "#68f70b",
-              duration: 0.3
-            });
-
-            gsap.to(features, {
-              x: 5,
-              duration: 0.2,
-              stagger: 0.05,
-              ease: "power2.out"
-            });
-          });
-
-          card.addEventListener('mouseleave', () => {
-            gsap.to(card, {
-              y: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(icon, {
-              rotation: 0,
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-            });
-
-            gsap.to(title, {
-              color: "#f3f3f3",
-              duration: 0.3
-            });
-
-            gsap.to(features, {
-              x: 0,
-              duration: 0.2,
-              stagger: 0.05,
-              ease: "power2.out"
-            });
-          });
-        }
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
-  const setCardRef = (el: HTMLDivElement | null, index: number) => {
-    cardsRef.current[index] = el;
+  // Cursor spotlight position for each card
+  const handleCardMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--x', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--y', `${e.clientY - rect.top}px`);
   };
 
   return (
-    <section ref={sectionRef} id="solutions" className="py-40 bg-dark relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div ref={bgElementsRef} className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-accent rounded-full blur-xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-accent rounded-full blur-xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-accent rounded-full blur-lg"></div>
+    <section ref={sectionRef} id="solutions" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-1/3 -left-40 w-[30rem] h-[30rem] bg-accent/10 rounded-full blur-[160px]" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 
-            ref={titleRef}
-            className="text-6xl md:text-8xl font-brutalist text-light mb-6"
-          >
+        {/* Section heading */}
+        <div className="max-w-4xl mb-20 md:mb-28">
+          <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
+            {'//'} 01 — What we do
+          </p>
+          <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
             SOLUTIONS
           </h2>
-          <p 
-            ref={subtitleRef}
-            className="text-xl text-light/70 max-w-3xl mx-auto"
-          >
-            From concept to deployment, we provide end-to-end solutions 
-            that transform your digital presence
+          <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
+            From concept to deployment — end-to-end services that transform your digital presence.
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Stacked cards */}
+        <div className="relative space-y-8">
           {services.map((service, index) => {
             const IconComponent = iconComponents[service.icon as keyof typeof iconComponents];
-            
+
             return (
-              <div 
-                key={index}
-                ref={(el) => setCardRef(el, index)}
-                className="group relative bg-light/10 backdrop-blur-lg rounded-3xl p-8 border border-light/20 hover:border-accent/50 transition-all duration-500 cursor-pointer"
+              <div
+                key={service.title}
+                ref={(el) => { cardsRef.current[index] = el; }}
+                onMouseMove={handleCardMove}
+                className="spotlight-card sticky group bg-surface/90 backdrop-blur-xl rounded-3xl border border-line hover:border-accent/40 transition-colors duration-500 overflow-hidden"
+                style={{ top: `${96 + index * 24}px` }}
               >
-                {/* Glassmorphism overlay */}
-                <div className="absolute inset-0 bg-accent/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="relative z-10">
-                  {/* Icon */}
-                  <div className="service-icon w-16 h-16 bg-accent/20 backdrop-blur-lg rounded-2xl flex items-center justify-center mb-6 group-hover:bg-accent/30 transition-colors duration-300">
-                    <IconComponent className="w-8 h-8 text-accent" />
+                <div className="grid md:grid-cols-12 gap-8 p-8 md:p-12 items-center">
+                  {/* Index + icon */}
+                  <div className="md:col-span-3 flex md:flex-col items-center md:items-start gap-6">
+                    <span className="font-mono text-muted/50 text-sm tracking-widest">
+                      {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+                    </span>
+                    <div className="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20 group-hover:bg-accent/20 group-hover:shadow-glow transition-all duration-500">
+                      <IconComponent className="w-9 h-9 text-accent" aria-hidden="true" />
+                    </div>
                   </div>
 
                   {/* Content */}
-                  <h3 className="service-title text-2xl font-bold text-light mb-4 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-light/70 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
+                  <div className="md:col-span-6 space-y-4">
+                    <p className="font-mono text-accent/80 text-xs tracking-[0.25em] uppercase">{service.tagline}</p>
+                    <h3 className="text-3xl md:text-5xl font-display font-bold text-light group-hover:text-accent transition-colors duration-500">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted text-lg leading-relaxed max-w-xl">{service.description}</p>
+                  </div>
 
                   {/* Features */}
-                  <ul className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <li 
-                        key={featureIndex}
-                        className="service-feature flex items-center text-light/60 text-sm"
-                      >
-                        <div className="w-2 h-2 bg-accent rounded-full mr-3 flex-shrink-0"></div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="md:col-span-3">
+                    <ul className="space-y-3">
+                      {service.features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-3 text-light/70 text-sm font-mono">
+                          <span className="w-1.5 h-1.5 bg-accent rounded-full shrink-0 group-hover:shadow-glow transition-shadow duration-500" aria-hidden="true" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br from-accent/20 to-transparent pointer-events-none"></div>
+                {/* Bottom accent line sweep */}
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent group-hover:w-full transition-all duration-700 ease-out" aria-hidden="true" />
               </div>
             );
           })}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <button 
-            ref={ctaRef}
-            className="group bg-accent text-dark px-8 py-4 rounded-2xl font-bold text-lg hover:bg-accent/90 transform hover:scale-105 transition-all duration-300 relative overflow-hidden"
-            onMouseEnter={() => {
-              gsap.to(ctaRef.current, {
-                scale: 1.05,
-                duration: 0.2
-              });
-            }}
-            onMouseLeave={() => {
-              gsap.to(ctaRef.current, {
-                scale: 1,
-                duration: 0.2
-              });
-            }}
+        {/* CTA */}
+        <div className="text-center mt-24">
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-3 bg-accent text-night px-10 py-5 rounded-full font-bold text-lg hover:shadow-glow hover:scale-105 transition-all duration-300"
           >
-            <span className="relative z-10">Discuss Your Project</span>
-            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-          </button>
+            Discuss Your Project
+            <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </a>
         </div>
       </div>
     </section>

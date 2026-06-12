@@ -1,62 +1,183 @@
 @import "tailwindcss";
 
 @theme {
+    /* Brand palette — dark theme built around the signature green */
+    --color-night: #0b0a11;
     --color-dark: #1f1d2c;
+    --color-surface: #14121d;
     --color-accent: #68f70b;
+    --color-accent-dim: #3f9b06;
     --color-light: #f3f3f3;
     --color-white: #ffffff;
-    --color-light-gray: #f8f9fa;
-    --color-medium-gray: #6b7280;
-    --color-dark-gray: #374151;
-    --color-border-light: #e5e7eb;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --color-muted: #9b98ab;
+    --color-line: rgba(243, 243, 243, 0.08);
+
+    --shadow-glow: 0 0 40px rgba(104, 247, 11, 0.25);
+    --shadow-card: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-xl: 16px;
 
-    --font-family-brutalist: 'Fredoka', 'Arial Black', sans-serif;
+    --font-display: 'Fredoka', 'Arial Black', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+    --animate-marquee: marquee 36s linear infinite;
+    --animate-marquee-reverse: marquee-reverse 42s linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-night);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
-  font-family: 'Fredoka', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--color-night);
+  color: var(--color-light);
 }
 
-h1 {
-  font-weight: 900;
+h1, h2 {
+  font-weight: 700;
 }
 
-h2 {
-  font-weight: 900;
+::selection {
+  background: var(--color-accent);
+  color: var(--color-night);
 }
 
-/* Custom animations */
-@keyframes float {
-  0%, 100% { 
-    transform: translateY(0px); 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-night);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(104, 247, 11, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Outlined display text (hollow letters) */
+.text-stroke {
+  -webkit-text-stroke: 2px var(--color-light);
+  -webkit-text-fill-color: transparent;
+  paint-order: stroke fill;
+}
+
+.text-stroke-accent {
+  -webkit-text-stroke: 2px var(--color-accent);
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle blueprint grid backdrop */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(243, 243, 243, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 243, 243, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Film grain overlay for depth */
+.bg-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cursor-tracking spotlight for cards: set --x / --y from JS */
+.spotlight-card {
+  position: relative;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    480px circle at var(--x, 50%) var(--y, 50%),
+    rgba(104, 247, 11, 0.1),
+    transparent 65%
+  );
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* Infinite marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: var(--animate-marquee);
+}
+
+.marquee-track-reverse {
+  display: flex;
+  width: max-content;
+  animation: var(--animate-marquee-reverse);
+}
+
+.marquee-paused:hover .marquee-track,
+.marquee-paused:hover .marquee-track-reverse {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track-reverse {
+    animation: none;
   }
-  50% { 
-    transform: translateY(-10px); 
-  }
 }
 
+/* Accent glow pulse */
 @keyframes glow {
-  0% { 
-    box-shadow: 0 0 20px rgba(104, 247, 11, 0.3); 
-  }
-  100% { 
-    box-shadow: 0 0 30px rgba(104, 247, 11, 0.6); 
-  }
-}
-
-/* Animation utilities */
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+  0% { box-shadow: 0 0 20px rgba(104, 247, 11, 0.25); }
+  100% { box-shadow: 0 0 36px rgba(104, 247, 11, 0.55); }
 }
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
