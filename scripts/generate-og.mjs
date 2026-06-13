@@ -1,5 +1,5 @@
 // Generates public/og-image.jpg (1200x630 social share image).
-// Deps are not in package.json — install them ad hoc before running:
+// Deps are not in package.json; install them ad hoc before running:
 //   npm install --no-save satori @resvg/resvg-js @fontsource/fredoka
 //   node scripts/generate-og.mjs
 import { readFile } from 'node:fs/promises';
@@ -18,7 +18,7 @@ const logoSrc = `data:image/png;base64,${logoPng.toString('base64')}`;
 const fredoka = (w) =>
   readFile(`node_modules/@fontsource/fredoka/files/fredoka-latin-${w}-normal.woff`);
 
-// "Fast. Precise. Elegant." — white words, green periods.
+// "Fast. Precise. Elegant.": white words, green periods.
 const tagline = ['Fast', 'Precise', 'Elegant'].flatMap((word) => [
   { type: 'span', props: { children: word } },
   { type: 'span', props: { style: { color: GREEN, marginRight: 24 }, children: '.' } },
