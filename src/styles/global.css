@@ -7,6 +7,8 @@
     --color-surface: #14121d;
     --color-accent: #68f70b;
     --color-accent-dim: #3f9b06;
+    /* accent for text on light backgrounds — #68f70b fails contrast there */
+    --color-accent-deep: #2f7a04;
     --color-light: #f3f3f3;
     --color-white: #ffffff;
     --color-muted: #9b98ab;
