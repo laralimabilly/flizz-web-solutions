@@ -2,36 +2,58 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { ArrowUpRight, MapPin, Bell, Play, FileSearch } from 'lucide-react';
+import { ArrowUpRight, MapPin, Bell, Play, FileSearch, Car, Mic } from 'lucide-react';
 import type { Project } from '../types';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo' | 'rumors' })[] = [
+const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo' | 'rumors' | 'nsa' | 'line' })[] = [
   {
     id: '1',
+    title: 'NSA Limousine',
+    description: 'A luxury transportation brand for Connecticut & New York — marketing site plus a custom admin dashboard for bookings, fleet and contacts. Built with Next.js, Supabase and Tailwind.',
+    industry: 'Luxury Transport',
+    services: ['Web Development', 'Admin Dashboard', 'Supabase'],
+    image: '/api/placeholder/600/400',
+    link: 'https://www.nsalimousine.com/',
+    year: '2026',
+    visual: 'nsa',
+  },
+  {
+    id: '2',
+    title: 'Line AI',
+    description: 'AI tools for first-time startup founders — co-founder matching and investor evaluation powered by real-time ElevenLabs voice agents. Built with React, Supabase and the ElevenLabs API.',
+    industry: 'AI / Startups',
+    services: ['Web Development', 'AI Voice Agents', 'Supabase'],
+    image: '/api/placeholder/600/400',
+    link: 'https://www.meetline.ai/',
+    year: '2026',
+    visual: 'line',
+  },
+  {
+    id: '3',
     title: 'DayOne Talent Advisory',
     description: 'High-performance web platform built with Astro and React — Storyblok-powered blogging, a lightweight proprietary i18n system and advanced analytics.',
     industry: 'Human Resources',
     services: ['Web Development', 'UI/UX Design', 'Storyblok CMS'],
     image: '/api/placeholder/600/400',
     link: 'https://www.dayonetalent.com/',
-    year: '2024',
+    year: '2025',
     visual: 'dayone',
   },
   {
-    id: '2',
+    id: '4',
     title: 'Bugo Mobile App',
     description: 'Bugo (Before U Go) uses intelligent geolocation — no bluetooth tags, no setup — to remind you of your belongings before leaving a place. React Native + Expo.',
     industry: 'Utility Tools',
     services: ['Mobile App Development', 'Brand Design', 'Web Development'],
     image: '/api/placeholder/600/400',
     link: 'https://bugoapp.com/',
-    year: '2024',
+    year: '2026',
     visual: 'bugo',
   },
   {
-    id: '3',
+    id: '5',
     title: "Gustavo Carmo's Website",
     description: 'A modern stage for the guitarist known for his work with Rudy Sarzo, Tye Trujillo and Dirk Verbeuren — discography, tour dates and social integrations.',
     industry: 'Music',
@@ -42,7 +64,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
     visual: 'gustavo',
   },
   {
-    id: '4',
+    id: '6',
     title: 'Ridiculous Rumors',
     description: 'A conspiracy-theory generator with a 60s spy-era vibe, powered by Gemini AI. Built with Next.js, the Gemini API and Supabase.',
     industry: 'Entertainment',
@@ -134,6 +156,90 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             <span className="font-mono text-[10px] text-accent uppercase tracking-widest">AI generating rumor…</span>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === 'nsa') {
+    // Luxury limo booking card — rendered in NSA's real brand gold
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] via-[#15110b] to-[#050505] p-6 md:p-10">
+        <div className="absolute inset-0 bg-noise" />
+        <div className="absolute -top-12 right-0 w-64 h-64 bg-[#b37a13]/20 rounded-full blur-[110px]" aria-hidden="true" />
+
+        <div className="relative w-full max-w-sm bg-[#0c0a07]/90 border border-[#b37a13]/30 rounded-2xl p-6 shadow-card">
+          <div className="flex items-center justify-between mb-6">
+            <span className="font-display font-bold text-lg tracking-wide text-light">
+              NSA <span className="text-[#c8902a]">Limousine</span>
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#c8902a] border border-[#b37a13]/40 px-2 py-1 rounded">
+              Reserved
+            </span>
+          </div>
+
+          {/* Route */}
+          <div className="flex gap-4">
+            <div className="flex flex-col items-center pt-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#c8902a]" />
+              <span className="w-px flex-1 min-h-[2.5rem] my-1 bg-gradient-to-b from-[#b37a13]/70 to-[#b37a13]/15" />
+              <MapPin className="w-4 h-4 text-[#c8902a]" />
+            </div>
+            <div className="flex-1 space-y-5">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-widest text-light/40">Pickup</div>
+                <div className="text-light text-sm">Stamford, CT</div>
+              </div>
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-widest text-light/40">Dropoff</div>
+                <div className="text-light text-sm">JFK International</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="h-px bg-[#b37a13]/20 my-5" />
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Car className="w-6 h-6 text-[#c8902a]" />
+              <span className="text-light text-sm">Luxury Sedan</span>
+            </div>
+            <span className="font-display font-bold text-[#c8902a]">$240</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === 'line') {
+    // Voice-AI agent interface — rendered in Line's real brand teal
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#04140f] via-[#071f1a] to-[#020a08]">
+        <div className="absolute inset-0 bg-grid opacity-40" />
+        <div className="absolute w-72 h-72 bg-[#14b8a6]/15 rounded-full blur-[100px]" aria-hidden="true" />
+
+        <div className="relative flex flex-col items-center gap-8">
+          {/* Voice orb */}
+          <div className="relative flex items-center justify-center">
+            <span className="absolute w-40 h-40 rounded-full border border-[#14b8a6]/20 animate-ping" />
+            <span className="absolute w-28 h-28 rounded-full border border-[#14b8a6]/30" />
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#2dd4bf] to-[#0d9488] flex items-center justify-center shadow-[0_0_44px_rgba(20,184,166,0.6)]">
+              <Mic className="w-8 h-8 text-[#04140f]" />
+            </div>
+          </div>
+
+          {/* Waveform */}
+          <div className="flex items-end gap-1.5 h-10" aria-hidden="true">
+            {[40, 75, 55, 95, 60, 100, 48, 80, 62, 90, 44, 70].map((h, i) => (
+              <span
+                key={i}
+                className="w-1.5 rounded-full bg-[#2dd4bf]"
+                style={{ height: `${h}%`, opacity: 0.4 + (h / 200) }}
+              />
+            ))}
+          </div>
+
+          <span className="font-mono text-xs text-[#5eead4] tracking-[0.3em] uppercase">Talking to Line…</span>
         </div>
       </div>
     );
