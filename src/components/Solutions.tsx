@@ -9,13 +9,6 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const services: (Service & { tagline: string })[] = [
   {
-    title: 'Brand & Web Design',
-    tagline: 'Design that converts',
-    description: 'Stunning visual identities and user experiences that captivate your audience and turn visitors into customers.',
-    icon: 'Palette',
-    features: ['Brand Identity', 'UI/UX Design', 'Responsive Design', 'Prototyping'],
-  },
-  {
     title: 'Web Development',
     tagline: 'Built for speed',
     description: 'High-performance websites built with modern technologies, engineered to load instantly and rank on top.',
@@ -35,6 +28,13 @@ const services: (Service & { tagline: string })[] = [
     description: 'Reliable hosting, continuous deployment, and ongoing support keeping your digital assets fast and secure.',
     icon: 'Cloud',
     features: ['Cloud Hosting', 'CI/CD Pipeline', '24/7 Monitoring', 'Regular Updates'],
+  },
+  {
+    title: 'Brand & Web Design',
+    tagline: 'Design that converts',
+    description: 'Stunning visual identities and user experiences that captivate your audience and turn visitors into customers.',
+    icon: 'Palette',
+    features: ['Brand Identity', 'UI/UX Design', 'Responsive Design', 'Prototyping'],
   },
 ];
 

@@ -1,0 +1,44 @@
+---
+import { ArrowUpRight } from 'lucide-react';
+
+interface Props {
+  /** 'light' matches the home portfolio section; 'dark' suits the night sections. */
+  theme?: 'light' | 'dark';
+  href?: string;
+}
+
+const { theme = 'light', href = '/#contact' } = Astro.props;
+const isDark = theme === 'dark';
+
+const borderClass = isDark ? 'border-line' : 'border-night/10';
+const eyebrowClass = isDark
+  ? 'text-accent group-hover:text-night/70'
+  : 'text-accent-deep group-hover:text-night/70';
+const titleClass = isDark ? 'text-light group-hover:text-night' : 'text-night group-hover:text-night';
+const arrowClass = isDark ? 'text-light group-hover:text-night' : 'text-night';
+---
+
+<div class="relative z-10">
+  <a href={href} class={`group relative block border-y ${borderClass} overflow-hidden`}>
+    <span
+      class="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+      aria-hidden="true"
+    ></span>
+    <div class="container mx-auto px-6 relative z-10 py-20 md:py-28 flex items-center justify-between gap-8">
+      <div>
+        <p class={`font-mono text-xs uppercase tracking-[0.3em] mb-6 transition-colors duration-300 ${eyebrowClass}`}>
+          {'//'} Your project could be next
+        </p>
+        <span class={`block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] transition-colors duration-300 ${titleClass}`}>
+          START YOUR
+          <br />
+          PROJECT
+        </span>
+      </div>
+      <ArrowUpRight
+        className={`w-16 h-16 md:w-28 md:h-28 group-hover:rotate-45 transition-transform duration-500 shrink-0 ${arrowClass}`}
+        aria-hidden="true"
+      />
+    </div>
+  </a>
+</div>

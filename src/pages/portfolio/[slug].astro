@@ -1,0 +1,171 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CallToAction from '../../components/CallToAction.astro';
+import ProjectVisual from '../../components/ProjectVisual';
+import { ArrowLeft, ArrowUpRight, Image as ImageIcon } from 'lucide-react';
+import { projects, getProjectBySlug } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = getProjectBySlug(slug!);
+if (!project) throw new Error(`Unknown project slug: ${slug}`);
+
+const metaTitle = `Case Study: ${project.title} | Flizz Web Solutions`;
+const metaDescription = project.description;
+const canonical = new URL(`/portfolio/${project.slug}`, Astro.site).toString();
+
+// Project-level structured data for richer search results.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: project.title,
+  headline: `Case Study: ${project.title}`,
+  about: project.industry,
+  dateCreated: project.year,
+  url: canonical,
+  description: project.description,
+  keywords: [...project.services, ...project.techStack].join(', '),
+  creator: { '@type': 'Organization', name: 'Flizz Web Solutions' },
+};
+---
+
+<Layout title={metaTitle} description={metaDescription}>
+  <Header />
+
+  <main>
+    {/* Hero */}
+    <section class="relative pt-36 md:pt-44 pb-12 md:pb-16 bg-night bg-grid bg-noise overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute -top-40 right-0 w-[34rem] h-[34rem] bg-accent/12 rounded-full blur-[160px]"></div>
+      </div>
+
+      <div class="container mx-auto px-6 relative z-10">
+        <a
+          href="/#portfolio"
+          class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted hover:text-accent transition-colors duration-300 mb-10"
+        >
+          <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+          Back to work
+        </a>
+
+        <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
+          {project.industry} · {project.year}
+        </p>
+
+        <h1 class="text-[clamp(2.6rem,7vw,5.5rem)] font-display font-bold leading-[0.95] text-light max-w-4xl">
+          {project.title}
+        </h1>
+
+        <p class="text-lg md:text-xl text-muted max-w-2xl mt-8 leading-relaxed">
+          {project.description}
+        </p>
+
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-2 bg-accent text-night px-7 py-3.5 rounded-full font-bold mt-10 hover:shadow-glow hover:scale-105 transition-all duration-300"
+          >
+            Visit Live Site
+            <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </a>
+        )}
+      </div>
+    </section>
+
+    {/* Main visual */}
+    <section class="bg-night pb-20 md:pb-28">
+      <div class="container mx-auto px-6">
+        <div class="relative aspect-[16/10] md:aspect-[16/8] rounded-3xl overflow-hidden border border-line shadow-card">
+          <ProjectVisual visual={project.visual} />
+        </div>
+      </div>
+    </section>
+
+    {/* Overview + details */}
+    <section class="bg-night pb-20 md:pb-28">
+      <div class="container mx-auto px-6">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          {/* Overview */}
+          <div class="lg:col-span-7">
+            <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-6">{'//'} Overview</p>
+            <p class="text-xl md:text-2xl text-light/90 leading-relaxed font-display font-medium">
+              {project.summary}
+            </p>
+          </div>
+
+          {/* Sidebar */}
+          <aside class="lg:col-span-5 lg:border-l lg:border-line lg:pl-12 space-y-10">
+            <div>
+              <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">Services</h2>
+              <ul class="space-y-2">
+                {project.services.map((service) => (
+                  <li class="flex items-center gap-3 text-light">
+                    <span class="w-1.5 h-1.5 bg-accent rounded-full shrink-0" aria-hidden="true"></span>
+                    {service}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">Tech Stack</h2>
+              <div class="flex flex-wrap gap-2">
+                {project.techStack.map((tech) => (
+                  <span class="font-mono text-xs text-light/80 bg-surface border border-line px-3 py-1.5 rounded-full">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <div>
+                <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-2">Industry</h2>
+                <p class="text-light">{project.industry}</p>
+              </div>
+              <div>
+                <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-2">Year</h2>
+                <p class="text-light">{project.year}</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {/* Image placeholders gallery */}
+    <section class="bg-night pb-24 md:pb-32">
+      <div class="container mx-auto px-6">
+        <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8">{'//'} Gallery</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          {Array.from({ length: project.galleryCount }).map((_, i) => (
+            <div
+              class={`relative rounded-2xl border border-dashed border-line bg-surface/40 flex items-center justify-center ${
+                i === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
+              }`}
+            >
+              <div class="flex flex-col items-center gap-3 text-muted">
+                <ImageIcon className="w-8 h-8" />
+                <span class="font-mono text-xs uppercase tracking-[0.25em]">Image placeholder</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Same CTA as the home page */}
+    <CallToAction theme="dark" />
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>
