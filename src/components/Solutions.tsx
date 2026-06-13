@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { Palette, Code2, Smartphone, Cloud, ArrowUpRight } from 'lucide-react';
+import { Palette, Code2, Smartphone, Cloud, ArrowUpRight, Plus } from 'lucide-react';
 import type { Service } from '../types';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -23,14 +23,14 @@ const services: (Service & { tagline: string })[] = [
     features: ['React & TypeScript', 'Next.js & Astro', 'Performance Optimization', 'SEO Ready'],
   },
   {
-    title: 'Mobile App Development',
+    title: 'Mobile Apps',
     tagline: 'Native experiences',
     description: 'Native and cross-platform mobile applications that deliver exceptional user experiences on iOS and Android.',
     icon: 'Smartphone',
     features: ['React Native', 'iOS & Android', 'App Store Optimization', 'Push Notifications'],
   },
   {
-    title: 'Deploy & Maintenance',
+    title: 'Deploy & Maintain',
     tagline: 'Always online',
     description: 'Reliable hosting, continuous deployment, and ongoing support keeping your digital assets fast and secure.',
     icon: 'Cloud',
@@ -41,18 +41,19 @@ const services: (Service & { tagline: string })[] = [
 const iconComponents = { Palette, Code2, Smartphone, Cloud };
 
 const Solutions: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState(0);
+
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const mm = gsap.matchMedia();
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
-        // Section heading reveal
         const split = new SplitText(titleRef.current, { type: 'chars' });
         gsap.from(split.chars, {
           yPercent: 110,
@@ -72,41 +73,15 @@ const Solutions: React.FC = () => {
           scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        // Cards slide in, then scale away as the next one stacks on top.
-        // The entrance targets the inner content while the scrub targets the
-        // card shell — they must not share properties, or the scrub locks its
-        // start values mid-entrance and leaves cards permanently faded.
-        cardsRef.current.forEach((card, i) => {
-          if (!card) return;
-
-          gsap.from(card.querySelector('.card-inner'), {
+        rowRefs.current.forEach((row) => {
+          if (!row) return;
+          gsap.from(row, {
             opacity: 0,
-            y: 80,
+            y: 60,
             duration: 0.9,
             ease: 'power3.out',
-            scrollTrigger: { trigger: card, start: 'top 90%' },
+            scrollTrigger: { trigger: row, start: 'top 92%' },
           });
-
-          const next = cardsRef.current[i + 1];
-          if (next) {
-            gsap.fromTo(card,
-              { scale: 1, opacity: 1, filter: 'blur(0px)' },
-              {
-                scale: 0.94,
-                opacity: 0.5,
-                filter: 'blur(2px)',
-                transformOrigin: 'center top',
-                ease: 'none',
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: next,
-                  start: 'top bottom',
-                  end: 'top top+=120',
-                  scrub: true,
-                },
-              }
-            );
-          }
         });
 
         return () => split.revert();
@@ -118,16 +93,8 @@ const Solutions: React.FC = () => {
     return () => mm.revert();
   }, []);
 
-  // Cursor spotlight position for each card
-  const handleCardMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--x', `${e.clientX - rect.left}px`);
-    card.style.setProperty('--y', `${e.clientY - rect.top}px`);
-  };
-
-  // No overflow-hidden on the section — it would turn it into a scroll container
-  // and break the sticky card stacking. The glow wrapper clips instead.
+  // No overflow-hidden on the section — it would clip the expanding rows' focus
+  // rings and the glow wrapper handles its own clipping.
   return (
     <section ref={sectionRef} id="solutions" className="relative py-32 md:py-40 bg-night bg-noise">
       {/* Ambient glow */}
@@ -149,68 +116,92 @@ const Solutions: React.FC = () => {
           </p>
         </div>
 
-        {/* Stacked cards */}
-        <div className="relative space-y-8">
+        {/* Service index — typographic rows, not cards */}
+        <div>
           {services.map((service, index) => {
             const IconComponent = iconComponents[service.icon as keyof typeof iconComponents];
+            const isOpen = openIndex === index;
 
             return (
               <div
                 key={service.title}
-                ref={(el) => { cardsRef.current[index] = el; }}
-                onMouseMove={handleCardMove}
-                className="spotlight-card sticky group bg-surface/90 backdrop-blur-xl rounded-3xl border border-line hover:border-accent/40 transition-colors duration-500 overflow-hidden"
-                style={{ top: `${96 + index * 24}px` }}
+                ref={(el) => { rowRefs.current[index] = el; }}
+                className="border-t border-line last:border-b"
               >
-                <div className="card-inner grid md:grid-cols-12 gap-8 p-8 md:p-12 items-center">
-                  {/* Index + icon */}
-                  <div className="md:col-span-3 flex md:flex-col items-center md:items-start gap-6">
-                    <span className="font-mono text-muted/50 text-sm tracking-widest">
-                      {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
-                    </span>
-                    <div className="w-20 h-20 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20 group-hover:bg-accent/20 group-hover:shadow-glow transition-all duration-500">
-                      <IconComponent className="w-9 h-9 text-accent" aria-hidden="true" />
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`service-panel-${index}`}
+                  className="group w-full grid grid-cols-12 items-center gap-4 py-8 md:py-12 text-left cursor-pointer"
+                >
+                  <span className="col-span-2 md:col-span-1 font-mono text-sm text-muted/60 group-hover:text-accent transition-colors duration-300">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+
+                  <h3
+                    className={`col-span-8 md:col-span-7 font-display font-bold leading-[1.05] text-[clamp(1.9rem,5.5vw,4.5rem)] transition-transform duration-500 ${
+                      isOpen ? 'title-hollow is-open translate-x-2 md:translate-x-4' : 'title-hollow'
+                    }`}
+                  >
+                    {service.title}
+                  </h3>
+
+                  <span className="hidden md:block md:col-span-3 font-mono text-xs uppercase tracking-[0.25em] text-muted group-hover:text-accent transition-colors duration-300">
+                    {service.tagline}
+                  </span>
+
+                  <span className="col-span-2 md:col-span-1 justify-self-end">
+                    <Plus
+                      className={`w-7 h-7 md:w-9 md:h-9 transition-transform duration-500 ${
+                        isOpen ? 'rotate-45 text-accent' : 'text-muted group-hover:text-accent group-hover:rotate-90'
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </span>
+                </button>
+
+                {/* Expanding detail panel */}
+                <div
+                  id={`service-panel-${index}`}
+                  className="grid transition-[grid-template-rows] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
+                  style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                >
+                  <div className="overflow-hidden">
+                    <div className="grid md:grid-cols-12 gap-8 pb-12 md:pb-16">
+                      <div className="md:col-start-2 md:col-span-6">
+                        <IconComponent className="w-10 h-10 text-accent mb-6" aria-hidden="true" />
+                        <p className="text-lg md:text-xl text-muted leading-relaxed max-w-xl">
+                          {service.description}
+                        </p>
+                        <a
+                          href="#contact"
+                          className="group/link inline-flex items-center gap-2 mt-8 font-mono text-sm uppercase tracking-[0.2em] text-accent"
+                        >
+                          <span className="border-b border-accent/40 group-hover/link:border-accent transition-colors duration-300 pb-1">
+                            Start this project
+                          </span>
+                          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" aria-hidden="true" />
+                        </a>
+                      </div>
+
+                      <ul className="md:col-span-4 self-end">
+                        {service.features.map((feature, i) => (
+                          <li
+                            key={feature}
+                            className="flex items-baseline justify-between gap-4 border-t border-line py-3 font-mono text-sm text-light/70"
+                          >
+                            <span>{feature}</span>
+                            <span className="text-muted/50 text-xs">{String(i + 1).padStart(2, '0')}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="md:col-span-6 space-y-4">
-                    <p className="font-mono text-accent/80 text-xs tracking-[0.25em] uppercase">{service.tagline}</p>
-                    <h3 className="text-3xl md:text-5xl font-display font-bold text-light group-hover:text-accent transition-colors duration-500">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted text-lg leading-relaxed max-w-xl">{service.description}</p>
-                  </div>
-
-                  {/* Features */}
-                  <div className="md:col-span-3">
-                    <ul className="space-y-3">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-3 text-light/70 text-sm font-mono">
-                          <span className="w-1.5 h-1.5 bg-accent rounded-full shrink-0 group-hover:shadow-glow transition-shadow duration-500" aria-hidden="true" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
-
-                {/* Bottom accent line sweep */}
-                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-accent group-hover:w-full transition-all duration-700 ease-out" aria-hidden="true" />
               </div>
             );
           })}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-24">
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-3 bg-accent text-night px-10 py-5 rounded-full font-bold text-lg hover:shadow-glow hover:scale-105 transition-all duration-300"
-          >
-            Discuss Your Project
-            <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </a>
         </div>
       </div>
     </section>

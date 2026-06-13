@@ -161,23 +161,21 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      {/* Tech Philosophy */}
+      {/* Tech Philosophy — editorial statement, no box */}
       <div className="container mx-auto px-6 relative z-10">
-        <div
-          ref={philosophyRef}
-          className="spotlight-card bg-surface/80 backdrop-blur-xl rounded-3xl p-10 md:p-14 border border-line hover:border-accent/40 transition-colors duration-500 max-w-4xl mx-auto"
-        >
-          <p className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-4">Philosophy</p>
-          <h3 className="text-3xl md:text-4xl font-display font-bold text-light mb-6">
-            The right tool for the right job.
-          </h3>
-          <p className="text-muted text-lg leading-relaxed">
-            Our technology choices are driven by performance, scalability, and developer experience.
-            We stay current with industry trends while maintaining stability and reliability in our solutions.
+        <div ref={philosophyRef} className="border-t border-line pt-14 md:pt-20">
+          <p className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8">
+            {'//'} Philosophy
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <p className="font-display font-medium text-3xl md:text-5xl text-light leading-tight max-w-5xl">
+            We don't chase trends. We pick <span className="text-accent">the right tool</span> for
+            the right job — driven by performance, scalability and{' '}
+            <span className="text-accent">developer experience</span>.
+          </p>
+          <div className="mt-12 flex flex-wrap gap-x-10 gap-y-4 font-mono text-sm text-muted">
             {['Performance First', 'Scalable Architecture', 'Developer Experience', 'Future-Proof Solutions'].map((pill) => (
-              <span key={pill} className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-mono border border-accent/25">
+              <span key={pill} className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 bg-accent rounded-full" aria-hidden="true" />
                 {pill}
               </span>
             ))}

@@ -376,25 +376,32 @@ const Portfolio: React.FC = () => {
           ))}
         </div>
 
-        {/* CTA */}
-        <div ref={ctaRef} className="mt-32 md:mt-40">
-          <div className="spotlight-card relative bg-surface/80 backdrop-blur-xl rounded-3xl p-12 md:p-16 border border-line hover:border-accent/40 transition-colors duration-500 text-center overflow-hidden">
-            <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[28rem] h-[28rem] bg-accent/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />
-            <h3 className="relative text-3xl md:text-5xl font-display font-bold text-light mb-4">
-              Your project could be <span className="text-accent">next</span>.
-            </h3>
-            <p className="relative text-muted text-lg mb-10 max-w-2xl mx-auto">
-              From concept to launch, we bring your vision to life with precision and elegance.
-            </p>
-            <a
-              href="#contact"
-              className="relative group inline-flex items-center gap-3 bg-accent text-night px-10 py-5 rounded-full font-bold text-lg hover:shadow-glow hover:scale-105 transition-all duration-300"
-            >
-              Start Your Project
-              <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
+      </div>
+
+      {/* CTA — full-bleed giant link with a green sweep on hover */}
+      <div ref={ctaRef} className="relative z-10 mt-32 md:mt-44">
+        <a href="#contact" className="group relative block border-y border-line overflow-hidden">
+          <span
+            className="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+            aria-hidden="true"
+          />
+          <div className="container mx-auto px-6 relative z-10 py-16 md:py-24 flex items-center justify-between gap-8">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent group-hover:text-night/70 transition-colors duration-300 mb-5">
+                {'//'} Your project could be next
+              </p>
+              <span className="block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] text-light group-hover:text-night transition-colors duration-300">
+                START YOUR
+                <br />
+                PROJECT
+              </span>
+            </div>
+            <ArrowUpRight
+              className="w-16 h-16 md:w-28 md:h-28 text-accent group-hover:text-night group-hover:rotate-45 transition-all duration-500 shrink-0"
+              aria-hidden="true"
+            />
           </div>
-        </div>
+        </a>
       </div>
     </section>
   );

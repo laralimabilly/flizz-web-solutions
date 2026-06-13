@@ -91,7 +91,7 @@ const Contact: React.FC = () => {
   };
 
   const inputClasses =
-    'w-full px-4 py-3.5 bg-night/60 border border-line rounded-xl text-light placeholder:text-muted/50 focus:border-accent focus:shadow-glow focus:outline-none transition-all duration-300';
+    'w-full bg-transparent border-0 border-b border-line rounded-none px-0 py-4 text-light text-lg placeholder:text-muted/40 focus:border-accent focus:outline-none transition-colors duration-300';
 
   return (
     <section ref={sectionRef} id="contact" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
@@ -121,51 +121,51 @@ const Contact: React.FC = () => {
               platform, we're ready to make it happen — in English or Portuguese.
             </p>
 
-            {/* Contact Details */}
-            <div className="space-y-4">
+            {/* Contact Details — hairline index rows */}
+            <div>
               {contactDetails.map(({ icon: Icon, label, value, href }) => {
                 const inner = (
                   <>
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/25 group-hover:bg-accent/20 group-hover:shadow-glow transition-all duration-300 shrink-0">
-                      <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
-                    </div>
-                    <div>
-                      <div className="font-mono text-xs uppercase tracking-widest text-muted">{label}</div>
-                      <div className="text-light font-medium mt-0.5 group-hover:text-accent transition-colors duration-300">{value}</div>
-                    </div>
+                    <span className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+                      <Icon className="w-4 h-4 text-accent" aria-hidden="true" />
+                      {label}
+                    </span>
+                    <span className="text-light text-lg group-hover:text-accent transition-colors duration-300 text-right">
+                      {value}
+                    </span>
                   </>
                 );
 
                 return href ? (
-                  <a key={label} href={href} className="group flex items-center gap-4 bg-surface/60 border border-line rounded-2xl p-4 hover:border-accent/40 transition-colors duration-300">
+                  <a key={label} href={href} className="group flex items-center justify-between gap-6 border-t border-line py-6">
                     {inner}
                   </a>
                 ) : (
-                  <div key={label} className="group flex items-center gap-4 bg-surface/60 border border-line rounded-2xl p-4">
+                  <div key={label} className="group flex items-center justify-between gap-6 border-t border-line py-6">
                     {inner}
                   </div>
                 );
               })}
-            </div>
 
-            {/* Additional Info */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="spotlight-card bg-surface/60 rounded-2xl p-6 border border-line hover:border-accent/40 transition-colors duration-300">
-                <Clock className="w-7 h-7 text-accent mb-3" aria-hidden="true" />
-                <h3 className="font-bold text-light mb-1">Response Time</h3>
-                <p className="text-muted text-sm">We typically respond within 24 hours</p>
+              <div className="flex items-center justify-between gap-6 border-t border-line py-6">
+                <span className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+                  <Clock className="w-4 h-4 text-accent" aria-hidden="true" />
+                  Response Time
+                </span>
+                <span className="text-light text-lg text-right">Within 24 hours</span>
               </div>
-
-              <div className="spotlight-card bg-surface/60 rounded-2xl p-6 border border-line hover:border-accent/40 transition-colors duration-300">
-                <Users className="w-7 h-7 text-accent mb-3" aria-hidden="true" />
-                <h3 className="font-bold text-light mb-1">Free Consultation</h3>
-                <p className="text-muted text-sm">30-minute strategy session included</p>
+              <div className="flex items-center justify-between gap-6 border-y border-line py-6">
+                <span className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+                  <Users className="w-4 h-4 text-accent" aria-hidden="true" />
+                  Free Consultation
+                </span>
+                <span className="text-light text-lg text-right">30-min strategy session</span>
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div ref={formWrapRef} className="bg-surface/80 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-line">
+          {/* Contact Form — editorial, no box */}
+          <div ref={formWrapRef}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -237,10 +237,16 @@ const Contact: React.FC = () => {
 
               <button
                 type="submit"
-                className="group w-full bg-accent text-night px-8 py-4 rounded-full font-bold text-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
+                className="group relative w-full overflow-hidden border border-line hover:border-accent transition-colors duration-300 mt-4 cursor-pointer"
               >
-                Send Message
-                <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" aria-hidden="true" />
+                <span
+                  className="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+                  aria-hidden="true"
+                />
+                <span className="relative z-10 flex items-center justify-center gap-3 py-6 font-display font-bold text-xl md:text-2xl text-light group-hover:text-night transition-colors duration-300">
+                  SEND MESSAGE
+                  <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" aria-hidden="true" />
+                </span>
               </button>
             </form>
           </div>

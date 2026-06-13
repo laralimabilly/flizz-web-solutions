@@ -140,7 +140,7 @@ const Hero: React.FC = () => {
               {'//'} Web Solutions — Brazil ⇄ USA
             </p>
 
-            <h1 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold leading-[0.95] text-light">
+            <h1 ref={titleRef} className="text-[clamp(3.5rem,11vw,6.5rem)] lg:text-[clamp(4rem,6.8vw,7.5rem)] font-display font-bold leading-[0.92] text-light">
               FAST.
               <br />
               <span className="text-accent drop-shadow-[0_0_30px_rgba(104,247,11,0.45)]">PRECISE.</span>
