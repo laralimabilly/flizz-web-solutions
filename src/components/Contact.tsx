@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const contactDetails = [
   { icon: Mail, label: 'Email', value: 'felipe@flizz.com.br', href: 'mailto:felipe@flizz.com.br' },
   { icon: Phone, label: 'Phone / WhatsApp', value: '+55 (17) 98144-9654', href: 'tel:+5517981449654' },
-  { icon: MapPin, label: 'Location', value: 'Brazil & US — Remote Worldwide' },
+  { icon: MapPin, label: 'Location', value: 'Brazil & US, Remote Worldwide' },
 ];
 
 const Contact: React.FC = () => {
@@ -80,9 +80,9 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // No backend yet — hand off to the user's mail client with everything pre-filled
+    // No backend yet; hand off to the user's mail client with everything pre-filled
     const subject = encodeURIComponent(`Project inquiry from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
-    const body = encodeURIComponent(`${formData.message}\n\n—\n${formData.name}\n${formData.email}${formData.company ? `\n${formData.company}` : ''}`);
+    const body = encodeURIComponent(`${formData.message}\n\n--\n${formData.name}\n${formData.email}${formData.company ? `\n${formData.company}` : ''}`);
     window.location.href = `mailto:felipe@flizz.com.br?subject=${subject}&body=${body}`;
   };
 
@@ -99,7 +99,7 @@ const Contact: React.FC = () => {
         {/* Section heading */}
         <div className="max-w-4xl mb-24 md:mb-28">
           <p ref={eyebrowRef} className="font-mono text-accent-deep text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 04 — Get in touch
+            {'//'} 04 / Get in touch
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold leading-[0.95] overflow-hidden">
             LET'S TALK
@@ -114,10 +114,10 @@ const Contact: React.FC = () => {
           <div ref={leftContentRef} className="space-y-10">
             <p className="text-night/60 text-lg leading-relaxed max-w-lg">
               Whether you need a complete digital transformation or want to enhance your existing
-              platform, we're ready to make it happen — in English or Portuguese.
+              platform, we're ready to make it happen, in English or Portuguese.
             </p>
 
-            {/* Contact Details — hairline index rows */}
+            {/* Contact Details: hairline index rows */}
             <div>
               {contactDetails.map(({ icon: Icon, label, value, href }) => {
                 const inner = (
@@ -160,7 +160,7 @@ const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* Contact Form — editorial, no box */}
+          {/* Contact Form: editorial, no box */}
           <div ref={formWrapRef}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">

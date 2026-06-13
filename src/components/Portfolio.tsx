@@ -11,7 +11,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   {
     id: '1',
     title: 'NSA Limousine',
-    description: 'A luxury transportation brand for Connecticut & New York — marketing site plus a custom admin dashboard for bookings, fleet and contacts. Built with Next.js, Supabase and Tailwind.',
+    description: 'A luxury transportation brand for Connecticut & New York, with a marketing site plus a custom admin dashboard for bookings, fleet and contacts. Built with Next.js, Supabase and Tailwind.',
     industry: 'Luxury Transport',
     services: ['Improved SEO', 'WhatsApp Integration', 'Messaging Automation'],
     image: '/api/placeholder/600/400',
@@ -22,7 +22,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   {
     id: '2',
     title: 'Line AI',
-    description: 'AI tools for first-time startup founders — co-founder matching and investor evaluation powered by real-time ElevenLabs voice agents. Built with React, Supabase and the ElevenLabs API.',
+    description: 'AI tools for first-time startup founders: co-founder matching and investor evaluation powered by real-time ElevenLabs voice agents. Built with React, Supabase and the ElevenLabs API.',
     industry: 'AI / Startups',
     services: ['Twilio Integration', 'AI Voice Agents', 'Supabase'],
     image: '/api/placeholder/600/400',
@@ -33,7 +33,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   {
     id: '3',
     title: 'DayOne Talent Advisory',
-    description: 'High-performance web platform built with Astro and React — Storyblok-powered blogging, a lightweight proprietary i18n system and advanced analytics.',
+    description: 'High-performance web platform built with Astro and React, featuring Storyblok-powered blogging, a lightweight proprietary i18n system and advanced analytics.',
     industry: 'Human Resources',
     services: ['Web Development', 'UI/UX Design', 'Storyblok CMS'],
     image: '/api/placeholder/600/400',
@@ -44,7 +44,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   {
     id: '4',
     title: 'Bugo Mobile App',
-    description: 'Bugo (Before U Go) uses intelligent geolocation — no bluetooth tags, no setup — to remind you of your belongings before leaving a place. React Native + Expo.',
+    description: 'Bugo (Before U Go) uses intelligent geolocation, with no bluetooth tags and no setup, to remind you of your belongings before leaving a place. React Native + Expo.',
     industry: 'Utility Tools',
     services: ['Mobile App Development', 'Brand Design', 'Web Development'],
     image: '/api/placeholder/600/400',
@@ -55,7 +55,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   {
     id: '5',
     title: "Gustavo Carmo's Website",
-    description: 'A modern stage for the guitarist known for his work with Rudy Sarzo, Tye Trujillo and Dirk Verbeuren — discography, tour dates and social integrations.',
+    description: 'A modern stage for the guitarist known for his work with Rudy Sarzo, Tye Trujillo and Dirk Verbeuren, featuring discography, tour dates and social integrations.',
     industry: 'Music',
     services: ['Web Development', 'Social Media', 'Platform Integration'],
     image: '/api/placeholder/600/400',
@@ -76,7 +76,7 @@ const projects: (Project & { year: string; visual: 'dayone' | 'bugo' | 'gustavo'
   },
 ];
 
-/* Hand-built art directions per project — keeps the page light (no heavy images)
+/* Hand-built art directions per project; keeps the page light (no heavy images)
    while every showcase still looks bespoke. Dark artwork pops on the light section. */
 const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
   if (visual === 'bugo') {
@@ -125,7 +125,7 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
           <div className="w-18 h-18 md:w-20 md:h-20 rounded-full bg-accent flex items-center justify-center shadow-glow">
             <Play className="w-8 h-8 text-night ml-1" fill="currentColor" />
           </div>
-          <span className="font-mono text-xs text-muted tracking-[0.3em] uppercase">Now playing — live</span>
+          <span className="font-mono text-xs text-muted tracking-[0.3em] uppercase">Now playing · live</span>
         </div>
       </div>
     );
@@ -162,7 +162,7 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
   }
 
   if (visual === 'nsa') {
-    // Luxury limo booking card — rendered in NSA's real brand gold
+    // Luxury limo booking card, rendered in NSA's real brand gold
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] via-[#15110b] to-[#050505] p-6 md:p-10">
         <div className="absolute inset-0 bg-noise" />
@@ -212,7 +212,7 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
   }
 
   if (visual === 'line') {
-    // Voice-AI agent interface — rendered in Line's real brand teal
+    // Voice-AI agent interface, rendered in Line's real brand teal
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#04140f] via-[#071f1a] to-[#020a08]">
         <div className="absolute inset-0 bg-grid opacity-40" />
@@ -245,7 +245,7 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
     );
   }
 
-  // Default: dayone — clean corporate site skeleton
+  // Default: dayone, clean corporate site skeleton
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-surface via-dark to-night p-6 md:p-10">
       <div className="absolute inset-0 bg-grid opacity-50" />
@@ -330,7 +330,7 @@ const Portfolio: React.FC = () => {
           });
 
           if (desktop && trackRef.current && pinRef.current) {
-            // Pinned horizontal gallery — the section locks and projects glide sideways.
+            // Pinned horizontal gallery; the section locks and projects glide sideways.
             // Distance is derived from the last panel's offset (not scrollWidth, which
             // drops trailing gap/padding) so the last project ends with a margin on its
             // right instead of flush against the viewport edge.
@@ -404,19 +404,19 @@ const Portfolio: React.FC = () => {
         {/* Section heading */}
         <div className="container mx-auto px-6 mb-14 lg:motion-safe:mb-10 lg:motion-safe:shrink-0">
           <p ref={eyebrowRef} className="font-mono text-accent-deep text-sm tracking-[0.3em] uppercase mb-5">
-            {'//'} 02 — Selected work
+            {'//'} 02 / Selected work
           </p>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 ref={titleRef} className="text-6xl md:text-7xl font-display font-bold leading-[0.95] overflow-hidden">
               PORTFOLIO
             </h2>
             <p ref={subtitleRef} className="text-base md:text-lg text-night/60 max-w-sm leading-relaxed">
-              Real products shipped for real clients — drag through the gallery.
+              Real products shipped for real clients. Drag through the gallery.
             </p>
           </div>
         </div>
 
-        {/* Track — each project is a near-full-screen spread; the leading
+        {/* Track: each project is a near-full-screen spread; the leading
             pad + trailing spacer keep the first and last panels off the edges. */}
         <div
           ref={trackRef}
@@ -448,12 +448,12 @@ const Portfolio: React.FC = () => {
 
                   {/* Corner index */}
                   <span className="absolute top-5 left-5 font-mono text-xs text-light/70 bg-night/60 backdrop-blur-md border border-line rounded-full px-3 py-1.5 tracking-widest">
-                    {String(index + 1).padStart(2, '0')} — {project.year}
+                    {String(index + 1).padStart(2, '0')} / {project.year}
                   </span>
                 </div>
               </a>
 
-              {/* Meta — its own column on desktop, with room to breathe */}
+              {/* Meta: its own column on desktop, with room to breathe */}
               <div className="mt-8 lg:motion-safe:mt-0 lg:motion-safe:col-span-5 space-y-6">
                 <span className="inline-block font-mono text-[11px] uppercase tracking-[0.25em] text-accent-deep border border-accent-deep/25 bg-accent/10 px-3 py-1.5 rounded-full">
                   {project.industry}
@@ -497,7 +497,7 @@ const Portfolio: React.FC = () => {
           ))}
         </div>
 
-        {/* Progress — desktop gallery only */}
+        {/* Progress: desktop gallery only */}
         <div className="container mx-auto px-6 mt-12 hidden lg:motion-safe:flex items-center gap-6 shrink-0">
           <span className="font-mono text-sm text-night tabular-nums">
             <span ref={counterRef}>01</span>
@@ -510,7 +510,7 @@ const Portfolio: React.FC = () => {
         </div>
       </div>
 
-      {/* CTA — full-bleed giant link; green panel sweeps up, text inverts to dark */}
+      {/* CTA: full-bleed giant link; green panel sweeps up, text inverts to dark */}
       <div ref={ctaRef} className="relative z-10 mt-12 lg:mt-8">
         <a href="#contact" className="group relative block border-y border-night/10 overflow-hidden">
           <span

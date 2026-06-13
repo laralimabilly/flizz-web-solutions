@@ -18,7 +18,7 @@ const services: (Service & { tagline: string })[] = [
   {
     title: 'Web Development',
     tagline: 'Built for speed',
-    description: 'High-performance websites built with modern technologies — engineered to load instantly and rank on top.',
+    description: 'High-performance websites built with modern technologies, engineered to load instantly and rank on top.',
     icon: 'Code2',
     features: ['React & TypeScript', 'Next.js & Astro', 'Performance Optimization', 'SEO Ready'],
   },
@@ -93,7 +93,7 @@ const Solutions: React.FC = () => {
     return () => mm.revert();
   }, []);
 
-  // No overflow-hidden on the section — it would clip the expanding rows' focus
+  // No overflow-hidden on the section; it would clip the expanding rows' focus
   // rings and the glow wrapper handles its own clipping.
   return (
     <section ref={sectionRef} id="solutions" className="relative py-36 md:py-52 bg-night bg-noise">
@@ -106,17 +106,17 @@ const Solutions: React.FC = () => {
         {/* Section heading */}
         <div className="max-w-4xl mb-24 md:mb-32">
           <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 01 — What we do
+            {'//'} 01 / What we do
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
             SOLUTIONS
           </h2>
           <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
-            From concept to deployment — end-to-end services that transform your digital presence.
+            From concept to deployment, end-to-end services that transform your digital presence.
           </p>
         </div>
 
-        {/* Service index — typographic rows, not cards */}
+        {/* Service index: typographic rows, not cards */}
         <div>
           {services.map((service, index) => {
             const IconComponent = iconComponents[service.icon as keyof typeof iconComponents];

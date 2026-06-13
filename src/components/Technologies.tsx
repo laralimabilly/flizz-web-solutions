@@ -133,7 +133,7 @@ const Technologies: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10 mb-16">
         <div className="max-w-4xl">
           <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 03 — Our toolbox
+            {'//'} 03 / Our toolbox
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
             TECH STACK
@@ -161,7 +161,7 @@ const Technologies: React.FC = () => {
         </div>
       </div>
 
-      {/* Tech Philosophy — editorial statement, no box */}
+      {/* Tech Philosophy: editorial statement, no box */}
       <div className="container mx-auto px-6 relative z-10">
         <div ref={philosophyRef} className="border-t border-line pt-14 md:pt-20">
           <p className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8">
@@ -169,7 +169,7 @@ const Technologies: React.FC = () => {
           </p>
           <p className="font-display font-medium text-3xl md:text-5xl text-light leading-tight max-w-5xl">
             We don't chase trends. We pick <span className="text-accent">the right tool</span> for
-            the right job — driven by performance, scalability and{' '}
+            the right job, driven by performance, scalability and{' '}
             <span className="text-accent">developer experience</span>.
           </p>
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-4 font-mono text-sm text-muted">

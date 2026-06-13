@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-    /* Brand palette — dark theme built around the signature green */
+    /* Brand palette: dark theme built around the signature green */
     --color-night: #0b0a11;
     --color-dark: #1f1d2c;
     --color-surface: #14121d;
     --color-accent: #68f70b;
     --color-accent-dim: #3f9b06;
-    /* accent for text on light backgrounds — #68f70b fails contrast there */
+    /* accent for text on light backgrounds; #68f70b fails contrast there */
     --color-accent-deep: #2f7a04;
     --color-light: #f3f3f3;
     --color-white: #ffffff;
@@ -43,7 +43,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  /* clip (not hidden) — hidden can create a scroll container and break position: sticky */
+  /* clip (not hidden); hidden can create a scroll container and break position: sticky */
   overflow-x: clip;
   font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   background-color: var(--color-night);
@@ -129,7 +129,7 @@ h1, h2 {
     -webkit-text-stroke-color: var(--color-accent);
   }
 
-  /* Custom cursor follower (desktop, motion-friendly only — see Layout script) */
+  /* Custom cursor follower (desktop, motion-friendly only; see Layout script) */
   .cursor-follower {
     position: fixed;
     top: 0;

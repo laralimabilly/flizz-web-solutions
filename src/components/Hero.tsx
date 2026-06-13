@@ -137,7 +137,7 @@ const Hero: React.FC = () => {
           {/* Left content */}
           <div className="space-y-10">
             <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase">
-              {'//'} Web Solutions — Brazil ⇄ USA
+              {'//'} Web Solutions · Brazil ⇄ USA
             </p>
 
             <h1 ref={titleRef} className="text-[clamp(3.5rem,11vw,6.5rem)] lg:text-[clamp(4rem,6.8vw,7.5rem)] font-display font-bold leading-[0.92] text-light">
@@ -150,7 +150,7 @@ const Hero: React.FC = () => {
 
             <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-xl leading-relaxed">
               We craft lightning-fast, pixel-perfect websites and apps that soar above the
-              competition — engineered for performance, built to rank.
+              competition. Engineered for performance, built to rank.
             </p>
 
             <div ref={buttonsRef} className="flex flex-wrap gap-4">
@@ -182,7 +182,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right visual — terminal card */}
+          {/* Right visual: terminal card */}
           <div ref={terminalWrapRef} className="relative hidden lg:block" style={{ perspective: '1200px' }} aria-hidden="true">
             <div
               ref={terminalRef}
@@ -194,7 +194,7 @@ const Hero: React.FC = () => {
                 <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
                 <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
                 <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-                <span className="ml-4 font-mono text-xs text-muted">flizz — deploy.ts</span>
+                <span className="ml-4 font-mono text-xs text-muted">flizz/deploy.ts</span>
               </div>
 
               {/* Code */}
