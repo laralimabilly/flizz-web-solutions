@@ -94,10 +94,10 @@ const Contact: React.FC = () => {
     'w-full bg-transparent border-0 border-b border-night/15 rounded-none px-0 py-4 text-night text-lg placeholder:text-night/30 focus:border-night focus:outline-none transition-colors duration-300';
 
   return (
-    <section ref={sectionRef} id="contact" className="relative py-32 md:py-40 bg-light text-night">
+    <section ref={sectionRef} id="contact" className="relative py-36 md:py-52 bg-light text-night">
       <div className="container mx-auto px-6">
         {/* Section heading */}
-        <div className="max-w-4xl mb-20">
+        <div className="max-w-4xl mb-24 md:mb-28">
           <p ref={eyebrowRef} className="font-mono text-accent-deep text-sm tracking-[0.3em] uppercase mb-6">
             {'//'} 04 — Get in touch
           </p>

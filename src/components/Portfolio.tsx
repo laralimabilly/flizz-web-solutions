@@ -224,8 +224,17 @@ const Portfolio: React.FC = () => {
           });
 
           if (desktop && trackRef.current && pinRef.current) {
-            // Pinned horizontal gallery — the section locks and projects glide sideways
-            const getAmount = () => Math.max(0, trackRef.current!.scrollWidth - window.innerWidth);
+            // Pinned horizontal gallery — the section locks and projects glide sideways.
+            // Distance is derived from the last panel's offset (not scrollWidth, which
+            // drops trailing gap/padding) so the last project ends with a margin on its
+            // right instead of flush against the viewport edge.
+            const getAmount = () => {
+              const panels = trackRef.current!.querySelectorAll<HTMLElement>('article');
+              const last = panels[panels.length - 1];
+              if (!last) return 0;
+              const rightMargin = window.innerWidth * 0.1; // mirrors the 10vw leading pad
+              return Math.max(0, last.offsetLeft + last.offsetWidth - window.innerWidth + rightMargin);
+            };
 
             gsap.to(trackRef.current, {
               x: () => -getAmount(),
@@ -301,26 +310,27 @@ const Portfolio: React.FC = () => {
           </div>
         </div>
 
-        {/* Track */}
+        {/* Track — each project is a near-full-screen spread; the leading
+            pad + trailing spacer keep the first and last panels off the edges. */}
         <div
           ref={trackRef}
-          className="flex flex-col gap-24 px-6 lg:motion-safe:flex-row lg:motion-safe:items-start lg:motion-safe:gap-[6vw] lg:motion-safe:px-[8vw] will-change-transform"
+          className="flex flex-col gap-28 px-6 lg:motion-safe:flex-row lg:motion-safe:items-center lg:motion-safe:gap-[10vw] lg:motion-safe:pl-[10vw] lg:motion-safe:pr-0 will-change-transform"
         >
           {projects.map((project, index) => (
             <article
               key={project.id}
               ref={(el) => { panelRefs.current[index] = el; }}
-              className="w-full lg:motion-safe:w-[56vw] xl:motion-safe:w-[50vw] shrink-0"
+              className="w-full shrink-0 lg:motion-safe:w-[80vw] xl:motion-safe:w-[72vw] lg:motion-safe:grid lg:motion-safe:grid-cols-12 lg:motion-safe:gap-12 lg:motion-safe:items-center"
             >
               {/* Visual */}
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block"
+                className="group block lg:motion-safe:col-span-7"
                 aria-label={`Visit ${project.title} live site`}
               >
-                <div className="relative aspect-[4/3] lg:motion-safe:aspect-auto lg:motion-safe:h-[46vh] rounded-3xl overflow-hidden border border-night/10 shadow-card transition-transform duration-700 group-hover:scale-[1.015]">
+                <div className="relative aspect-[4/3] lg:motion-safe:aspect-auto lg:motion-safe:h-[58vh] rounded-3xl overflow-hidden border border-night/10 shadow-card transition-transform duration-700 group-hover:scale-[1.015]">
                   <ProjectVisual visual={project.visual} />
 
                   {/* Hover veil */}
@@ -337,45 +347,45 @@ const Portfolio: React.FC = () => {
                 </div>
               </a>
 
-              {/* Meta */}
-              <div className="mt-7 grid md:grid-cols-12 gap-4 items-start">
-                <div className="md:col-span-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent-deep border border-accent-deep/25 bg-accent/10 px-3 py-1.5 rounded-full">
-                      {project.industry}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-display font-bold leading-tight">
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-accent-deep transition-colors duration-300"
-                    >
-                      {project.title}
-                    </a>
-                  </h3>
-                  <p className="text-night/60 mt-3 leading-relaxed max-w-xl">{project.description}</p>
-                </div>
+              {/* Meta — its own column on desktop, with room to breathe */}
+              <div className="mt-8 lg:motion-safe:mt-0 lg:motion-safe:col-span-5 space-y-6">
+                <span className="inline-block font-mono text-[11px] uppercase tracking-[0.25em] text-accent-deep border border-accent-deep/25 bg-accent/10 px-3 py-1.5 rounded-full">
+                  {project.industry}
+                </span>
 
-                <div className="md:col-span-4 md:justify-self-end flex md:flex-col items-start gap-3 md:text-right">
-                  <ul className="flex md:flex-col flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs text-night/50 md:items-end">
-                    {project.services.map((service) => (
-                      <li key={service}>{service}</li>
-                    ))}
-                  </ul>
+                <h3 className="text-3xl md:text-4xl xl:text-5xl font-display font-bold leading-[1.05]">
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/link inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.2em] text-night hover:text-accent-deep transition-colors duration-300 md:mt-2"
+                    className="hover:text-accent-deep transition-colors duration-300"
                   >
-                    <span className="border-b border-night/30 group-hover/link:border-accent-deep transition-colors duration-300 pb-0.5">
-                      Case Study
-                    </span>
-                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                    {project.title}
                   </a>
-                </div>
+                </h3>
+
+                <p className="text-night/60 text-lg leading-relaxed max-w-md">{project.description}</p>
+
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-night/50 pt-1">
+                  {project.services.map((service) => (
+                    <li key={service} className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-accent-deep rounded-full" aria-hidden="true" />
+                      {service}
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/link inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-night hover:text-accent-deep transition-colors duration-300 pt-2"
+                >
+                  <span className="border-b border-night/30 group-hover/link:border-accent-deep transition-colors duration-300 pb-1">
+                    Case Study
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                </a>
               </div>
             </article>
           ))}
@@ -394,26 +404,26 @@ const Portfolio: React.FC = () => {
         </div>
       </div>
 
-      {/* CTA — full-bleed giant link; dark panel sweeps up on the light section */}
-      <div ref={ctaRef} className="relative z-10 mt-8 lg:mt-0">
+      {/* CTA — full-bleed giant link; green panel sweeps up, text inverts to dark */}
+      <div ref={ctaRef} className="relative z-10 mt-12 lg:mt-8">
         <a href="#contact" className="group relative block border-y border-night/10 overflow-hidden">
           <span
-            className="absolute inset-0 bg-night translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
+            className="absolute inset-0 bg-accent translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]"
             aria-hidden="true"
           />
-          <div className="container mx-auto px-6 relative z-10 py-16 md:py-24 flex items-center justify-between gap-8">
+          <div className="container mx-auto px-6 relative z-10 py-20 md:py-28 flex items-center justify-between gap-8">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-deep group-hover:text-accent transition-colors duration-300 mb-5">
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-deep group-hover:text-night/70 transition-colors duration-300 mb-6">
                 {'//'} Your project could be next
               </p>
-              <span className="block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] text-night group-hover:text-light transition-colors duration-300">
+              <span className="block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] text-night group-hover:text-night transition-colors duration-300">
                 START YOUR
                 <br />
                 PROJECT
               </span>
             </div>
             <ArrowUpRight
-              className="w-16 h-16 md:w-28 md:h-28 text-night group-hover:text-accent group-hover:rotate-45 transition-all duration-500 shrink-0"
+              className="w-16 h-16 md:w-28 md:h-28 text-night group-hover:rotate-45 transition-transform duration-500 shrink-0"
               aria-hidden="true"
             />
           </div>

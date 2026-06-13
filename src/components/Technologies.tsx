@@ -125,7 +125,7 @@ const Technologies: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} aria-label="Technologies" className="relative py-32 md:py-40 bg-night bg-noise overflow-hidden">
+    <section ref={sectionRef} aria-label="Technologies" className="relative py-36 md:py-52 bg-night bg-noise overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-accent/5 rounded-full blur-[200px]" />
       </div>

@@ -96,7 +96,7 @@ const Solutions: React.FC = () => {
   // No overflow-hidden on the section — it would clip the expanding rows' focus
   // rings and the glow wrapper handles its own clipping.
   return (
-    <section ref={sectionRef} id="solutions" className="relative py-32 md:py-40 bg-night bg-noise">
+    <section ref={sectionRef} id="solutions" className="relative py-36 md:py-52 bg-night bg-noise">
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div className="absolute top-1/3 -left-40 w-[30rem] h-[30rem] bg-accent/10 rounded-full blur-[160px]" />
@@ -104,7 +104,7 @@ const Solutions: React.FC = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section heading */}
-        <div className="max-w-4xl mb-20 md:mb-28">
+        <div className="max-w-4xl mb-24 md:mb-32">
           <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
             {'//'} 01 — What we do
           </p>
@@ -133,7 +133,7 @@ const Solutions: React.FC = () => {
                   onClick={() => setOpenIndex(isOpen ? -1 : index)}
                   aria-expanded={isOpen}
                   aria-controls={`service-panel-${index}`}
-                  className="group w-full grid grid-cols-12 items-center gap-4 py-8 md:py-12 text-left cursor-pointer"
+                  className="group w-full grid grid-cols-12 items-center gap-4 py-10 md:py-16 text-left cursor-pointer"
                 >
                   <span className="col-span-2 md:col-span-1 font-mono text-sm text-muted/60 group-hover:text-accent transition-colors duration-300">
                     {String(index + 1).padStart(2, '0')}

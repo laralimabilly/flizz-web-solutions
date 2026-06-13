@@ -135,7 +135,7 @@ const Hero: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10 flex-1 flex items-center">
         <div className="grid lg:grid-cols-2 gap-16 items-center w-full">
           {/* Left content */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase">
               {'//'} Web Solutions — Brazil ⇄ USA
             </p>
@@ -169,7 +169,7 @@ const Hero: React.FC = () => {
               </a>
             </div>
 
-            <div ref={statsRef} className="flex flex-wrap gap-10 pt-6 border-t border-line">
+            <div ref={statsRef} className="flex flex-wrap gap-12 pt-8 border-t border-line">
               {stats.map((stat) => (
                 <div key={stat.label}>
                   <div className="text-3xl md:text-4xl font-bold text-light font-display">
