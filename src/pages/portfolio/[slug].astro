@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
 import CallToAction from '../../components/CallToAction.astro';
 import ProjectVisual from '../../components/ProjectVisual';
 import { ArrowLeft, ArrowUpRight, Image as ImageIcon } from 'lucide-react';
@@ -164,8 +163,6 @@ const jsonLd = {
     {/* Same CTA as the home page */}
     <CallToAction theme="dark" />
   </main>
-
-  <Footer />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Layout>

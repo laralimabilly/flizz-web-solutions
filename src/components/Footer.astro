@@ -1,26 +1,32 @@
 ---
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, ArrowUpRight } from 'lucide-react';
 import { getYear } from '../utils/utils.ts';
 ---
 
-<footer class="relative bg-night border-t border-line overflow-hidden">
-  <!-- Giant watermark wordmark -->
-  <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 pointer-events-none select-none" aria-hidden="true">
-    <span class="font-display font-bold text-[10rem] md:text-[18rem] leading-none text-light/[0.03] tracking-tight">FLIZZ</span>
-  </div>
-
-  <div class="container mx-auto px-6 py-20 relative z-10">
-    <div class="grid lg:grid-cols-4 gap-12">
-      <!-- Brand Section -->
-      <div class="lg:col-span-2 space-y-6">
+<footer
+  id="site-footer"
+  class="fixed bottom-0 left-0 right-0 h-[80vh] z-0 bg-night border-t border-line overflow-hidden flex flex-col justify-between"
+  aria-label="Site footer"
+>
+  {/* Top: brand + anchors */}
+  <div class="container mx-auto px-6 pt-16 md:pt-20">
+    <div class="grid lg:grid-cols-12 gap-12">
+      {/* Brand */}
+      <div class="lg:col-span-5 space-y-6">
         <img class="w-32" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Web Solutions logo" width="128" height="46" loading="lazy" />
-
-        <p class="text-muted text-lg max-w-md leading-relaxed">
-          Creating lightning-fast, pixel-perfect websites that soar above the competition.
-          Your digital transformation partner in Brazil and the US.
+        <p class="text-muted text-lg max-w-sm leading-relaxed">
+          Lightning-fast, pixel-perfect websites and apps for clients in Brazil and the US.
         </p>
-
-        <div class="flex space-x-3">
+        <a
+          href="/#contact"
+          class="group inline-flex items-center gap-2 text-light font-medium hover:text-accent transition-colors duration-300"
+        >
+          <span class="border-b border-accent/40 group-hover:border-accent transition-colors duration-300 pb-0.5">
+            felipe@flizz.com.br
+          </span>
+          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </a>
+        <div class="flex space-x-3 pt-2">
           <a
             href="https://github.com/laralimabilly"
             target="_blank"
@@ -42,40 +48,78 @@ import { getYear } from '../utils/utils.ts';
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div class="space-y-6">
-        <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Navigate</h2>
-        <nav class="space-y-3" aria-label="Footer navigation">
-          <a href="/#home" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Home</a>
-          <a href="/#solutions" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Solutions</a>
-          <a href="/#portfolio" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Portfolio</a>
-          <a href="/#contact" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Contact</a>
-        </nav>
-      </div>
+      {/* Anchors */}
+      <nav class="lg:col-span-4 lg:col-start-9 grid grid-cols-2 gap-8" aria-label="Footer navigation">
+        <div class="space-y-5">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Navigate</h2>
+          <ul class="space-y-3">
+            <li><a href="/#home" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Home</a></li>
+            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Solutions</a></li>
+            <li><a href="/#portfolio" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Portfolio</a></li>
+            <li><a href="/#contact" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Contact</a></li>
+          </ul>
+        </div>
+        <div class="space-y-5">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Services</h2>
+          <ul class="space-y-3">
+            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Web Development</a></li>
+            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Mobile Apps</a></li>
+            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Deploy & Maintain</a></li>
+            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Brand & Web Design</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
 
-      <!-- Services -->
-      <div class="space-y-6">
-        <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Services</h2>
-        <nav class="space-y-3" aria-label="Services">
-          <a href="/#solutions" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Web Design</a>
-          <a href="/#solutions" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Web Development</a>
-          <a href="/#solutions" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Mobile Apps</a>
-          <a href="/#solutions" class="block text-light/70 hover:text-accent hover:translate-x-1 transition-all duration-300">Deploy & Maintenance</a>
-        </nav>
-      </div>
+  {/* Bottom: giant parallax wordmark + meta bar */}
+  <div>
+    <div class="overflow-hidden px-4">
+      <span
+        id="footer-wordmark"
+        class="block text-center font-display font-bold text-light leading-[0.78] tracking-tighter text-[clamp(5.5rem,23vw,21rem)] will-change-transform select-none"
+      >
+        FL<span class="text-accent">i</span>ZZ
+      </span>
     </div>
 
-    <!-- Bottom Section -->
-    <div class="border-t border-line mt-16 pt-8">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="text-muted text-sm font-mono">
-          © {getYear()} Flizz Web Solutions. All rights reserved.
-        </div>
-
-        <div class="text-muted text-sm font-mono flex items-center gap-2">
-          Made with <span class="text-accent">⚡</span> in Brazil
-        </div>
+    <div class="border-t border-line">
+      <div class="container mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p class="text-muted text-sm font-mono">© {getYear()} Flizz Web Solutions. All rights reserved.</p>
+        <p class="text-muted text-sm font-mono flex items-center gap-2">Made with <span class="text-accent">⚡</span> in Brazil</p>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  // Parallax: the giant wordmark drifts slowly down to its resting place as the
+  // footer is revealed at the end of the page. Disabled for reduced motion.
+  const wordmark = document.getElementById('footer-wordmark');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (wordmark && !reduce) {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const revealH = window.innerHeight * 0.8;
+      const start = max - revealH;
+      const progress = Math.min(1, Math.max(0, (window.scrollY - start) / revealH));
+      // From -22% (higher up) at the start of the reveal to 0 (settled) at the end.
+      wordmark.style.transform = `translateY(${(1 - progress) * -22}%)`;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+</script>

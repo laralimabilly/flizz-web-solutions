@@ -55,6 +55,7 @@ const structuredData = {
   ],
 };
 
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 ---
 
@@ -101,7 +102,13 @@ import '../styles/global.css';
   </head>
 
   <body class="font-sans antialiased bg-night text-light">
-    <slot />
+    {/* Page content sits above the footer and scrolls up to reveal it. */}
+    <div class="site-content">
+      <slot />
+    </div>
+    {/* Reserves the scroll room the fixed footer is revealed through. */}
+    <div class="footer-spacer" aria-hidden="true"></div>
+    <Footer />
 
     <!-- Custom cursor follower -->
     <div id="cursor" class="cursor-follower hidden md:block" aria-hidden="true"></div>
@@ -139,3 +146,18 @@ import '../styles/global.css';
     </script>
   </body>
 </html>
+
+<style is:global>
+  /* Footer reveal: content sits above (z-1) and slides up to expose the
+     fixed footer that is pinned behind it. The spacer reserves the scroll
+     room the reveal happens through (matches the footer's 80vh height). */
+  .site-content {
+    position: relative;
+    z-index: 1;
+    background-color: var(--color-night);
+  }
+
+  .footer-spacer {
+    height: 80vh;
+  }
+</style>
