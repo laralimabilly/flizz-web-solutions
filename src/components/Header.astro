@@ -3,81 +3,86 @@
 
 <header
   id="site-header"
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b border-transparent"
+  class="fixed top-0 left-0 right-0 z-50 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] will-change-transform"
 >
-  <!-- Scroll progress bar -->
-  <div id="scroll-progress" class="absolute top-0 left-0 h-[2px] bg-accent w-0 shadow-glow"></div>
+  <nav class="container mx-auto px-6 py-5 flex items-center justify-between" aria-label="Main navigation">
+    <!-- Logo (detached, stands on its own) -->
+    <a
+      href="/#home"
+      class="shrink-0 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]"
+      aria-label="Flizz Web Solutions - Home"
+    >
+      <img class="w-28" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Web Solutions logo" width="112" height="40" />
+    </a>
 
-  <nav class="container mx-auto px-6 py-4" aria-label="Main navigation">
-    <div class="flex items-center justify-between">
-      <!-- Logo -->
-      <a href="/#home" class="flex items-center space-x-3" aria-label="Flizz Web Solutions - Home">
-        <img class="w-28" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Web Solutions logo" width="112" height="40" />
-      </a>
-
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="/#home" class="nav-link text-light/80 hover:text-accent transition-colors duration-300 font-medium text-sm tracking-wide">Home</a>
-        <a href="/#solutions" class="nav-link text-light/80 hover:text-accent transition-colors duration-300 font-medium text-sm tracking-wide">Solutions</a>
-        <a href="/#portfolio" class="nav-link text-light/80 hover:text-accent transition-colors duration-300 font-medium text-sm tracking-wide">Portfolio</a>
-        <a href="/#contact" class="nav-link text-light/80 hover:text-accent transition-colors duration-300 font-medium text-sm tracking-wide">Contact</a>
-        <a
-          href="/#contact"
-          class="bg-accent text-night px-5 py-2.5 rounded-full font-semibold text-sm hover:shadow-glow hover:scale-105 transition-all duration-300"
-        >
-          Start a Project
-        </a>
+    <!-- Desktop: anchors in a floating white pill + CTA -->
+    <div class="hidden md:flex items-center gap-3">
+      <div class="flex items-center gap-1 bg-white rounded-full p-1.5 shadow-lg shadow-black/10">
+        <a href="/#home" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Home</a>
+        <a href="/#solutions" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Solutions</a>
+        <a href="/#portfolio" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Portfolio</a>
+        <a href="/#contact" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Contact</a>
       </div>
-
-      <!-- Mobile Menu Button -->
-      <button
-        id="mobile-menu-btn"
-        class="md:hidden flex flex-col space-y-1.5 p-2"
-        aria-label="Toggle menu"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
+      <a
+        href="/#contact"
+        class="bg-accent text-night px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg shadow-accent/20 hover:shadow-glow hover:scale-105 transition-all duration-300"
       >
-        <span class="w-6 h-0.5 bg-light transition-all duration-300"></span>
-        <span class="w-6 h-0.5 bg-light transition-all duration-300"></span>
-        <span class="w-6 h-0.5 bg-light transition-all duration-300"></span>
-      </button>
+        Start a Project
+      </a>
     </div>
 
-    <!-- Mobile Navigation -->
-    <div id="mobile-menu" class="md:hidden mt-4 pb-4 hidden">
-      <div class="flex flex-col space-y-4 bg-surface/95 backdrop-blur-lg rounded-2xl p-6 border border-line">
-        <a href="/#home" class="text-light/80 hover:text-accent transition-colors duration-300 font-medium">Home</a>
-        <a href="/#solutions" class="text-light/80 hover:text-accent transition-colors duration-300 font-medium">Solutions</a>
-        <a href="/#portfolio" class="text-light/80 hover:text-accent transition-colors duration-300 font-medium">Portfolio</a>
-        <a href="/#contact" class="text-light/80 hover:text-accent transition-colors duration-300 font-medium">Contact</a>
-        <a href="/#contact" class="bg-accent text-night px-5 py-2.5 rounded-full font-semibold text-center">Start a Project</a>
-      </div>
-    </div>
+    <!-- Mobile menu button (white pill to stay visible on any background) -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden w-11 h-11 rounded-full bg-white shadow-lg shadow-black/10 flex flex-col items-center justify-center gap-1.5"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="w-5 h-0.5 bg-night transition-all duration-300"></span>
+      <span class="w-5 h-0.5 bg-night transition-all duration-300"></span>
+      <span class="w-5 h-0.5 bg-night transition-all duration-300"></span>
+    </button>
   </nav>
+
+  <!-- Mobile Navigation -->
+  <div id="mobile-menu" class="md:hidden px-6 pb-4 hidden">
+    <div class="flex flex-col gap-1 bg-white rounded-2xl p-4 shadow-xl">
+      <a href="/#home" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Home</a>
+      <a href="/#solutions" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Solutions</a>
+      <a href="/#portfolio" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Portfolio</a>
+      <a href="/#contact" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Contact</a>
+      <a href="/#contact" class="mt-2 px-4 py-3 rounded-xl bg-accent text-night font-semibold text-center">Start a Project</a>
+    </div>
+  </div>
 </header>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const header = document.getElementById('site-header');
-    const progress = document.getElementById('scroll-progress');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    // Glass background once scrolled past the hero's top edge
-    const onScroll = () => {
-      const scrolled = window.scrollY > 24;
-      header?.classList.toggle('bg-night/80', scrolled);
-      header?.classList.toggle('backdrop-blur-xl', scrolled);
-      header?.classList.toggle('border-line', scrolled);
+    // Hide when scrolling down, reveal when scrolling back up.
+    let lastY = window.scrollY;
+    const HIDE_AFTER = 120; // don't hide until past the hero's top area
 
-      if (progress) {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const goingDown = y > lastY;
+
+      if (y <= HIDE_AFTER || !goingDown) {
+        if (header) header.style.transform = 'translateY(0)'; // at top or scrolling up
+      } else if (header) {
+        header.style.transform = 'translateY(-130%)'; // scrolling down
+        mobileMenu?.classList.add('hidden'); // tuck the menu away too
+        mobileMenuBtn?.setAttribute('aria-expanded', 'false');
       }
+
+      lastY = y;
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
 
     mobileMenuBtn?.addEventListener('click', () => {
       const isHidden = mobileMenu?.classList.toggle('hidden');
@@ -89,9 +94,9 @@
         spans[1].style.opacity = '1';
         spans[2].style.transform = 'rotate(0deg)';
       } else {
-        spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+        spans[0].style.transform = 'rotate(45deg) translate(4px, 5px)';
         spans[1].style.opacity = '0';
-        spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        spans[2].style.transform = 'rotate(-45deg) translate(4px, -5px)';
       }
     });
 
