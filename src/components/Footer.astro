@@ -77,9 +77,9 @@ import { getYear } from '../utils/utils.ts';
     <div class="overflow-hidden px-4">
       <span
         id="footer-wordmark"
-        class="block text-center font-display font-bold text-light leading-[0.78] tracking-tighter text-[clamp(5.5rem,23vw,21rem)] will-change-transform select-none"
+        class="footer-wordmark block text-center font-display font-bold leading-[0.78] tracking-tighter text-[clamp(5.5rem,23vw,21rem)] will-change-transform select-none"
       >
-        FL<span class="text-accent">i</span>ZZ
+        FL<span class="footer-wordmark-i">i</span>ZZ
       </span>
     </div>
 
@@ -107,8 +107,9 @@ import { getYear } from '../utils/utils.ts';
       const revealH = window.innerHeight * 0.8;
       const start = max - revealH;
       const progress = Math.min(1, Math.max(0, (window.scrollY - start) / revealH));
-      // From -22% (higher up) at the start of the reveal to 0 (settled) at the end.
-      wordmark.style.transform = `translateY(${(1 - progress) * -22}%)`;
+      // Rises in the scroll direction: from +40% (below, clipped) at the start of
+      // the reveal up to 0 (settled) at the end, bottom to top.
+      wordmark.style.transform = `translateY(${(1 - progress) * 40}%)`;
     };
 
     const onScroll = () => {
@@ -123,3 +124,18 @@ import { getYear } from '../utils/utils.ts';
     update();
   }
 </script>
+
+<style>
+  /* Watermark wordmark: faint light fill that smoothly fades out toward the
+     bottom so the giant name reads like a watermark, not a solid headline. */
+  .footer-wordmark {
+    color: rgba(243, 243, 243, 0.12);
+    -webkit-mask-image: linear-gradient(to top, transparent 2%, #000 60%);
+    mask-image: linear-gradient(to top, transparent 2%, #000 60%);
+  }
+
+  /* Keep a subtle brand-green hint on the dotted i, in line with the watermark. */
+  .footer-wordmark-i {
+    color: rgba(104, 247, 11, 0.22);
+  }
+</style>
