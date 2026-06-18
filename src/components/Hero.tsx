@@ -3,6 +3,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -16,15 +18,15 @@ const codeLines = [
   { indent: 0, tokens: [{ t: '// deployed in record time ⚡', c: 'text-muted/60' }] },
 ];
 
-const marqueeItems = ['PERFORMANCE', 'WEB DESIGN', 'SEO', 'WEB APPS', 'MOBILE APPS', 'E-COMMERCE', 'BRANDING'];
-
 const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 99, suffix: '%', label: 'Client Satisfaction' },
-  { value: 100, suffix: '/100', label: 'Performance Scores' },
+  { value: 50, suffix: '+' },
+  { value: 99, suffix: '%' },
+  { value: 100, suffix: '/100' },
 ];
 
-const Hero: React.FC = () => {
+const Hero: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
+  const t = useTranslations(lang);
+  const marqueeItems = t.hero.marquee;
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
@@ -137,20 +139,19 @@ const Hero: React.FC = () => {
           {/* Left content */}
           <div className="space-y-10">
             <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase">
-              {'//'} Web Solutions · Brazil ⇄ USA
+              {'//'} {t.hero.eyebrow}
             </p>
 
             <h1 ref={titleRef} className="text-[clamp(3.5rem,11vw,6.5rem)] lg:text-[clamp(4rem,6.8vw,7.5rem)] font-display font-bold leading-[0.92] text-light">
-              FAST.
+              {t.hero.titleLines[0]}
               <br />
-              <span className="text-accent drop-shadow-[0_0_30px_rgba(104,247,11,0.45)]">PRECISE.</span>
+              <span className="text-accent drop-shadow-[0_0_30px_rgba(104,247,11,0.45)]">{t.hero.titleLines[1]}</span>
               <br />
-              <span className="text-stroke">ELEGANT.</span>
+              <span className="text-stroke">{t.hero.titleLines[2]}</span>
             </h1>
 
             <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-xl leading-relaxed">
-              We craft lightning-fast, pixel-perfect websites and apps that soar above the
-              competition. Engineered for performance, built to rank.
+              {t.hero.subtitle}
             </p>
 
             <div ref={buttonsRef} className="flex flex-wrap gap-4">
@@ -158,25 +159,25 @@ const Hero: React.FC = () => {
                 href="#contact"
                 className="group bg-accent text-night px-8 py-4 rounded-full font-bold text-lg hover:shadow-glow hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
               >
-                Start a Project
+                {t.hero.ctaPrimary}
                 <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </a>
               <a
                 href="#portfolio"
                 className="px-8 py-4 rounded-full font-medium text-lg text-light border border-line hover:border-accent/60 hover:text-accent transition-all duration-300 backdrop-blur-sm"
               >
-                View Portfolio
+                {t.hero.ctaSecondary}
               </a>
             </div>
 
             <div ref={statsRef} className="flex flex-wrap gap-12 pt-8 border-t border-line">
-              {stats.map((stat) => (
-                <div key={stat.label}>
+              {stats.map((stat, i) => (
+                <div key={i}>
                   <div className="text-3xl md:text-4xl font-bold text-light font-display">
                     <span data-count={stat.value}>{stat.value}</span>
                     <span className="text-accent">{stat.suffix}</span>
                   </div>
-                  <div className="text-muted text-sm font-mono mt-1">{stat.label}</div>
+                  <div className="text-muted text-sm font-mono mt-1">{t.hero.statLabels[i]}</div>
                 </div>
               ))}
             </div>
@@ -230,7 +231,7 @@ const Hero: React.FC = () => {
               ⚡ 100/100 Lighthouse
             </div>
             <div className="absolute -bottom-6 -left-4 bg-surface/90 backdrop-blur-lg border border-line rounded-xl px-4 py-2 font-mono text-xs text-light shadow-card animate-float" style={{ animationDelay: '1.2s' }}>
-              🇧🇷 → 🇺🇸 Worldwide delivery
+              🇧🇷 → 🇺🇸 {t.hero.worldwide}
             </div>
           </div>
         </div>
@@ -239,7 +240,7 @@ const Hero: React.FC = () => {
       {/* Scroll hint */}
       <div ref={scrollHintRef} className="relative z-10 flex justify-center pb-6">
         <a href="#solutions" className="flex flex-col items-center gap-2 text-muted hover:text-accent transition-colors duration-300" aria-label="Scroll to solutions">
-          <span className="font-mono text-xs tracking-[0.25em] uppercase">Scroll</span>
+          <span className="font-mono text-xs tracking-[0.25em] uppercase">{t.hero.scroll}</span>
           <ArrowDown className="w-4 h-4 animate-bounce" />
         </a>
       </div>

@@ -1,18 +1,31 @@
 ---
+import type { Lang } from '../i18n/ui';
+import { ui } from '../i18n/ui';
+import { getAltPath } from '../i18n/utils';
+
 export interface Props {
   title: string;
   description?: string;
   image?: string;
+  lang?: Lang;
 }
 
 const {
   title,
-  description = "Flizz Web Solutions builds lightning-fast, pixel-perfect websites, web apps and mobile apps for clients in Brazil and the US. Performance-first development with React, Astro and React Native.",
+  lang = 'en',
+  description = ui[lang].meta.description,
   image = "/og-image.jpg",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL(image, Astro.site);
+
+// hreflang alternates: every page exists in both locales at mirrored paths.
+const enURL = new URL(getAltPath(Astro.url.pathname, 'en'), Astro.site).toString();
+const ptURL = new URL(getAltPath(Astro.url.pathname, 'pt'), Astro.site).toString();
+
+const htmlLang = lang === 'pt' ? 'pt-BR' : 'en';
+const ogLocale = lang === 'pt' ? 'pt_BR' : 'en_US';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -50,7 +63,7 @@ const structuredData = {
       url: `${Astro.site}`,
       name: "Flizz Web Solutions",
       publisher: { "@id": `${Astro.site}#organization` },
-      inLanguage: "en",
+      inLanguage: htmlLang,
     },
   ],
 };
@@ -60,13 +73,16 @@ import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang={htmlLang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="pt-BR" href={ptURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
@@ -81,7 +97,7 @@ import '../styles/global.css';
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImage} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={ogLocale} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -108,7 +124,7 @@ import '../styles/global.css';
     </div>
     {/* Reserves the scroll room the fixed footer is revealed through. */}
     <div class="footer-spacer" aria-hidden="true"></div>
-    <Footer />
+    <Footer lang={lang} />
 
     <!-- Custom cursor follower -->
     <div id="cursor" class="cursor-follower hidden md:block" aria-hidden="true"></div>

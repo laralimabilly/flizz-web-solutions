@@ -3,44 +3,17 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { Palette, Code2, Smartphone, Cloud, ArrowUpRight, Plus } from 'lucide-react';
-import type { Service } from '../types';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const services: (Service & { tagline: string })[] = [
-  {
-    title: 'Web Development',
-    tagline: 'Built for speed',
-    description: 'High-performance websites built with modern technologies, engineered to load instantly and rank on top.',
-    icon: 'Code2',
-    features: ['React & TypeScript', 'Next.js & Astro', 'Performance Optimization', 'SEO Ready'],
-  },
-  {
-    title: 'Mobile Apps',
-    tagline: 'Native experiences',
-    description: 'Native and cross-platform mobile applications that deliver exceptional user experiences on iOS and Android.',
-    icon: 'Smartphone',
-    features: ['React Native', 'iOS & Android', 'App Store Optimization', 'Push Notifications'],
-  },
-  {
-    title: 'Deploy & Maintain',
-    tagline: 'Always online',
-    description: 'Reliable hosting, continuous deployment, and ongoing support keeping your digital assets fast and secure.',
-    icon: 'Cloud',
-    features: ['Cloud Hosting', 'CI/CD Pipeline', '24/7 Monitoring', 'Regular Updates'],
-  },
-  {
-    title: 'Brand & Web Design',
-    tagline: 'Design that converts',
-    description: 'Stunning visual identities and user experiences that captivate your audience and turn visitors into customers.',
-    icon: 'Palette',
-    features: ['Brand Identity', 'UI/UX Design', 'Responsive Design', 'Prototyping'],
-  },
-];
+// Icons parallel the service order in the i18n dictionary (ui.solutions.services).
+const serviceIcons = [Code2, Smartphone, Cloud, Palette];
 
-const iconComponents = { Palette, Code2, Smartphone, Cloud };
-
-const Solutions: React.FC = () => {
+const Solutions: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
+  const t = useTranslations(lang);
+  const services = t.solutions.services;
   const [openIndex, setOpenIndex] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -106,20 +79,20 @@ const Solutions: React.FC = () => {
         {/* Section heading */}
         <div className="max-w-4xl mb-24 md:mb-32">
           <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 01 / What we do
+            {'//'} 01 / {t.solutions.eyebrow}
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
-            SOLUTIONS
+            {t.solutions.title}
           </h2>
           <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
-            From concept to deployment, end-to-end services that transform your digital presence.
+            {t.solutions.subtitle}
           </p>
         </div>
 
         {/* Service index: typographic rows, not cards */}
         <div>
           {services.map((service, index) => {
-            const IconComponent = iconComponents[service.icon as keyof typeof iconComponents];
+            const IconComponent = serviceIcons[index];
             const isOpen = openIndex === index;
 
             return (
@@ -179,7 +152,7 @@ const Solutions: React.FC = () => {
                           className="group/link inline-flex items-center gap-2 mt-8 font-mono text-sm uppercase tracking-[0.2em] text-accent"
                         >
                           <span className="border-b border-accent/40 group-hover/link:border-accent transition-colors duration-300 pb-1">
-                            Start this project
+                            {t.solutions.startThis}
                           </span>
                           <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" aria-hidden="true" />
                         </a>

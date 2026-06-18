@@ -6,15 +6,19 @@ import Solutions from '../components/Solutions';
 import Portfolio from '../components/Portfolio';
 import Technologies from '../components/Technologies';
 import Contact from '../components/Contact';
+import { ui } from '../i18n/ui';
+
+const lang = 'en';
+const t = ui[lang];
 ---
 
-<Layout title="Flizz Web Solutions | Fast, Precise, Elegant Websites & Apps">
-  <Header />
+<Layout title={t.meta.homeTitle} lang={lang}>
+  <Header lang={lang} />
   <main>
-    <Hero client:load />
-    <Solutions client:visible />
-    <Portfolio client:visible />
-    <Technologies client:visible />
-    <Contact client:visible />
+    <Hero client:load lang={lang} />
+    <Solutions client:visible lang={lang} />
+    <Portfolio client:visible lang={lang} />
+    <Technologies client:visible lang={lang} />
+    <Contact client:visible lang={lang} />
   </main>
 </Layout>

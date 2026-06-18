@@ -3,12 +3,17 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ArrowUpRight } from 'lucide-react';
-import { projects } from '../data/projects';
+import { getLocalizedProjects } from '../data/projects';
 import ProjectVisual from './ProjectVisual';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const Portfolio: React.FC = () => {
+const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
+  const t = useTranslations(lang);
+  const projects = getLocalizedProjects(lang);
+  const projectBase = lang === 'pt' ? '/pt/portfolio' : '/portfolio';
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
@@ -127,14 +132,14 @@ const Portfolio: React.FC = () => {
         {/* Section heading */}
         <div className="container mx-auto px-6 mb-14 lg:motion-safe:mb-10 lg:motion-safe:shrink-0">
           <p ref={eyebrowRef} className="font-mono text-accent-deep text-sm tracking-[0.3em] uppercase mb-5">
-            {'//'} 02 / Selected work
+            {'//'} 02 / {t.portfolio.eyebrow}
           </p>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 ref={titleRef} className="text-6xl md:text-7xl font-display font-bold leading-[0.95] overflow-hidden">
-              PORTFOLIO
+              {t.portfolio.title}
             </h2>
             <p ref={subtitleRef} className="text-base md:text-lg text-night/60 max-w-sm leading-relaxed">
-              Real products shipped for real clients. Drag through the gallery.
+              {t.portfolio.subtitle}
             </p>
           </div>
         </div>
@@ -153,9 +158,9 @@ const Portfolio: React.FC = () => {
             >
               {/* Visual links to the project's detail page */}
               <a
-                href={`/portfolio/${project.slug}`}
+                href={`${projectBase}/${project.slug}`}
                 className="group block lg:motion-safe:col-span-7"
-                aria-label={`View the ${project.title} case study`}
+                aria-label={`${t.portfolio.caseStudy}: ${project.title}`}
               >
                 <div className="relative aspect-[4/3] lg:motion-safe:aspect-auto lg:motion-safe:h-[58vh] rounded-3xl overflow-hidden border border-night/10 shadow-card transition-transform duration-700 group-hover:scale-[1.015]">
                   <ProjectVisual visual={project.visual} />
@@ -163,7 +168,7 @@ const Portfolio: React.FC = () => {
                   {/* Hover veil */}
                   <div className="absolute inset-0 bg-night/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                     <span className="inline-flex items-center gap-2 bg-accent text-night px-6 py-3 rounded-full font-bold translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      View Project <ArrowUpRight className="w-4 h-4" />
+                      {t.portfolio.viewProject} <ArrowUpRight className="w-4 h-4" />
                     </span>
                   </div>
 
@@ -182,7 +187,7 @@ const Portfolio: React.FC = () => {
 
                 <h3 className="text-3xl md:text-4xl xl:text-5xl font-display font-bold leading-[1.05]">
                   <a
-                    href={`/portfolio/${project.slug}`}
+                    href={`${projectBase}/${project.slug}`}
                     className="hover:text-accent-deep transition-colors duration-300"
                   >
                     {project.title}
@@ -201,11 +206,11 @@ const Portfolio: React.FC = () => {
                 </ul>
 
                 <a
-                  href={`/portfolio/${project.slug}`}
+                  href={`${projectBase}/${project.slug}`}
                   className="group/link inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-night hover:text-accent-deep transition-colors duration-300 pt-2"
                 >
                   <span className="border-b border-night/30 group-hover/link:border-accent-deep transition-colors duration-300 pb-1">
-                    Case Study
+                    {t.portfolio.caseStudy}
                   </span>
                   <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
                 </a>
@@ -223,7 +228,7 @@ const Portfolio: React.FC = () => {
           <span className="relative flex-1 h-[2px] bg-night/10 overflow-hidden">
             <span ref={barRef} className="absolute inset-0 bg-accent-deep origin-left scale-x-0" />
           </span>
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-night/40">Scroll</span>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-night/40">{t.portfolio.scroll}</span>
         </div>
       </div>
 
@@ -237,12 +242,12 @@ const Portfolio: React.FC = () => {
           <div className="container mx-auto px-6 relative z-10 py-20 md:py-28 flex items-center justify-between gap-8">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent-deep group-hover:text-night/70 transition-colors duration-300 mb-6">
-                {'//'} Your project could be next
+                {'//'} {t.cta.eyebrow}
               </p>
               <span className="block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] text-night group-hover:text-night transition-colors duration-300">
-                START YOUR
+                {t.cta.titleLines[0]}
                 <br />
-                PROJECT
+                {t.cta.titleLines[1]}
               </span>
             </div>
             <ArrowUpRight

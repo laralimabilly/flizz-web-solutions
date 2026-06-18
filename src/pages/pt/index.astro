@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero';
+import Solutions from '../../components/Solutions';
+import Portfolio from '../../components/Portfolio';
+import Technologies from '../../components/Technologies';
+import Contact from '../../components/Contact';
+import { ui } from '../../i18n/ui';
+
+const lang = 'pt';
+const t = ui[lang];
+---
+
+<Layout title={t.meta.homeTitle} lang={lang}>
+  <Header lang={lang} />
+  <main>
+    <Hero client:load lang={lang} />
+    <Solutions client:visible lang={lang} />
+    <Portfolio client:visible lang={lang} />
+    <Technologies client:visible lang={lang} />
+    <Contact client:visible lang={lang} />
+  </main>
+</Layout>

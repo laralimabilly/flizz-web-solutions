@@ -1,15 +1,15 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
-import ProjectDetail from '../../components/ProjectDetail.astro';
-import { projects, getProjectBySlug, localizeProject } from '../../data/projects';
-import { ui } from '../../i18n/ui';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+import { projects, getProjectBySlug, localizeProject } from '../../../data/projects';
+import { ui } from '../../../i18n/ui';
 
 export function getStaticPaths() {
   return projects.map((project) => ({ params: { slug: project.slug } }));
 }
 
-const lang = 'en';
+const lang = 'pt';
 const t = ui[lang];
 
 const { slug } = Astro.params;
@@ -19,7 +19,7 @@ const project = localizeProject(source, lang);
 
 const metaTitle = `${t.projectDetail.caseStudyPrefix}: ${project.title}${t.meta.projectTitleSuffix}`;
 const metaDescription = project.description;
-const canonical = new URL(`/portfolio/${project.slug}`, Astro.site).toString();
+const canonical = new URL(`/pt/portfolio/${project.slug}`, Astro.site).toString();
 
 // Project-level structured data for richer search results.
 const jsonLd = {
@@ -32,7 +32,7 @@ const jsonLd = {
   url: canonical,
   description: project.description,
   keywords: [...project.services, ...project.techStack].join(', '),
-  inLanguage: 'en',
+  inLanguage: 'pt-BR',
   creator: { '@type': 'Organization', name: 'Flizz Web Solutions' },
 };
 ---

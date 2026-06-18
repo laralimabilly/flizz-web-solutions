@@ -4,16 +4,20 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { Mail, Phone, MapPin, Send, Clock, Users } from 'lucide-react';
 import type { ContactForm } from '../types';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const contactDetails = [
-  { icon: Mail, label: 'Email', value: 'felipe@flizz.com.br', href: 'mailto:felipe@flizz.com.br' },
-  { icon: Phone, label: 'Phone / WhatsApp', value: '+55 (17) 98144-9654', href: 'tel:+5517981449654' },
-  { icon: MapPin, label: 'Location', value: 'Brazil & US, Remote Worldwide' },
-];
+const Contact: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
+  const t = useTranslations(lang);
 
-const Contact: React.FC = () => {
+  const contactDetails = [
+    { icon: Mail, label: t.contact.emailLabel, value: 'felipe@flizz.com.br', href: 'mailto:felipe@flizz.com.br' },
+    { icon: Phone, label: t.contact.phoneLabel, value: '+55 (17) 98144-9654', href: 'tel:+5517981449654' },
+    { icon: MapPin, label: t.contact.locationLabel, value: t.contact.locationValue },
+  ];
+
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
     email: '',
@@ -81,7 +85,7 @@ const Contact: React.FC = () => {
     e.preventDefault();
 
     // No backend yet; hand off to the user's mail client with everything pre-filled
-    const subject = encodeURIComponent(`Project inquiry from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
+    const subject = encodeURIComponent(`${t.contact.mailSubject} ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
     const body = encodeURIComponent(`${formData.message}\n\n--\n${formData.name}\n${formData.email}${formData.company ? `\n${formData.company}` : ''}`);
     window.location.href = `mailto:felipe@flizz.com.br?subject=${subject}&body=${body}`;
   };
@@ -99,13 +103,13 @@ const Contact: React.FC = () => {
         {/* Section heading */}
         <div className="max-w-4xl mb-24 md:mb-28">
           <p ref={eyebrowRef} className="font-mono text-accent-deep text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 04 / Get in touch
+            {'//'} 04 / {t.contact.eyebrow}
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold leading-[0.95] overflow-hidden">
-            LET'S TALK
+            {t.contact.title}
           </h2>
           <p ref={subtitleRef} className="text-lg md:text-xl text-night/60 max-w-2xl mt-6 leading-relaxed">
-            Ready to transform your digital presence? Let's discuss your project and bring your vision to life.
+            {t.contact.subtitle}
           </p>
         </div>
 
@@ -113,8 +117,7 @@ const Contact: React.FC = () => {
           {/* Contact Information */}
           <div ref={leftContentRef} className="space-y-10">
             <p className="text-night/60 text-lg leading-relaxed max-w-lg">
-              Whether you need a complete digital transformation or want to enhance your existing
-              platform, we're ready to make it happen, in English or Portuguese.
+              {t.contact.intro}
             </p>
 
             {/* Contact Details: hairline index rows */}
@@ -146,16 +149,16 @@ const Contact: React.FC = () => {
               <div className="flex items-center justify-between gap-6 border-t border-night/10 py-6">
                 <span className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-night/50">
                   <Clock className="w-4 h-4 text-accent-deep" aria-hidden="true" />
-                  Response Time
+                  {t.contact.responseTimeLabel}
                 </span>
-                <span className="text-night text-lg text-right">Within 24 hours</span>
+                <span className="text-night text-lg text-right">{t.contact.responseTimeValue}</span>
               </div>
               <div className="flex items-center justify-between gap-6 border-y border-night/10 py-6">
                 <span className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-night/50">
                   <Users className="w-4 h-4 text-accent-deep" aria-hidden="true" />
-                  Free Consultation
+                  {t.contact.freeConsultLabel}
                 </span>
-                <span className="text-night text-lg text-right">30-min strategy session</span>
+                <span className="text-night text-lg text-right">{t.contact.freeConsultValue}</span>
               </div>
             </div>
           </div>
@@ -166,7 +169,7 @@ const Contact: React.FC = () => {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-night/50 font-mono text-xs uppercase tracking-widest mb-2">
-                    Name *
+                    {t.contact.nameLabel}
                   </label>
                   <input
                     type="text"
@@ -177,13 +180,13 @@ const Contact: React.FC = () => {
                     required
                     autoComplete="name"
                     className={inputClasses}
-                    placeholder="Your full name"
+                    placeholder={t.contact.namePlaceholder}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-night/50 font-mono text-xs uppercase tracking-widest mb-2">
-                    Email *
+                    {t.contact.emailFieldLabel}
                   </label>
                   <input
                     type="email"
@@ -194,14 +197,14 @@ const Contact: React.FC = () => {
                     required
                     autoComplete="email"
                     className={inputClasses}
-                    placeholder="your@email.com"
+                    placeholder={t.contact.emailPlaceholder}
                   />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="company" className="block text-night/50 font-mono text-xs uppercase tracking-widest mb-2">
-                  Company
+                  {t.contact.companyLabel}
                 </label>
                 <input
                   type="text"
@@ -211,13 +214,13 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   autoComplete="organization"
                   className={inputClasses}
-                  placeholder="Your company name"
+                  placeholder={t.contact.companyPlaceholder}
                 />
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-night/50 font-mono text-xs uppercase tracking-widest mb-2">
-                  Message *
+                  {t.contact.messageLabel}
                 </label>
                 <textarea
                   id="message"
@@ -227,7 +230,7 @@ const Contact: React.FC = () => {
                   required
                   rows={6}
                   className={`${inputClasses} resize-none`}
-                  placeholder="Tell us about your project..."
+                  placeholder={t.contact.messagePlaceholder}
                 />
               </div>
 
@@ -240,7 +243,7 @@ const Contact: React.FC = () => {
                   aria-hidden="true"
                 />
                 <span className="relative z-10 flex items-center justify-center gap-3 py-6 font-display font-bold text-xl md:text-2xl text-night group-hover:text-accent transition-colors duration-300">
-                  SEND MESSAGE
+                  {t.contact.submit}
                   <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" aria-hidden="true" />
                 </span>
               </button>

@@ -1,6 +1,18 @@
 ---
 import { Github, Linkedin, ArrowUpRight } from 'lucide-react';
 import { getYear } from '../utils/utils.ts';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
+const anchor = (id: string) => `${lang === 'pt' ? '/pt/' : '/'}#${id}`;
+const serviceTitles = t.solutions.services.map((s) => s.title);
 ---
 
 <footer
@@ -15,10 +27,10 @@ import { getYear } from '../utils/utils.ts';
       <div class="lg:col-span-5 space-y-6">
         <img class="w-32" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Web Solutions logo" width="128" height="46" loading="lazy" />
         <p class="text-muted text-lg max-w-sm leading-relaxed">
-          Lightning-fast, pixel-perfect websites and apps for clients in Brazil and the US.
+          {t.footer.tagline}
         </p>
         <a
-          href="/#contact"
+          href={anchor('contact')}
           class="group inline-flex items-center gap-2 text-light font-medium hover:text-accent transition-colors duration-300"
         >
           <span class="border-b border-accent/40 group-hover:border-accent transition-colors duration-300 pb-0.5">
@@ -51,21 +63,20 @@ import { getYear } from '../utils/utils.ts';
       {/* Anchors */}
       <nav class="lg:col-span-4 lg:col-start-9 grid grid-cols-2 gap-8" aria-label="Footer navigation">
         <div class="space-y-5">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Navigate</h2>
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">{t.footer.navigateHeading}</h2>
           <ul class="space-y-3">
-            <li><a href="/#home" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Home</a></li>
-            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Solutions</a></li>
-            <li><a href="/#portfolio" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Portfolio</a></li>
-            <li><a href="/#contact" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Contact</a></li>
+            <li><a href={anchor('home')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{t.nav.home}</a></li>
+            <li><a href={anchor('solutions')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{t.nav.solutions}</a></li>
+            <li><a href={anchor('portfolio')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{t.nav.portfolio}</a></li>
+            <li><a href={anchor('contact')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{t.nav.contact}</a></li>
           </ul>
         </div>
         <div class="space-y-5">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">Services</h2>
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">{t.footer.servicesHeading}</h2>
           <ul class="space-y-3">
-            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Web Development</a></li>
-            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Mobile Apps</a></li>
-            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Deploy & Maintain</a></li>
-            <li><a href="/#solutions" class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">Brand & Web Design</a></li>
+            {serviceTitles.map((title) => (
+              <li><a href={anchor('solutions')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{title}</a></li>
+            ))}
           </ul>
         </div>
       </nav>
@@ -85,8 +96,8 @@ import { getYear } from '../utils/utils.ts';
 
     <div class="border-t border-line">
       <div class="container mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
-        <p class="text-muted text-sm font-mono">© {getYear()} Flizz Web Solutions. All rights reserved.</p>
-        <p class="text-muted text-sm font-mono flex items-center gap-2">Made with <span class="text-accent">⚡</span> in Brazil</p>
+        <p class="text-muted text-sm font-mono">© {getYear()} Flizz Web Solutions. {t.footer.rights}</p>
+        <p class="text-muted text-sm font-mono flex items-center gap-2">{t.footer.madeWith} <span class="text-accent">⚡</span> {t.footer.madeWithSuffix}</p>
       </div>
     </div>
   </div>

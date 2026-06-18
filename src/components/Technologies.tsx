@@ -3,6 +3,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { Technology } from '../types';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -76,7 +78,8 @@ const TechChip: React.FC<{ tech: Technology }> = ({ tech }) => (
   </div>
 );
 
-const Technologies: React.FC = () => {
+const Technologies: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
+  const t = useTranslations(lang);
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
@@ -133,13 +136,13 @@ const Technologies: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10 mb-16">
         <div className="max-w-4xl">
           <p ref={eyebrowRef} className="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-6">
-            {'//'} 03 / Our toolbox
+            {'//'} 03 / {t.technologies.eyebrow}
           </p>
           <h2 ref={titleRef} className="text-6xl md:text-8xl font-display font-bold text-light leading-[0.95] overflow-hidden">
-            TECH STACK
+            {t.technologies.title}
           </h2>
           <p ref={subtitleRef} className="text-lg md:text-xl text-muted max-w-2xl mt-6 leading-relaxed">
-            Cutting-edge technologies and tools we use to build exceptional digital experiences.
+            {t.technologies.subtitle}
           </p>
         </div>
       </div>
@@ -165,15 +168,13 @@ const Technologies: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div ref={philosophyRef} className="border-t border-line pt-14 md:pt-20">
           <p className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8">
-            {'//'} Philosophy
+            {'//'} {t.technologies.philosophyEyebrow}
           </p>
           <p className="font-display font-medium text-3xl md:text-5xl text-light leading-tight max-w-5xl">
-            We don't chase trends. We pick <span className="text-accent">the right tool</span> for
-            the right job, driven by performance, scalability and{' '}
-            <span className="text-accent">developer experience</span>.
+            {t.technologies.philosophy.p1}<span className="text-accent">{t.technologies.philosophy.accent1}</span>{t.technologies.philosophy.p2}<span className="text-accent">{t.technologies.philosophy.accent2}</span>{t.technologies.philosophy.p3}
           </p>
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-4 font-mono text-sm text-muted">
-            {['Performance First', 'Scalable Architecture', 'Developer Experience', 'Future-Proof Solutions'].map((pill) => (
+            {t.technologies.pills.map((pill) => (
               <span key={pill} className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full" aria-hidden="true" />
                 {pill}

@@ -1,13 +1,17 @@
 ---
 import { ArrowUpRight } from 'lucide-react';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 
 interface Props {
   /** 'light' matches the home portfolio section; 'dark' suits the night sections. */
   theme?: 'light' | 'dark';
   href?: string;
+  lang?: Lang;
 }
 
-const { theme = 'light', href = '/#contact' } = Astro.props;
+const { theme = 'light', lang = 'en', href = lang === 'pt' ? '/pt/#contact' : '/#contact' } = Astro.props;
+const t = useTranslations(lang);
 const isDark = theme === 'dark';
 
 const borderClass = isDark ? 'border-line' : 'border-night/10';
@@ -27,12 +31,12 @@ const arrowClass = isDark ? 'text-light group-hover:text-night' : 'text-night';
     <div class="container mx-auto px-6 relative z-10 py-20 md:py-28 flex items-center justify-between gap-8">
       <div>
         <p class={`font-mono text-xs uppercase tracking-[0.3em] mb-6 transition-colors duration-300 ${eyebrowClass}`}>
-          {'//'} Your project could be next
+          {'//'} {t.cta.eyebrow}
         </p>
         <span class={`block font-display font-bold leading-[0.95] text-[clamp(2.6rem,7.5vw,7rem)] transition-colors duration-300 ${titleClass}`}>
-          START YOUR
+          {t.cta.titleLines[0]}
           <br />
-          PROJECT
+          {t.cta.titleLines[1]}
         </span>
       </div>
       <ArrowUpRight

@@ -1,4 +1,25 @@
 ---
+import type { Lang } from '../i18n/ui';
+import { useTranslations, getAltPath } from '../i18n/utils';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+
+// Locale-aware home + anchor hrefs (English at root, Portuguese under /pt/).
+const home = lang === 'pt' ? '/pt/' : '/';
+const anchor = (id: string) => `${lang === 'pt' ? '/pt/' : '/'}#${id}`;
+
+// Language selector targets: this same page in the other locale.
+const enHref = getAltPath(Astro.url.pathname, 'en');
+const ptHref = getAltPath(Astro.url.pathname, 'pt');
+
+const pillLink = 'px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300';
+const langActive = 'px-2.5 py-1 rounded-full text-xs font-semibold bg-night text-white';
+const langInactive = 'px-2.5 py-1 rounded-full text-xs font-semibold text-night/50 hover:text-night transition-colors duration-300';
 ---
 
 <header
@@ -8,26 +29,33 @@
   <nav class="container mx-auto px-6 py-5 flex items-center justify-between" aria-label="Main navigation">
     <!-- Logo (detached, stands on its own) -->
     <a
-      href="/#home"
+      href={home}
       class="shrink-0 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]"
       aria-label="Flizz Web Solutions - Home"
     >
       <img class="w-28" src="/images/Flizz_Logo_Light@300x.webp" alt="Flizz Web Solutions logo" width="112" height="40" />
     </a>
 
-    <!-- Desktop: anchors in a floating white pill + CTA -->
+    <!-- Desktop: anchors in a floating white pill + language selector + CTA -->
     <div class="hidden md:flex items-center gap-3">
       <div class="flex items-center gap-1 bg-white rounded-full p-1.5 shadow-lg shadow-black/10">
-        <a href="/#home" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Home</a>
-        <a href="/#solutions" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Solutions</a>
-        <a href="/#portfolio" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Portfolio</a>
-        <a href="/#contact" class="px-4 py-2 rounded-full text-sm font-medium text-night/60 hover:text-night hover:bg-night/[0.06] transition-colors duration-300">Contact</a>
+        <a href={anchor('home')} class={pillLink}>{t.nav.home}</a>
+        <a href={anchor('solutions')} class={pillLink}>{t.nav.solutions}</a>
+        <a href={anchor('portfolio')} class={pillLink}>{t.nav.portfolio}</a>
+        <a href={anchor('contact')} class={pillLink}>{t.nav.contact}</a>
       </div>
+
+      <!-- Language selector -->
+      <div class="flex items-center gap-0.5 bg-white rounded-full p-1.5 shadow-lg shadow-black/10" aria-label="Language">
+        <a href={enHref} hreflang="en" aria-current={lang === 'en' ? 'true' : undefined} class={lang === 'en' ? langActive : langInactive}>EN</a>
+        <a href={ptHref} hreflang="pt-BR" aria-current={lang === 'pt' ? 'true' : undefined} class={lang === 'pt' ? langActive : langInactive}>PT</a>
+      </div>
+
       <a
-        href="/#contact"
+        href={anchor('contact')}
         class="bg-accent text-night px-5 py-2.5 rounded-full font-semibold text-sm shadow-lg shadow-accent/20 hover:shadow-glow hover:scale-105 transition-all duration-300"
       >
-        Start a Project
+        {t.nav.startProject}
       </a>
     </div>
 
@@ -48,11 +76,18 @@
   <!-- Mobile Navigation -->
   <div id="mobile-menu" class="md:hidden px-6 pb-4 hidden">
     <div class="flex flex-col gap-1 bg-white rounded-2xl p-4 shadow-xl">
-      <a href="/#home" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Home</a>
-      <a href="/#solutions" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Solutions</a>
-      <a href="/#portfolio" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Portfolio</a>
-      <a href="/#contact" class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">Contact</a>
-      <a href="/#contact" class="mt-2 px-4 py-3 rounded-xl bg-accent text-night font-semibold text-center">Start a Project</a>
+      <a href={anchor('home')} class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">{t.nav.home}</a>
+      <a href={anchor('solutions')} class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">{t.nav.solutions}</a>
+      <a href={anchor('portfolio')} class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">{t.nav.portfolio}</a>
+      <a href={anchor('contact')} class="px-4 py-3 rounded-xl text-night/70 hover:text-night hover:bg-night/[0.06] font-medium transition-colors duration-300">{t.nav.contact}</a>
+
+      <!-- Language selector -->
+      <div class="flex items-center gap-2 mt-2 pt-3 border-t border-night/10 px-4">
+        <a href={enHref} hreflang="en" aria-current={lang === 'en' ? 'true' : undefined} class={lang === 'en' ? 'px-3 py-1.5 rounded-full text-sm font-semibold bg-night text-white' : 'px-3 py-1.5 rounded-full text-sm font-semibold text-night/50'}>EN</a>
+        <a href={ptHref} hreflang="pt-BR" aria-current={lang === 'pt' ? 'true' : undefined} class={lang === 'pt' ? 'px-3 py-1.5 rounded-full text-sm font-semibold bg-night text-white' : 'px-3 py-1.5 rounded-full text-sm font-semibold text-night/50'}>PT</a>
+      </div>
+
+      <a href={anchor('contact')} class="mt-2 px-4 py-3 rounded-xl bg-accent text-night font-semibold text-center">{t.nav.startProject}</a>
     </div>
   </div>
 </header>
