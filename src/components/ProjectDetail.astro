@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { ArrowLeft, ArrowUpRight, Image as ImageIcon } from 'lucide-react';
 import CallToAction from './CallToAction.astro';
 import ProjectVisual from './ProjectVisual';
@@ -14,6 +15,21 @@ interface Props {
 const { project, lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 const backHref = lang === 'pt' ? '/pt/#portfolio' : '/#portfolio';
+
+// Resolve a project's gallery by convention: drop optimized source images into
+// src/assets/portfolio/<slug>/ (e.g. 01-hero.webp, 02.webp, 03.webp). They are
+// sorted by filename — the first becomes the full-width 16:9 banner, the rest
+// render as 4:3 tiles. Until a project's folder has images, it falls back to the
+// placeholder boxes below, so the page keeps building.
+const galleryModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/portfolio/**/*.{webp,jpg,jpeg,png,avif}',
+  { eager: true },
+);
+const galleryImages = Object.entries(galleryModules)
+  .filter(([path]) => path.includes(`/portfolio/${project.slug}/`))
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+const hasImages = galleryImages.length > 0;
 ---
 
 <main>
@@ -124,18 +140,37 @@ const backHref = lang === 'pt' ? '/pt/#portfolio' : '/#portfolio';
     <div class="container mx-auto px-6">
       <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8">{'//'} {t.projectDetail.gallery}</p>
       <div class="grid md:grid-cols-2 gap-6">
-        {Array.from({ length: project.galleryCount }).map((_, i) => (
-          <div
-            class={`relative rounded-2xl border border-dashed border-line bg-surface/40 flex items-center justify-center ${
-              i === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
-            }`}
-          >
-            <div class="flex flex-col items-center gap-3 text-muted">
-              <ImageIcon className="w-8 h-8" />
-              <span class="font-mono text-xs uppercase tracking-[0.25em]">{t.projectDetail.imagePlaceholder}</span>
-            </div>
-          </div>
-        ))}
+        {hasImages
+          ? galleryImages.map((img, i) => (
+              <div
+                class={`relative rounded-2xl overflow-hidden border border-line shadow-card bg-surface/40 ${
+                  i === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-[16/9]'
+                }`}
+              >
+                <Image
+                  src={img}
+                  alt={`${t.projectDetail.galleryAlt} ${project.title} (${i + 1})`}
+                  widths={i === 0 ? [768, 1280, 1920, 2560] : [400, 640, 768, 1280]}
+                  sizes={i === 0 ? '(min-width: 768px) min(1488px, 100vw), 100vw' : '(min-width: 768px) 740px, 100vw'}
+                  format="webp"
+                  quality={80}
+                  loading="lazy"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+            ))
+          : Array.from({ length: project.galleryCount }).map((_, i) => (
+              <div
+                class={`relative rounded-2xl border border-dashed border-line bg-surface/40 flex items-center justify-center ${
+                  i === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-[16/9]'
+                }`}
+              >
+                <div class="flex flex-col items-center gap-3 text-muted">
+                  <ImageIcon className="w-8 h-8" />
+                  <span class="font-mono text-xs uppercase tracking-[0.25em]">{t.projectDetail.imagePlaceholder}</span>
+                </div>
+              </div>
+            ))}
       </div>
     </div>
   </section>

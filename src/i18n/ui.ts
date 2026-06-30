@@ -138,6 +138,7 @@ const en = {
     year: 'Year',
     gallery: 'Gallery',
     imagePlaceholder: 'Image placeholder',
+    galleryAlt: 'Screenshot of',
     caseStudyPrefix: 'Case Study',
   },
   meta: {
@@ -276,6 +277,7 @@ const pt: UI = {
     year: 'Ano',
     gallery: 'Galeria',
     imagePlaceholder: 'Imagem em breve',
+    galleryAlt: 'Captura de tela de',
     caseStudyPrefix: 'Estudo de caso',
   },
   meta: {
