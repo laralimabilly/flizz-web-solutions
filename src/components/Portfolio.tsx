@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import '../utils/scrollTriggerSetup';
 import { ArrowUpRight } from 'lucide-react';
 import { getLocalizedProjects } from '../data/projects';
 import ProjectVisual from './ProjectVisual';
@@ -39,18 +40,24 @@ const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
 
         const ctx = gsap.context(() => {
           const split = new SplitText(titleRef.current, { type: 'chars' });
-          gsap.from(split.chars, {
+          gsap.fromTo(split.chars, {
             yPercent: 110,
             opacity: 0,
+          }, {
+            yPercent: 0,
+            opacity: 1,
             stagger: 0.025,
             duration: 0.8,
             ease: 'power4.out',
             scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
           });
 
-          gsap.from([eyebrowRef.current, subtitleRef.current], {
+          gsap.fromTo([eyebrowRef.current, subtitleRef.current], {
             opacity: 0,
             y: 40,
+          }, {
+            opacity: 1,
+            y: 0,
             duration: 0.9,
             stagger: 0.15,
             ease: 'power3.out',
@@ -94,9 +101,12 @@ const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
             // Mobile / reduced width: vertical stack with simple entrances
             panelRefs.current.forEach((panel) => {
               if (!panel) return;
-              gsap.from(panel, {
+              gsap.fromTo(panel, {
                 opacity: 0,
                 y: 70,
+              }, {
+                opacity: 1,
+                y: 0,
                 duration: 0.9,
                 ease: 'power3.out',
                 scrollTrigger: { trigger: panel, start: 'top 88%' },
@@ -104,9 +114,12 @@ const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
             });
           }
 
-          gsap.from(ctaRef.current, {
+          gsap.fromTo(ctaRef.current, {
             opacity: 0,
             y: 60,
+          }, {
+            opacity: 1,
+            y: 0,
             duration: 1,
             ease: 'power3.out',
             scrollTrigger: { trigger: ctaRef.current, start: 'top 92%' },
@@ -127,7 +140,7 @@ const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
       {/* Pinned viewport: heading + horizontal track */}
       <div
         ref={pinRef}
-        className="py-24 lg:motion-safe:py-0 lg:motion-safe:pt-24 lg:motion-safe:h-screen lg:motion-safe:flex lg:motion-safe:flex-col lg:motion-safe:justify-center lg:motion-safe:overflow-hidden"
+        className="py-24 lg:motion-safe:py-0 lg:motion-safe:pt-24 lg:motion-safe:h-dvh lg:motion-safe:flex lg:motion-safe:flex-col lg:motion-safe:justify-center lg:motion-safe:overflow-hidden"
       >
         {/* Section heading */}
         <div className="container mx-auto px-6 mb-14 lg:motion-safe:mb-10 lg:motion-safe:shrink-0">
@@ -162,7 +175,7 @@ const Portfolio: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
                 className="group block lg:motion-safe:col-span-7"
                 aria-label={`${t.portfolio.caseStudy}: ${project.title}`}
               >
-                <div className="relative aspect-[4/3] lg:motion-safe:aspect-auto lg:motion-safe:h-[58vh] rounded-3xl overflow-hidden border border-night/10 shadow-card transition-transform duration-700 group-hover:scale-[1.015]">
+                <div className="relative aspect-[4/3] lg:motion-safe:aspect-auto lg:motion-safe:h-[58dvh] rounded-3xl overflow-hidden border border-night/10 shadow-card transition-transform duration-700 group-hover:scale-[1.015]">
                   <ProjectVisual visual={project.visual} />
 
                   {/* Hover veil */}

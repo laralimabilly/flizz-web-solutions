@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import '../utils/scrollTriggerSetup';
 import { Palette, Code2, Smartphone, Cloud, ArrowUpRight, Plus } from 'lucide-react';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
@@ -28,18 +29,24 @@ const Solutions: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
         const split = new SplitText(titleRef.current, { type: 'chars' });
-        gsap.from(split.chars, {
+        gsap.fromTo(split.chars, {
           yPercent: 110,
           opacity: 0,
+        }, {
+          yPercent: 0,
+          opacity: 1,
           stagger: 0.025,
           duration: 0.8,
           ease: 'power4.out',
           scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        gsap.from([eyebrowRef.current, subtitleRef.current], {
+        gsap.fromTo([eyebrowRef.current, subtitleRef.current], {
           opacity: 0,
           y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
           duration: 0.9,
           stagger: 0.15,
           ease: 'power3.out',
@@ -48,9 +55,12 @@ const Solutions: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
 
         rowRefs.current.forEach((row) => {
           if (!row) return;
-          gsap.from(row, {
+          gsap.fromTo(row, {
             opacity: 0,
             y: 60,
+          }, {
+            opacity: 1,
+            y: 0,
             duration: 0.9,
             ease: 'power3.out',
             scrollTrigger: { trigger: row, start: 'top 92%' },

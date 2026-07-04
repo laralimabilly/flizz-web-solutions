@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import '../utils/scrollTriggerSetup';
 import type { Technology } from '../types';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
@@ -92,27 +93,36 @@ const Technologies: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       const ctx = gsap.context(() => {
         const split = new SplitText(titleRef.current, { type: 'chars' });
-        gsap.from(split.chars, {
+        gsap.fromTo(split.chars, {
           yPercent: 110,
           opacity: 0,
+        }, {
+          yPercent: 0,
+          opacity: 1,
           stagger: 0.025,
           duration: 0.8,
           ease: 'power4.out',
           scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        gsap.from([eyebrowRef.current, subtitleRef.current], {
+        gsap.fromTo([eyebrowRef.current, subtitleRef.current], {
           opacity: 0,
           y: 40,
+        }, {
+          opacity: 1,
+          y: 0,
           duration: 0.9,
           stagger: 0.15,
           ease: 'power3.out',
           scrollTrigger: { trigger: titleRef.current, start: 'top 85%' },
         });
 
-        gsap.from(philosophyRef.current, {
+        gsap.fromTo(philosophyRef.current, {
           opacity: 0,
           y: 80,
+        }, {
+          opacity: 1,
+          y: 0,
           duration: 1,
           ease: 'power3.out',
           scrollTrigger: { trigger: philosophyRef.current, start: 'top 88%' },

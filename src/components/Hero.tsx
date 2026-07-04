@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import '../utils/scrollTriggerSetup';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
@@ -126,7 +127,7 @@ const Hero: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
     <section
       ref={heroRef}
       id="home"
-      className="relative min-h-screen flex flex-col justify-center bg-night bg-grid bg-noise pt-28 overflow-hidden"
+      className="relative min-h-dvh flex flex-col justify-center bg-night bg-grid bg-noise pt-28 overflow-hidden"
     >
       {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
