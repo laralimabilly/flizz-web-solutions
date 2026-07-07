@@ -1,0 +1,291 @@
+---
+import { ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
+import CallToAction from './CallToAction.astro';
+import ContactPanel from './ContactPanel';
+import ServiceVisual from './ServiceVisual';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import type { LocalizedService } from '../data/services';
+
+interface Props {
+  service: LocalizedService;
+  /** The other services, for the internal-links strip. */
+  others: LocalizedService[];
+  lang?: Lang;
+}
+
+const { service, others, lang = 'en' } = Astro.props;
+const t = useTranslations(lang);
+const base = lang === 'pt' ? '/pt' : '';
+const backHref = `${base}/#solutions`;
+const contactHref = `${base}/#contact`;
+const index = String(Number(service.id)).padStart(2, '0');
+---
+
+<main>
+  {/* Hero: editorial, giant three-line title over a drifting watermark index */}
+  <section class="relative min-h-[88dvh] flex flex-col justify-center bg-night bg-grid bg-noise pt-32 pb-16 overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-40 left-1/4 w-[34rem] h-[34rem] bg-accent/12 rounded-full blur-[160px]"></div>
+      <div class="absolute bottom-0 right-0 w-[26rem] h-[26rem] bg-accent/8 rounded-full blur-[140px]"></div>
+      {/* Watermark index */}
+      <span class="svc-watermark absolute -right-6 top-24 md:top-16 font-display font-bold leading-none text-[10rem] md:text-[22rem] select-none">
+        {index}
+      </span>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <a
+        href={backHref}
+        class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted hover:text-accent transition-colors duration-300 mb-10"
+      >
+        <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+        {t.servicePage.back}
+      </a>
+
+      <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-8">
+        {'//'} {t.servicePage.eyebrowPrefix} {index} · {service.tagline}
+      </p>
+
+      <h1 class="font-display font-bold leading-[0.94] text-[clamp(2.6rem,8.5vw,7rem)] max-w-5xl">
+        <span class="svc-hero-line"><span class="text-light">{service.titleLines[0]}</span></span>
+        <span class="svc-hero-line"><span class="text-accent drop-shadow-[0_0_30px_rgba(104,247,11,0.45)]">{service.titleLines[1]}</span></span>
+        <span class="svc-hero-line"><span class="text-stroke">{service.titleLines[2]}</span></span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-muted max-w-2xl mt-10 leading-relaxed">
+        {service.intro}
+      </p>
+
+      {/* Stats: hairline row like the home hero */}
+      <div class="flex flex-wrap gap-x-14 gap-y-6 mt-12 pt-8 border-t border-line max-w-3xl">
+        {service.stats.map((stat) => (
+          <div>
+            <div class="text-3xl md:text-4xl font-bold text-light font-display">
+              {stat.value}<span class="text-accent">&nbsp;</span>
+            </div>
+            <div class="text-muted text-sm font-mono mt-1">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Visual CTA: the hand-built scene is one giant link to start the project */}
+  <section class="bg-night pb-24 md:pb-32">
+    <div class="container mx-auto px-6" data-reveal>
+      <a
+        href={contactHref}
+        class="group relative block aspect-[5/6] sm:aspect-[16/10] md:aspect-[16/8] rounded-3xl overflow-hidden border border-line shadow-card transition-transform duration-700 hover:scale-[1.01]"
+        aria-label={t.servicePage.startCta}
+      >
+        <ServiceVisual visual={service.visual} />
+
+        {/* Corner index chip */}
+        <span class="absolute top-5 left-5 font-mono text-xs text-light/70 bg-night/60 backdrop-blur-md border border-line rounded-full px-3 py-1.5 tracking-widest z-10">
+          {index} / {service.tagline}
+        </span>
+
+        {/* Always-visible CTA pill (bottom-left), brightens on hover */}
+        <span class="absolute bottom-5 left-5 z-10 inline-flex items-center gap-2 bg-accent text-night px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-sm md:text-base shadow-glow transition-transform duration-500 group-hover:scale-105">
+          {t.servicePage.startCta}
+          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+        </span>
+
+        {/* Hover veil, desktop refinement */}
+        <span
+          class="absolute inset-0 bg-night/50 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[5]"
+          aria-hidden="true"
+        ></span>
+      </a>
+    </div>
+  </section>
+
+  {/* Pillars: hairline editorial columns */}
+  <section class="bg-night pb-24 md:pb-36">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mb-14 md:mb-20" data-reveal>
+        <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-5">
+          {'//'} {t.servicePage.pillarsEyebrow}
+        </p>
+        <h2 class="text-5xl md:text-7xl font-display font-bold text-light leading-[0.95]">
+          {t.servicePage.pillarsTitle}
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-x-10 gap-y-12">
+        {service.pillars.map((pillar, i) => (
+          <div class="border-t border-line pt-8 group" data-reveal style={`transition-delay: ${i * 120}ms`}>
+            <span class="font-mono text-sm text-muted/60 group-hover:text-accent transition-colors duration-300">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="font-display font-bold text-2xl md:text-3xl text-light mt-4 mb-4 leading-tight">
+              {pillar.title}
+            </h3>
+            <p class="text-muted leading-relaxed">{pillar.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Process: numbered index rows, Solutions-style */}
+  <section class="relative bg-night pb-24 md:pb-36">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+      <div class="absolute top-1/4 -left-40 w-[28rem] h-[28rem] bg-accent/8 rounded-full blur-[160px]"></div>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="max-w-4xl mb-14 md:mb-20" data-reveal>
+        <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-5">
+          {'//'} {t.servicePage.processEyebrow}
+        </p>
+        <h2 class="text-5xl md:text-7xl font-display font-bold text-light leading-[0.95]">
+          {t.servicePage.processTitle}
+        </h2>
+      </div>
+
+      <div>
+        {service.process.map((step, i) => (
+          <div
+            class="group grid grid-cols-12 items-baseline gap-4 border-t border-line last:border-b py-9 md:py-12"
+            data-reveal
+          >
+            <span class="col-span-12 md:col-span-2 font-display font-bold text-4xl md:text-6xl title-hollow group-hover:translate-x-2 transition-transform duration-500">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="col-span-12 md:col-span-4 font-display font-bold text-2xl md:text-3xl text-light group-hover:text-accent transition-colors duration-300">
+              {step.title}
+            </h3>
+            <p class="col-span-12 md:col-span-6 text-muted leading-relaxed max-w-xl">
+              {step.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Deliverables: marquee strip of chips */}
+  <section class="bg-night pb-24 md:pb-36 overflow-hidden">
+    <div class="container mx-auto px-6 mb-10" data-reveal>
+      <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase">
+        {'//'} {t.servicePage.deliverablesEyebrow}
+      </p>
+    </div>
+
+    <div class="relative marquee-paused" data-reveal>
+      <div class="absolute left-0 top-0 w-20 md:w-40 h-full bg-gradient-to-r from-night to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute right-0 top-0 w-20 md:w-40 h-full bg-gradient-to-l from-night to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+      <div class="overflow-hidden">
+        <div class="marquee-track">
+          {[...service.deliverables, ...service.deliverables].map((item) => (
+            <span class="flex items-center gap-3 mx-3 bg-surface/80 border border-line hover:border-accent/50 rounded-full px-6 py-3.5 font-display font-medium text-light/90 whitespace-nowrap transition-colors duration-300">
+              <span class="w-1.5 h-1.5 bg-accent rounded-full" aria-hidden="true"></span>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* FAQ: native details/summary. Zero JS, crawlable, keyboard-friendly */}
+  <section class="bg-night pb-24 md:pb-36">
+    <div class="container mx-auto px-6">
+      <div class="grid lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-4" data-reveal>
+          <p class="font-mono text-accent text-sm tracking-[0.3em] uppercase mb-5">
+            {'//'} {t.servicePage.faqEyebrow}
+          </p>
+          <h2 class="text-5xl md:text-6xl font-display font-bold text-light leading-[0.95]">
+            {t.servicePage.faqTitle}
+          </h2>
+        </div>
+
+        <div class="lg:col-span-8" data-reveal>
+          {service.faq.map((item) => (
+            <details class="svc-faq group border-t border-line last:border-b">
+              <summary class="flex items-center justify-between gap-6 py-6 md:py-7 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <span class="font-display font-medium text-xl md:text-2xl text-light group-open:text-accent transition-colors duration-300">
+                  {item.q}
+                </span>
+                <Plus className="svc-faq-icon w-6 h-6 shrink-0 text-muted transition-transform duration-300" aria-hidden="true" />
+              </summary>
+              <p class="text-muted leading-relaxed pb-7 max-w-2xl">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Other services: internal links strip */}
+  <section class="bg-night pb-20 md:pb-28">
+    <div class="container mx-auto px-6">
+      <p class="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-8" data-reveal>
+        {'//'} {t.servicePage.otherEyebrow}
+      </p>
+      <div class="grid md:grid-cols-3 gap-px bg-line border border-line rounded-2xl overflow-hidden" data-reveal>
+        {others.map((other) => (
+          <a
+            href={`${base}/services/${other.slug}`}
+            class="group bg-night hover:bg-surface p-8 md:p-10 transition-colors duration-300 flex flex-col gap-6"
+          >
+            <span class="font-mono text-xs uppercase tracking-[0.25em] text-muted group-hover:text-accent transition-colors duration-300">
+              {other.tagline}
+            </span>
+            <span class="font-display font-bold text-2xl md:text-3xl text-light leading-tight flex-1">
+              {other.title}
+            </span>
+            <ArrowUpRight className="w-7 h-7 text-muted group-hover:text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" aria-hidden="true" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CallToAction theme="dark" lang={lang} href={contactHref} />
+
+  {/* Slide-over contact form. Every "#contact" link on this page opens it
+      in place; the links keep their home-anchor href as a no-JS fallback. */}
+  <ContactPanel client:load lang={lang} />
+</main>
+
+<style>
+  /* Rotate the FAQ plus into a close icon when open. */
+  details[open] :global(.svc-faq-icon) {
+    transform: rotate(45deg);
+    color: var(--color-accent);
+  }
+</style>
+
+<script>
+  // Progressive-enhancement reveals: content is visible by default; JS hides
+  // it only after load and reveals as it scrolls in. Crawlers, no-JS and
+  // reduced-motion users always get fully visible content.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -36px 0px' },
+    );
+
+    els.forEach((el) => {
+      // Never hide something already in view (e.g. after a bfcache restore).
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) return;
+      el.classList.add('will-reveal');
+      io.observe(el);
+    });
+  }
+</script>

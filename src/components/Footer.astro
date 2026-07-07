@@ -3,6 +3,7 @@ import { Github, Linkedin, ArrowUpRight } from 'lucide-react';
 import { getYear } from '../utils/utils.ts';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
+import { serviceSlugs } from '../data/services';
 
 interface Props {
   lang?: Lang;
@@ -12,7 +13,11 @@ const { lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 
 const anchor = (id: string) => `${lang === 'pt' ? '/pt/' : '/'}#${id}`;
-const serviceTitles = t.solutions.services.map((s) => s.title);
+const serviceBase = lang === 'pt' ? '/pt/services' : '/services';
+const serviceLinks = t.solutions.services.map((s, i) => ({
+  title: s.title,
+  href: `${serviceBase}/${serviceSlugs[i]}`,
+}));
 ---
 
 <footer
@@ -74,8 +79,8 @@ const serviceTitles = t.solutions.services.map((s) => s.title);
         <div class="space-y-5">
           <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-accent">{t.footer.servicesHeading}</h2>
           <ul class="space-y-3">
-            {serviceTitles.map((title) => (
-              <li><a href={anchor('solutions')} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{title}</a></li>
+            {serviceLinks.map(({ title, href }) => (
+              <li><a href={href} class="text-light/70 hover:text-accent hover:translate-x-1 inline-block transition-all duration-300">{title}</a></li>
             ))}
           </ul>
         </div>

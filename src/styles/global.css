@@ -191,6 +191,129 @@ h1, h2 {
   }
 }
 
+/* --- Service pages ------------------------------------------------------- */
+
+/* Scroll reveals, progressive enhancement: elements are visible by default
+   (SEO / no-JS / reduced motion). A tiny IntersectionObserver script adds
+   .will-reveal after load, then .is-revealed as each block scrolls in. */
+.will-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.will-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero title lines rise in on load (pure CSS, no JS dependency). */
+@keyframes svc-rise {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+
+.svc-hero-line {
+  display: block;
+  overflow: hidden;
+}
+
+.svc-hero-line > span {
+  display: block;
+  animation: svc-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.svc-hero-line:nth-child(2) > span { animation-delay: 0.14s; }
+.svc-hero-line:nth-child(3) > span { animation-delay: 0.28s; }
+
+/* Giant watermark index number drifting behind the hero. */
+@keyframes svc-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-24px); }
+}
+
+.svc-watermark {
+  -webkit-text-stroke: 2px rgba(243, 243, 243, 0.07);
+  -webkit-text-fill-color: transparent;
+  animation: svc-drift 9s ease-in-out infinite;
+}
+
+/* Speed streaks flying across the web-dev visual. */
+@keyframes svc-streak {
+  from { transform: translateX(-140%); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { transform: translateX(240%); opacity: 0; }
+}
+
+.svc-streak {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(104, 247, 11, 0.55), transparent);
+  animation: svc-streak 3.2s ease-in-out infinite;
+}
+
+/* Lighthouse-style gauge draws itself to 100. r=45 → circumference ≈ 282.7 */
+@keyframes svc-draw { to { stroke-dashoffset: 0; } }
+
+.svc-gauge {
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  animation: svc-draw 1.8s 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Bezier path in the design visual draws itself once. */
+.svc-bezier {
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  animation: svc-draw 2.4s 0.5s ease-out forwards;
+}
+
+/* Pulse travelling along the deploy pipeline. */
+@keyframes svc-pipeline {
+  from { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  to { left: calc(100% - 10px); opacity: 0; }
+}
+
+.svc-pipeline-dot {
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 14px rgba(104, 247, 11, 0.9);
+  animation: svc-pipeline 3.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .will-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .svc-hero-line > span,
+  .svc-watermark,
+  .svc-streak,
+  .svc-pipeline-dot {
+    animation: none;
+  }
+
+  /* Draw-once strokes should simply be complete. */
+  .svc-gauge,
+  .svc-bezier {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Accent glow pulse */
 @keyframes glow {
   0% { box-shadow: 0 0 20px rgba(104, 247, 11, 0.25); }

@@ -18,7 +18,7 @@ const backHref = lang === 'pt' ? '/pt/#portfolio' : '/#portfolio';
 
 // Resolve a project's gallery by convention: drop optimized source images into
 // src/assets/portfolio/<slug>/ (e.g. 01-hero.webp, 02.webp, 03.webp). They are
-// sorted by filename — the first becomes the full-width 16:9 banner, the rest
+// sorted by filename: the first becomes the full-width 16:9 banner, the rest
 // render as 4:3 tiles. Until a project's folder has images, it falls back to the
 // placeholder boxes below, so the page keeps building.
 const galleryModules = import.meta.glob<{ default: ImageMetadata }>(

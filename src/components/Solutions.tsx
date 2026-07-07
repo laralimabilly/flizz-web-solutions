@@ -3,9 +3,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import '../utils/scrollTriggerSetup';
-import { Palette, Code2, Smartphone, Cloud, ArrowUpRight, Plus } from 'lucide-react';
+import { Palette, Code2, Smartphone, Cloud, ArrowUpRight, ArrowRight, Plus } from 'lucide-react';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
+import { serviceSlugs } from '../data/services';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -15,6 +16,7 @@ const serviceIcons = [Code2, Smartphone, Cloud, Palette];
 const Solutions: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
   const t = useTranslations(lang);
   const services = t.solutions.services;
+  const serviceBase = lang === 'pt' ? '/pt/services' : '/services';
   const [openIndex, setOpenIndex] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -157,15 +159,26 @@ const Solutions: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
                         <p className="text-lg md:text-xl text-muted leading-relaxed max-w-xl">
                           {service.description}
                         </p>
-                        <a
-                          href="#contact"
-                          className="group/link inline-flex items-center gap-2 mt-8 font-mono text-sm uppercase tracking-[0.2em] text-accent"
-                        >
-                          <span className="border-b border-accent/40 group-hover/link:border-accent transition-colors duration-300 pb-1">
-                            {t.solutions.startThis}
-                          </span>
-                          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" aria-hidden="true" />
-                        </a>
+                        <div className="flex flex-wrap items-center gap-x-10 gap-y-4 mt-8">
+                          <a
+                            href="#contact"
+                            className="group/link inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-accent"
+                          >
+                            <span className="border-b border-accent/40 group-hover/link:border-accent transition-colors duration-300 pb-1">
+                              {t.solutions.startThis}
+                            </span>
+                            <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" aria-hidden="true" />
+                          </a>
+                          <a
+                            href={`${serviceBase}/${serviceSlugs[index]}`}
+                            className="group/more inline-flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-light/70 hover:text-accent transition-colors duration-300"
+                          >
+                            <span className="border-b border-line group-hover/more:border-accent transition-colors duration-300 pb-1">
+                              {t.servicePage.learnMore}
+                            </span>
+                            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/more:translate-x-1" aria-hidden="true" />
+                          </a>
+                        </div>
                       </div>
 
                       <ul className="md:col-span-4 self-end">

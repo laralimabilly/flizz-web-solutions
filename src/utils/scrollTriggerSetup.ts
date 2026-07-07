@@ -1,4 +1,4 @@
-// Shared ScrollTrigger setup — imported for its side effects by every component
+// Shared ScrollTrigger setup, imported for its side effects by every component
 // that uses scroll-driven animations. Keeps trigger positions stable on mobile.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

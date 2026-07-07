@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { services, getServiceBySlug, localizeService, getLocalizedServices } from '../../data/services';
+import { ui } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug } }));
+}
+
+const lang = 'en';
+const t = ui[lang];
+
+const { slug } = Astro.params;
+const source = getServiceBySlug(slug!);
+if (!source) throw new Error(`Unknown service slug: ${slug}`);
+const service = localizeService(source, lang);
+const others = getLocalizedServices(lang).filter((s) => s.slug !== service.slug);
+
+const canonical = new URL(`/services/${service.slug}`, Astro.site).toString();
+
+// Rich results: the service itself, its FAQ, and the breadcrumb trail.
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${canonical}#service`,
+    name: service.title,
+    serviceType: service.title,
+    description: service.metaDescription,
+    url: canonical,
+    inLanguage: 'en',
+    provider: { '@id': `${Astro.site}#organization` },
+    areaServed: [
+      { '@type': 'Country', name: 'Brazil' },
+      { '@type': 'Country', name: 'United States' },
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: service.title,
+      itemListElement: service.deliverables.map((item) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: item },
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.nav.home, item: `${Astro.site}` },
+      { '@type': 'ListItem', position: 2, name: t.nav.solutions, item: `${Astro.site}#solutions` },
+      { '@type': 'ListItem', position: 3, name: service.title, item: canonical },
+    ],
+  },
+];
+---
+
+<Layout title={service.metaTitle} description={service.metaDescription} lang={lang}>
+  <Header lang={lang} />
+  <ServiceDetail service={service} others={others} lang={lang} />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>
