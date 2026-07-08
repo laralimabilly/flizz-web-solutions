@@ -136,6 +136,70 @@ const structuredData = {
     {/* Without JS the loader can't be dismissed, so keep it hidden. */}
     <noscript><style>#page-loader{display:none!important}</style></noscript>
 
+    {/* Reliable #section scrolling. The homepage hydrates islands, loads images
+        and runs intro animations after first paint, so the browser's native
+        fragment scroll lands at a stale position. This re-scrolls once layout is
+        stable, handles bfcache back/forward (which re-fires nothing else), and
+        never fights a user who has already scrolled. */}
+    <script is:inline>
+      (function () {
+        function targetEl() {
+          var h = location.hash;
+          if (!h || h.length < 2) return null;
+          var id;
+          try { id = decodeURIComponent(h.slice(1)); } catch (e) { id = h.slice(1); }
+          return document.getElementById(id);
+        }
+
+        // Own the scroll on hash loads so the browser doesn't restore a stale
+        // position over ours (covers bfcache back/forward too).
+        if (location.hash && location.hash.length > 1 && 'scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+        }
+
+        function scrollToTarget(smooth) {
+          var el = targetEl();
+          if (!el) return false;
+          el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+          return true;
+        }
+
+        // Re-scroll at a few settle points to counter post-load layout shift.
+        function runCorrections() {
+          if (!location.hash || location.hash.length < 2) return;
+          var userScrolled = false;
+          var events = ['wheel', 'touchstart', 'keydown'];
+          function mark() { userScrolled = true; cleanup(); }
+          function cleanup() { events.forEach(function (ev) { window.removeEventListener(ev, mark); }); }
+          events.forEach(function (ev) { window.addEventListener(ev, mark, { passive: true }); });
+
+          var passes = [0, 120, 350, 700, 1300];
+          passes.forEach(function (delay, i) {
+            setTimeout(function () {
+              if (userScrolled) return;
+              scrollToTarget(i === passes.length - 1); // last pass eases in
+              if (i === passes.length - 1) cleanup();
+            }, delay);
+          });
+        }
+
+        var started = false;
+        function begin() { if (started) return; started = true; runCorrections(); }
+
+        // Start once the loader is gone / hero committed; fall back to load, then
+        // an absolute safety timeout.
+        window.addEventListener('flizz:ready', begin, { once: true });
+        window.addEventListener('load', function () { setTimeout(begin, 60); });
+        setTimeout(begin, 1400);
+
+        // bfcache restore: only pageshow fires, and layout is already settled.
+        window.addEventListener('pageshow', function (e) { if (e.persisted) scrollToTarget(false); });
+
+        // In-page anchor clicks.
+        window.addEventListener('hashchange', function () { scrollToTarget(true); });
+      })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
