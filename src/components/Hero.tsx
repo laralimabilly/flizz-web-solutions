@@ -120,7 +120,17 @@ const Hero: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
       return () => ctx.revert();
     });
 
-    return () => mm.revert();
+    // Reveal the page once the hero's initial animation state is committed to
+    // the DOM, so the loader fades out into the intro animation (no flash).
+    // Runs for reduced-motion too, where the hero simply stays visible.
+    const raf = requestAnimationFrame(() => {
+      window.dispatchEvent(new Event('flizz:ready'));
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      mm.revert();
+    };
   }, []);
 
   return (

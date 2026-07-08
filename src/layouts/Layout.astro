@@ -2,12 +2,15 @@
 import type { Lang } from '../i18n/ui';
 import { ui } from '../i18n/ui';
 import { getAltPath } from '../i18n/utils';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
 
 export interface Props {
   title: string;
   description?: string;
   image?: string;
   lang?: Lang;
+  loader?: boolean;
 }
 
 const {
@@ -15,10 +18,27 @@ const {
   lang = 'en',
   description = ui[lang].meta.description,
   image = "/og-image.jpg",
+  loader = false,
 } = Astro.props;
+
+// Loader dismissal: the overlay ships in the initial HTML so it hides the
+// pre-hydration flash of the hero. It fades out once the hero has committed
+// its animation start-state (flizz:ready), with a safety timeout as a fallback.
+const loaderScript = loader
+  ? `<script>(function(){var l=document.getElementById('page-loader');if(!l)return;var done=false;function hide(){if(done)return;done=true;l.classList.add('is-hidden');var rm=function(){if(l&&l.parentNode)l.parentNode.removeChild(l);};l.addEventListener('transitionend',rm,{once:true});setTimeout(rm,900);}window.addEventListener('flizz:ready',hide,{once:true});setTimeout(hide,4000);})();<\/script>`
+  : '';
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL(image, Astro.site);
+
+// Google Tag Manager container id, read from env so it stays out of source.
+const gtmId = import.meta.env.PUBLIC_GTM_ID;
+const gtmHead = gtmId
+  ? `<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');<\/script>`
+  : '';
+const gtmBody = gtmId
+  ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>`
+  : '';
 
 // hreflang alternates: every page exists in both locales at mirrored paths.
 const enURL = new URL(getAltPath(Astro.url.pathname, 'en'), Astro.site).toString();
@@ -70,9 +90,6 @@ const structuredData = {
     },
   ],
 };
-
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
 ---
 
 <!DOCTYPE html>
@@ -80,6 +97,11 @@ import '../styles/global.css';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* Google Tag Manager */}
+    <Fragment set:html={gtmHead} />
+    {/* End Google Tag Manager */}
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
@@ -111,6 +133,9 @@ import '../styles/global.css';
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
+    {/* Without JS the loader can't be dismissed, so keep it hidden. */}
+    <noscript><style>#page-loader{display:none!important}</style></noscript>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -121,6 +146,27 @@ import '../styles/global.css';
   </head>
 
   <body class="font-sans antialiased bg-night text-light">
+    {/* Google Tag Manager (noscript) */}
+    <Fragment set:html={gtmBody} />
+    {/* End Google Tag Manager (noscript) */}
+
+    {/* Full-screen loader: covers the hero until it's ready to animate in. */}
+    {loader && (
+      <div id="page-loader" role="status" aria-label="Loading">
+        <div class="loader-inner">
+          <div class="loader-ring" aria-hidden="true"></div>
+          <img
+            src="/images/Flizz_Symbol_Light@300x.webp"
+            alt=""
+            width="34"
+            height="34"
+            class="loader-symbol"
+          />
+        </div>
+      </div>
+    )}
+    <Fragment set:html={loaderScript} />
+
     {/* Page content sits above the footer and scrolls up to reveal it. */}
     <div class="site-content">
       <slot />
@@ -191,5 +237,65 @@ import '../styles/global.css';
 
   .footer-spacer {
     height: 80dvh;
+  }
+
+  /* Page loader: sits above everything (WhatsApp button is z-60, cursor z-50)
+     and covers the hero flash until the animation is ready to play. */
+  #page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-night);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  }
+
+  #page-loader.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loader-inner {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loader-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid var(--color-line);
+    border-top-color: var(--color-accent);
+    animation: loader-spin 0.8s linear infinite;
+  }
+
+  .loader-symbol {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    animation: loader-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes loader-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes loader-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loader-ring,
+    .loader-symbol {
+      animation: none;
+    }
   }
 </style>

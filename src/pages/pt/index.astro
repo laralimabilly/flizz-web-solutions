@@ -12,7 +12,7 @@ const lang = 'pt';
 const t = ui[lang];
 ---
 
-<Layout title={t.meta.homeTitle} lang={lang}>
+<Layout title={t.meta.homeTitle} lang={lang} loader>
   <Header lang={lang} />
   <main>
     <Hero client:load lang={lang} />
