@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:fo="http://www.w3.org/1999/XSL/Format"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://flizz.com.br/</loc>
+  <lastmod>2026-07-08T02:18:34+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/services/web-development/</loc>
+  <lastmod>2026-07-08T02:18:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/services/mobile-apps/</loc>
+  <lastmod>2026-07-08T02:18:41+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/services/deploy-maintain/</loc>
+  <lastmod>2026-07-08T02:18:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/services/brand-web-design/</loc>
+  <lastmod>2026-07-08T02:18:41+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/nsa-limousine/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/line-ai/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/dayone-talent-advisory/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/bugo-mobile-app/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/gustavo-carmo-website/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/portfolio/ridiculous-rumors/</loc>
+  <lastmod>2026-07-08T02:18:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/services/web-development/</loc>
+  <lastmod>2026-07-08T02:18:41+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/services/mobile-apps/</loc>
+  <lastmod>2026-07-08T02:18:41+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/services/deploy-maintain/</loc>
+  <lastmod>2026-07-08T02:18:41+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/services/brand-web-design/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/nsa-limousine/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/line-ai/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/dayone-talent-advisory/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/bugo-mobile-app/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/gustavo-carmo-website/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://flizz.com.br/pt/portfolio/ridiculous-rumors/</loc>
+  <lastmod>2026-07-08T02:18:40+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+</urlset>
