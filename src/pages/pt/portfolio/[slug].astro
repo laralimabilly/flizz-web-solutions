@@ -37,7 +37,12 @@ const jsonLd = {
 };
 ---
 
-<Layout title={metaTitle} description={metaDescription} lang={lang}>
+<Layout
+  title={metaTitle}
+  description={metaDescription}
+  image={`/og/project-${project.slug}-pt.jpg`}
+  lang={lang}
+>
   <Header lang={lang} />
   <ProjectDetail project={project} lang={lang} />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

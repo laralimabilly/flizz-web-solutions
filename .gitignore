@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# contact endpoint secrets (copy from resend-config.example.php)
+public/api/resend-config.php
+
 # macOS-specific files
 .DS_Store
 

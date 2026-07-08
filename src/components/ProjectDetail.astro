@@ -6,6 +6,7 @@ import ProjectVisual from './ProjectVisual';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 import type { LocalizedProject } from '../data/projects';
+import { getServiceSlugForName } from '../data/services';
 
 interface Props {
   project: LocalizedProject;
@@ -15,6 +16,13 @@ interface Props {
 const { project, lang = 'en' } = Astro.props;
 const t = useTranslations(lang);
 const backHref = lang === 'pt' ? '/pt/#portfolio' : '/#portfolio';
+const serviceBase = lang === 'pt' ? '/pt/services' : '/services';
+
+// Link each case-study service to its dedicated page when there is one.
+const serviceItems = project.services.map((name) => {
+  const slug = getServiceSlugForName(name);
+  return { name, href: slug ? `${serviceBase}/${slug}` : undefined };
+});
 
 // Resolve a project's gallery by convention: drop optimized source images into
 // src/assets/portfolio/<slug>/ (e.g. 01-hero.webp, 02.webp, 03.webp). They are
@@ -100,10 +108,19 @@ const hasImages = galleryImages.length > 0;
           <div>
             <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">{t.projectDetail.services}</h2>
             <ul class="space-y-2">
-              {project.services.map((service) => (
+              {serviceItems.map(({ name, href }) => (
                 <li class="flex items-center gap-3 text-light">
                   <span class="w-1.5 h-1.5 bg-accent rounded-full shrink-0" aria-hidden="true"></span>
-                  {service}
+                  {href ? (
+                    <a
+                      href={href}
+                      class="border-b border-line hover:border-accent hover:text-accent transition-colors duration-300"
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    name
+                  )}
                 </li>
               ))}
             </ul>

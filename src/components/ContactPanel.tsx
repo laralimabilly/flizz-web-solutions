@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Mail, Phone, Send, X } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, Mail, Phone, Send, X } from 'lucide-react';
 import type { ContactForm } from '../types';
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
@@ -20,6 +20,8 @@ const ContactPanel: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
     company: '',
     message: '',
   });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [honeypot, setHoneypot] = useState('');
 
   // Intercept every "#contact" link on the page.
   useEffect(() => {
@@ -51,11 +53,30 @@ const ContactPanel: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
     };
   }, [open]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // Mail-client fallback, offered when the endpoint is unreachable.
+  const mailtoHref = () => {
     const subject = encodeURIComponent(`${t.contact.mailSubject} ${formData.name}${formData.company ? ` (${formData.company})` : ''}`);
     const body = encodeURIComponent(`${formData.message}\n\n--\n${formData.name}\n${formData.email}${formData.company ? `\n${formData.company}` : ''}`);
-    window.location.href = `mailto:felipe@flizz.com.br?subject=${subject}&body=${body}`;
+    return `mailto:felipe@flizz.com.br?subject=${subject}&body=${body}`;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    try {
+      const res = await fetch('/api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, website: honeypot }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.ok !== true) throw new Error('send_failed');
+      setStatus('success');
+      setFormData({ name: '', email: '', company: '', message: '' });
+    } catch {
+      setStatus('error');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -110,7 +131,21 @@ const ContactPanel: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
         </div>
 
         <div className="flex-1 overflow-y-auto px-8 md:px-10 py-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="relative space-y-6">
+            {/* Honeypot: humans never see it, bots fill it */}
+            <div className="absolute -left-[9999px] top-0" aria-hidden="true">
+              <label htmlFor="panel-website">Website</label>
+              <input
+                type="text"
+                id="panel-website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+              />
+            </div>
+
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label htmlFor="panel-name" className={labelClasses}>{t.contact.nameLabel}</label>
@@ -173,11 +208,30 @@ const ContactPanel: React.FC<{ lang?: Lang }> = ({ lang = 'en' }) => {
 
             <button
               type="submit"
-              className="group w-full flex items-center justify-center gap-3 bg-accent text-night py-5 rounded-full font-display font-bold text-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              disabled={status === 'sending'}
+              className="group w-full flex items-center justify-center gap-3 bg-accent text-night py-5 rounded-full font-display font-bold text-lg hover:shadow-glow hover:scale-[1.02] transition-all duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-wait"
             >
-              {t.contact.submit}
+              {status === 'sending' ? t.contact.sending : t.contact.submit}
               <Send className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" aria-hidden="true" />
             </button>
+
+            <div aria-live="polite">
+              {status === 'success' && (
+                <p className="flex items-center gap-3 border border-accent/30 bg-accent/10 text-accent rounded-xl px-5 py-4 font-medium">
+                  <CheckCircle2 className="w-5 h-5 shrink-0" aria-hidden="true" />
+                  {t.contact.success}
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="border border-line bg-surface/60 text-light rounded-xl px-5 py-4">
+                  {t.contact.error}{' '}
+                  {t.contact.errorFallback}{' '}
+                  <a href={mailtoHref()} className="font-semibold text-accent underline underline-offset-4">
+                    felipe@flizz.com.br
+                  </a>
+                </p>
+              )}
+            </div>
           </form>
 
           {/* Direct channels */}

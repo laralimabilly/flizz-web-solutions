@@ -118,7 +118,15 @@ const en = {
     messageLabel: 'Message *',
     messagePlaceholder: 'Tell us about your project...',
     submit: 'SEND MESSAGE',
+    sending: 'SENDING...',
+    success: 'Message sent! We will get back to you within 24 hours.',
+    error: 'Something went wrong and the message was not sent.',
+    errorFallback: 'Try again, or email us directly:',
     mailSubject: 'Project inquiry from',
+  },
+  whatsapp: {
+    label: 'Chat on WhatsApp',
+    message: 'Hi! I would like to talk about a project.',
   },
   footer: {
     tagline: 'Lightning-fast, pixel-perfect websites and apps for clients in Brazil and the US.',
@@ -273,7 +281,15 @@ const pt: UI = {
     messageLabel: 'Mensagem *',
     messagePlaceholder: 'Conte sobre o seu projeto...',
     submit: 'ENVIAR MENSAGEM',
+    sending: 'ENVIANDO...',
+    success: 'Mensagem enviada! Retornamos em até 24 horas.',
+    error: 'Algo deu errado e a mensagem não foi enviada.',
+    errorFallback: 'Tente de novo ou envie um e-mail direto:',
     mailSubject: 'Contato de projeto de',
+  },
+  whatsapp: {
+    label: 'Conversar no WhatsApp',
+    message: 'Olá! Quero conversar sobre um projeto.',
   },
   footer: {
     tagline: 'Sites e apps ultrarrápidos e pixel-perfect para clientes no Brasil e nos EUA.',

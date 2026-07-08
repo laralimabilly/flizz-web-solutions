@@ -66,7 +66,12 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={service.metaTitle} description={service.metaDescription} lang={lang}>
+<Layout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  image={`/og/service-${service.slug}-pt.jpg`}
+  lang={lang}
+>
   <Header lang={lang} />
   <ServiceDetail service={service} others={others} lang={lang} />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

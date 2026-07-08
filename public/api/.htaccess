@@ -1,0 +1,7 @@
+# Never serve the Resend config directly, even if PHP handling ever breaks.
+<Files "resend-config.php">
+  Require all denied
+</Files>
+<Files "resend-config.example.php">
+  Require all denied
+</Files>

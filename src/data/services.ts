@@ -665,3 +665,21 @@ export const getLocalizedServices = (lang: Lang): LocalizedService[] =>
 
 /** Slugs in home-page order, used to link Solutions rows and footer items. */
 export const serviceSlugs = services.map((s) => s.slug);
+
+/* Maps the service names used in portfolio case studies (both locales) to a
+   service page slug, for internal linking. Names without a clear match stay
+   unlinked, so only add entries with an obvious owner. */
+const serviceNameToSlug: Record<string, string> = {
+  'Web Development': 'web-development',
+  'Desenvolvimento Web': 'web-development',
+  'Improved SEO': 'web-development',
+  'SEO Aprimorado': 'web-development',
+  'Mobile App Development': 'mobile-apps',
+  'Desenvolvimento de App Mobile': 'mobile-apps',
+  'Brand Design': 'brand-web-design',
+  'Design de Marca': 'brand-web-design',
+  'UI/UX Design': 'brand-web-design',
+};
+
+export const getServiceSlugForName = (name: string): string | undefined =>
+  serviceNameToSlug[name];
