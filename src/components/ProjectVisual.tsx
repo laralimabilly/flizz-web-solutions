@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Bell, Play, FileSearch, Car, Mic } from 'lucide-react';
+import { MapPin, Bell, Play, FileSearch, Car, Mic, Flame, ShoppingCart } from 'lucide-react';
 
 /* Hand-built art directions per project; keeps pages light (no heavy images)
    while every showcase still looks bespoke. Shared by the home gallery and the
@@ -167,6 +167,37 @@ const ProjectVisual: React.FC<{ visual: string }> = ({ visual }) => {
           </div>
 
           <span className="font-mono text-xs text-[#5eead4] tracking-[0.3em] uppercase">Talking to Line…</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (visual === 'idontneedthat') {
+    // Novelty-product storefront card, rendered in the brand's 90s palette
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0e0817] via-[#160a1f] to-[#08050d] p-6 md:p-10">
+        <div className="absolute inset-0 bg-noise" />
+        <div className="absolute -top-10 -left-6 w-56 h-56 bg-[#ff6b9d]/20 rounded-full blur-[100px]" aria-hidden="true" />
+        <div className="absolute -bottom-10 -right-6 w-56 h-56 bg-[#00d4ff]/20 rounded-full blur-[100px]" aria-hidden="true" />
+
+        <div className="relative w-full max-w-sm -rotate-1 rounded-2xl border-2 border-[#68f70b]/40 bg-[#12101a]/90 p-5 shadow-card">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="inline-flex -rotate-2 items-center gap-1 rounded-full bg-[#ff6b9d] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
+              <Flame className="w-3 h-3" /> Hot right now
+            </span>
+            <ShoppingCart className="w-4 h-4 text-[#68f70b]" />
+          </div>
+          <div className="mb-4 flex aspect-square items-center justify-center rounded-xl border border-light/10 bg-gradient-to-br from-[#ffe600]/20 via-[#b44dff]/20 to-[#00d4ff]/20">
+            <span className="text-5xl">🦆</span>
+          </div>
+          <div className="space-y-2">
+            <div className="h-2.5 w-4/5 rounded bg-light/25" />
+            <div className="h-2.5 w-2/5 rounded bg-light/10" />
+          </div>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#00d4ff]">Add to cart, coward</span>
+            <span className="text-sm font-bold text-[#68f70b]">$19.99</span>
+          </div>
         </div>
       </div>
     );

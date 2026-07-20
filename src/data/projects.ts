@@ -7,7 +7,7 @@
 
 import type { Lang } from '../i18n/ui';
 
-export type ProjectVisualKey = 'dayone' | 'bugo' | 'gustavo' | 'rumors' | 'nsa' | 'line';
+export type ProjectVisualKey = 'dayone' | 'bugo' | 'gustavo' | 'rumors' | 'nsa' | 'line' | 'idontneedthat';
 
 /** A string available in both supported locales. */
 type Localized<T> = Record<Lang, T>;
@@ -99,6 +99,29 @@ export const projects: PortfolioProject[] = [
   },
   {
     id: '3',
+    slug: 'i-dont-need-that',
+    title: "I Don't Need That",
+    description: {
+      en: 'An affiliate marketplace for gloriously useless novelty products, with a bold 90s-inspired storefront and a full admin dashboard for products, categories and click analytics. Built with Next.js and Supabase.',
+      pt: 'Um marketplace de afiliados para produtos inúteis e maravilhosos, com uma loja de inspiração nos anos 90 e um painel administrativo completo para produtos, categorias e analytics de cliques. Construído com Next.js e Supabase.',
+    },
+    summary: {
+      en: "I Don't Need That is an affiliate marketplace built around a simple joke: products you didn't know you needed, and definitely don't. We built a loud, 90s-inspired storefront on Next.js and Supabase, backed by a full admin panel for managing products, categories, tags and site settings. Every affiliate click is tracked, so the team can see what's working by day, device and country.",
+      pt: 'I Don’t Need That é um marketplace de afiliados construído em torno de uma piada simples: produtos que você não sabia que precisava e definitivamente não precisa. Construímos uma loja vibrante com inspiração nos anos 90 sobre Next.js e Supabase, apoiada por um painel administrativo completo para gerenciar produtos, categorias, tags e configurações do site. Cada clique de afiliado é rastreado, para que a equipe veja o que está funcionando por dia, dispositivo e país.',
+    },
+    industry: { en: 'Affiliate / E-commerce', pt: 'Afiliados / E-commerce' },
+    services: {
+      en: ['Web Development', 'Admin Dashboard', 'Click Analytics'],
+      pt: ['Desenvolvimento Web', 'Painel Administrativo', 'Analytics de Cliques'],
+    },
+    techStack: ['Next.js 16', 'React 19', 'TypeScript', 'Supabase', 'Tailwind CSS', 'shadcn/ui'],
+    link: 'https://www.idontneedthat.com/',
+    year: '2026',
+    visual: 'idontneedthat',
+    galleryCount: 8,
+  },
+  {
+    id: '4',
     slug: 'dayone-talent-advisory',
     title: 'DayOne Talent Advisory',
     description: {
@@ -121,7 +144,7 @@ export const projects: PortfolioProject[] = [
     galleryCount: 3,
   },
   {
-    id: '4',
+    id: '5',
     slug: 'bugo-mobile-app',
     title: 'Bugo Mobile App',
     description: {
@@ -144,7 +167,7 @@ export const projects: PortfolioProject[] = [
     galleryCount: 3,
   },
   {
-    id: '5',
+    id: '6',
     slug: 'gustavo-carmo-website',
     title: "Gustavo Carmo's Website",
     description: {
@@ -167,7 +190,7 @@ export const projects: PortfolioProject[] = [
     galleryCount: 3,
   },
   {
-    id: '6',
+    id: '7',
     slug: 'ridiculous-rumors',
     title: 'Ridiculous Rumors',
     description: {

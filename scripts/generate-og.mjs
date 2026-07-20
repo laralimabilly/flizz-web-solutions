@@ -33,6 +33,7 @@ const projects = [
   { slug: 'bugo-mobile-app', title: 'Bugo Mobile App', meta: { en: 'Utility Tools · 2026', pt: 'Ferramentas Utilitárias · 2026' } },
   { slug: 'gustavo-carmo-website', title: "Gustavo Carmo's Website", meta: { en: 'Music · 2023', pt: 'Música · 2023' } },
   { slug: 'ridiculous-rumors', title: 'Ridiculous Rumors', meta: { en: 'Entertainment · 2025', pt: 'Entretenimento · 2025' } },
+  { slug: 'i-dont-need-that', title: "I Don't Need That", meta: { en: 'Affiliate / E-commerce · 2026', pt: 'Afiliados / E-commerce · 2026' } },
 ];
 
 const eyebrowWords = {
